@@ -13,7 +13,8 @@ public class Time {
 	
 	public Time(String timestamp)
 	{
-		_time = convertTimestamp(timestamp);
+		if(timestamp == null) _time=-1;
+		else _time = convertTimestamp(timestamp);
 	}
 	
 	public Time(long time)
@@ -73,6 +74,7 @@ public class Time {
 	 */
 	public String convertRawTime(boolean HMS)
 	{
+		if(_time<0) return "DNF";
 		if(!HMS)
 		{
 			long ns = _time;

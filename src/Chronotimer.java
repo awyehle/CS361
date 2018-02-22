@@ -17,6 +17,9 @@ public class Chronotimer {
 	private boolean[] _channelOn = new boolean[_CHANNELS];
 	private boolean[] _channelTripped = new boolean[_CHANNELS];
 	private Sensor[] _sensorsConnected = new Sensor[_CHANNELS];
+	private Time[] _startTimes = new Time[_CHANNELS/2];
+	private Time[] _finishTimes = new Time[_CHANNELS/2];
+	
 	
 	public Chronotimer()
 	{
@@ -47,7 +50,10 @@ public class Chronotimer {
 		{
 			try
 			{
-				_channelTripped[Integer.parseInt(command[2])]=true;
+				int i = Integer.parseInt(command[2]);
+				_channelTripped[i]=true;
+				if(i%2==0) _startTimes[i/2] = new Time(command[0]);
+				else _finishTimes[i/2+1] = new Time(command[0]);
 			}
 			catch(NumberFormatException e) {}
 			break;
@@ -56,10 +62,26 @@ public class Chronotimer {
 		{
 			_channelOn = new boolean[_CHANNELS];
 			_channelTripped = new boolean[_CHANNELS];
+			break;
 		}
 		case "TIME":
 		{
 			_time = new Time(command[2]);
+			break;
+		}
+		case "DNF":
+		{
+			_finishTimes[1] = new Time(null);
+		}
+		case "START":
+		{
+			runCommand(command[0], "TRIG",""+0);
+			break;
+		}
+		case "FINISH":
+		{
+			runCommand(command[0], "TRIG",""+1);
+			break;
 		}
 		default: {System.out.println("This should not be able to happen!"); break;}
 		}
