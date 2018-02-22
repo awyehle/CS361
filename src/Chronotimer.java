@@ -76,6 +76,10 @@ public class Chronotimer {
 		}
 		case "CANCEL":
 		{
+			_channelTripped[0] = false;
+			_channelTripped[1] = false;
+			_startTimes[0]=null;
+			_finishTimes[0]=null;
 			break;
 		}
 		case "START":
