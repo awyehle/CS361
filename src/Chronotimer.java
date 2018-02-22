@@ -1,3 +1,9 @@
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
+
 /**
  * System for timer...
  * @author Andrew Huelsman, whomever else
@@ -6,35 +12,61 @@
 public class Chronotimer {
 
 	private boolean _isOn;
-	private Event POWER, TOG;
 	private final int _CHANNELS = 8;
+	private Time _time;
 	private boolean[] _channelOn = new boolean[_CHANNELS];
+	private boolean[] _channelTripped = new boolean[_CHANNELS];
+	private Sensor[] _sensorsConnected = new Sensor[_CHANNELS];
 	
-	private abstract class Event {
-
-		private String _name;
-		
-		public Event(String name)
-		{
-			this._name=name;
-		}
-
+	public Chronotimer()
+	{
+		_channelOn[0] = true;
+		_sensorsConnected[0] = new Sensor();
 	}
 
-	private void initializeEvents()
+	public void runCommand(String... command)
 	{
-		POWER = new Event("POWER") {
-			public void action()
+		switch(command[1])
+		{
+		case "POWER":
+		{
+			_isOn = !_isOn;
+			break;
+		}
+		case "TOG":
+		{
+			try
 			{
-				_isOn = !_isOn;
+				_channelOn[Integer.parseInt(command[2])]=!_channelOn[Integer.parseInt(command[2])];
 			}
-		};
-		TOG = new Event("TOG") {
-			public void action(int channel)
+			catch(NumberFormatException e) {}
+			break;
+		}
+		case "TRIG":
+		{
+			try
 			{
-				if(channel < 0 || channel >=_CHANNELS) throw new IllegalArgumentException("Channel does not exist");
-				_channelOn[channel]=!_channelOn[channel];
+				_channelTripped[Integer.parseInt(command[2])]=true;
 			}
-		};
+			catch(NumberFormatException e) {}
+			break;
+		}
+		case "RESET":
+		{
+			_channelOn = new boolean[_CHANNELS];
+			_channelTripped = new boolean[_CHANNELS];
+		}
+		default: {System.out.println("This should not be able to happen!"); break;}
+		}
+	}
+
+	public int getConnection(Sensor sensor)
+	{
+		for(int i = 0; i< _CHANNELS; ++i)
+		{
+			if(_sensorsConnected[i]==sensor)
+				return i;
+		}
+		return -1;
 	}
 }

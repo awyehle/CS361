@@ -1,3 +1,6 @@
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * A class which will support time measurements
  * @author Andrew Huelsman
@@ -17,6 +20,11 @@ public class Time {
 	{
 		if(time<0) throw new IllegalArgumentException("Time cannot be negative.");
 		_time = time;
+	}
+	
+	public Time()
+	{
+		this(new Timestamp(new Date().getTime()).toString().split(" ")[1]);
 	}
 	
 	public long getTime()
@@ -63,15 +71,30 @@ public class Time {
 	 * mm is minutes, ss is seconds, and nns is nanoseconds
 	 * @return this time in a readable timestamp format
 	 */
-	public String convertRawTime()
+	public String convertRawTime(boolean HMS)
 	{
-		long ns = _time;
-		long sec = _time/1000;
-		ns = _time%1000;
-		long min = sec/60;
-		sec = sec%60;
-		
-		return String.format("%02d:%02d.%03d", min,sec,ns);
+		if(!HMS)
+		{
+			long ns = _time;
+			long sec = _time/1000;
+			ns = _time%1000;
+			long min = sec/60;
+			sec = sec%60;
+			
+			return String.format("%02d:%02d.%03d", min,sec,ns);
+		}
+		else
+		{
+			long ns = _time;
+			long sec = _time/1000;
+			ns = _time%1000;
+			long min = sec/60;
+			sec = sec%60;
+			long hr = min/60;
+			min = min%60;
+			
+			return String.format("%02d:%02d:%02d", hr,min,sec);
+		}
 	}
 
 	/**
