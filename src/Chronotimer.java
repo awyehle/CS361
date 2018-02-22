@@ -20,6 +20,7 @@ public class Chronotimer {
 	
 	public Chronotimer()
 	{
+		_time = new Time();
 		_channelOn[0] = true;
 		_sensorsConnected[0] = new Sensor();
 	}
@@ -55,6 +56,10 @@ public class Chronotimer {
 		{
 			_channelOn = new boolean[_CHANNELS];
 			_channelTripped = new boolean[_CHANNELS];
+		}
+		case "TIME":
+		{
+			_time = new Time(command[2]);
 		}
 		default: {System.out.println("This should not be able to happen!"); break;}
 		}
