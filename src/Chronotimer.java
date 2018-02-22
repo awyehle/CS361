@@ -72,6 +72,11 @@ public class Chronotimer {
 		case "DNF":
 		{
 			_finishTimes[1] = new Time(null);
+			break;
+		}
+		case "CANCEL":
+		{
+			break;
 		}
 		case "START":
 		{
