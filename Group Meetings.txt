@@ -12,7 +12,7 @@ Highlights of the meeting:
 
 Meeting outcome: Completed and submitted lab 2
 
-Diciplinary actions taken: none
+Disciplinary actions taken: none
 
 -----------------------------
 
@@ -31,4 +31,22 @@ Highlights of meeting:
 	
 Meeting outcome: We completed lab 4
 	
-Diciplinary actions taken: none
+Disciplinary actions taken: none
+
+-----------------------------
+
+Meeting 3
+2/15/18 3:30pm - 
+
+Meeting goal: Complete Lab 5 - ATM simulator 2 | Sprint through sprint 1
+
+Important decisions made: Assigned rolls for sprint 1.  Andy will finish ATM to fix output, Andrew and Mike will finish test cases for Lab 5
+
+Highlights of meeting: 
+	- Mostly finished Lab 5
+	- Worked on Sprint 1
+	- clarified classes we need to make for Chronotimer
+	
+Meeting outcome: Got a lot of work done on both Sprint 1 and Lab 5 but finished neither
+
+Disciplinary actions taken: none
