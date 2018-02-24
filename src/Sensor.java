@@ -12,6 +12,6 @@ public class Sensor {
 	{
 		if(_connection==null)
 			return;
-		_connection.runCommand(new Time().convertRawTime(false), "TRIG", ""+_connection.getConnection(this));
+		_connection.runCommand(new Time().convertRawTime(), "TRIG", ""+_connection.getConnection(this));
 	}
 }

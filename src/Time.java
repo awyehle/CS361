@@ -72,21 +72,9 @@ public class Time {
 	 * mm is minutes, ss is seconds, and nns is nanoseconds
 	 * @return this time in a readable timestamp format
 	 */
-	public String convertRawTime(boolean HMS)
+	public String convertRawTime()
 	{
 		if(_time<0) return "DNF";
-		if(!HMS)
-		{
-			long ns = _time;
-			long sec = _time/1000;
-			ns = _time%1000;
-			long min = sec/60;
-			sec = sec%60;
-			
-			return String.format("%02d:%02d.%03d", min,sec,ns);
-		}
-		else
-		{
 			long ns = _time;
 			long sec = _time/1000;
 			ns = _time%1000;
@@ -95,8 +83,7 @@ public class Time {
 			long hr = min/60;
 			min = min%60;
 			
-			return String.format("%02d:%02d:%02d", hr,min,sec);
-		}
+			return String.format("%02d:%02d:%02d.%03d", hr,min,sec, ns);
 	}
 
 	/**
@@ -107,6 +94,8 @@ public class Time {
 	 */
 	public static Time difference(Time time1, Time time2)
 	{
+		if(time1==null || time2 == null) return new Time(null);
+		if(time1._time < 0 || time2._time <0) return new Time(null);
 		return new Time(Math.abs(time1.getTime()-time2.getTime()));
 	}
 }
