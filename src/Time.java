@@ -105,7 +105,7 @@ public class Time {
 	 * @param time2 second time
 	 * @return absolute difference between time1 and time2
 	 */
-	public Time difference(Time time1, Time time2)
+	public static Time difference(Time time1, Time time2)
 	{
 		return new Time(Math.abs(time1.getTime()-time2.getTime()));
 	}

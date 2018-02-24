@@ -1,7 +1,4 @@
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+
 
 
 /**
@@ -30,7 +27,7 @@ public class Chronotimer {
 
 	public void runCommand(String... command)
 	{
-		switch(command[1])
+		switch(command[1].toUpperCase())
 		{
 		case "POWER":
 		{
@@ -53,7 +50,7 @@ public class Chronotimer {
 				int i = Integer.parseInt(command[2]);
 				_channelTripped[i]=true;
 				if(i%2==0) _startTimes[i/2] = new Time(command[0]);
-				else _finishTimes[i/2+1] = new Time(command[0]);
+				else _finishTimes[i/2] = new Time(command[0]);
 			}
 			catch(NumberFormatException e) {}
 			break;
@@ -104,5 +101,11 @@ public class Chronotimer {
 				return i;
 		}
 		return -1;
+	}
+	
+	public void printRun(int startChannel)
+	{
+		if(startChannel<0 || startChannel>3) return;
+		System.out.println(Time.difference(_startTimes[startChannel], _finishTimes[startChannel]).convertRawTime(false));
 	}
 }
