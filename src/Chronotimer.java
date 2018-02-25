@@ -20,6 +20,12 @@ public class Chronotimer {
 	
 	private Printer _printer = new Printer();
 	
+	
+	/**
+	 * stupid ugly printer class it echos crap
+	 * @author Andrew Huelsman
+	 *
+	 */
 	private class Printer
 	{
 		public void println(String echo)
@@ -31,10 +37,15 @@ public class Chronotimer {
 	public Chronotimer()
 	{
 		_time = new Time();
-		_channelOn[0] = true;
-		_sensorsConnected[0] = new Sensor();
+		//_channelOn[0] = true;
+		//_sensorsConnected[0] = new Sensor();
 	}
 
+	
+	/**
+	 * Method which contains cases for the command sent to this Chronotimer.
+	 * @param command array of strings which acts as the command with arguments
+	 */
 	public void runCommand(String... command)
 	{
 		if(!command[1].toUpperCase().equals("POWER") && !_isOn) return;
@@ -66,6 +77,17 @@ public class Chronotimer {
 		{
 			_eventRunning=false;
 		}
+		case "CONN":
+		{
+			try
+			{
+				int channel = Integer.parseInt(command[3])-1;
+				_sensorsConnected[channel] = new Sensor();
+				_printer.println(command[0] + " Channel " + (channel+1) + " has a sensor connected");
+			}
+			catch(NumberFormatException e) {_printer.println(command[0] + " Error connecting the sensor");}
+			break;
+		}
 		case "EVENT":
 		{
 			switch(command[2].toUpperCase())
@@ -85,9 +107,9 @@ public class Chronotimer {
 		{
 			try
 			{
-				int channel = Integer.parseInt(command[2]);
+				int channel = Integer.parseInt(command[2])-1;
 				_channelOn[channel]=!_channelOn[channel];
-				_printer.println(command[0] + " Channel " + channel + " has been turned " + (_channelOn[channel]? "on" : "off"));
+				_printer.println(command[0] + " Channel " + (channel+1) + " has been turned " + (_channelOn[channel]? "on" : "off"));
 			}
 			catch(NumberFormatException e) {_printer.println(command[0] + " Error turning on or off the channel");}
 			break;
@@ -96,9 +118,11 @@ public class Chronotimer {
 		{
 			try
 			{
-				int i = Integer.parseInt(command[2]);
+				int i = Integer.parseInt(command[2])-1;
+				if(_sensorsConnected[i] == null || !_channelOn[i])
+					break;
 				_channelTripped[i]=true;
-				_printer.println(command[0] + " Channel " + i + " has been tripped!");
+				_printer.println(command[0] + " Channel " + (i+1) + " has been tripped!");
 				if(i%2==0) 
 				{
 					_startTimes[i/2] = new Time(command[0]);
@@ -126,7 +150,7 @@ public class Chronotimer {
 		}
 		case "DNF":
 		{
-			_finishTimes[1] = new Time(null);
+			_finishTimes[0] = new Time(null);
 			_printer.println(command[0] + " Racer for channels [1] and [2] did not finish (DNF)");
 			break;
 		}
@@ -141,12 +165,12 @@ public class Chronotimer {
 		}
 		case "START":
 		{
-			runCommand(command[0], "TRIG",""+0);
+			runCommand(command[0], "TRIG",""+1);
 			break;
 		}
 		case "FINISH":
 		{
-			runCommand(command[0], "TRIG",""+1);
+			runCommand(command[0], "TRIG",""+2);
 			break;
 		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}
