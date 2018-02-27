@@ -178,9 +178,9 @@ public class Chronotimer {
 		{
 			if(command.length < 3) {
 				printRun(0);
+				printRun(1);
 				printRun(2);
-				printRun(4);
-				printRun(6);
+				printRun(3);
 			}
 			else {
 				try
@@ -210,6 +210,6 @@ public class Chronotimer {
 	{
 		if(startChannel<0 || startChannel>3) return;
 		String time = Time.difference(_startTimes[startChannel], _finishTimes[startChannel]).convertRawTime();
-		_printer.println("Time for racer on channels ["+(startChannel+1)+"] and ["+(startChannel+2) +"] is " + time);
+		_printer.println("Time for racer on channels ["+((startChannel*2)+1)+"] and ["+((startChannel*2)+2)+"] is " + time);
 	}
 }
