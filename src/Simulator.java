@@ -50,7 +50,7 @@ public class Simulator {
 	 }
 	 
 	 private static void consoleInput() {
-		 System.out.println("Input ([Exit]):");
+		 System.out.println("Input [Time command]:");
 		 String input = stdin.nextLine();
 		 inputCommand(input);
 		 consoleInput();
