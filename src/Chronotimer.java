@@ -120,7 +120,7 @@ public class Chronotimer {
 			try
 			{
 				int i = Integer.parseInt(command[2])-1;
-				if(_sensorsConnected[i] == null || !_channelOn[i])
+				if(/*_sensorsConnected[i] == null || */!_channelOn[i])
 					break;
 				_channelTripped[i]=true;
 				_printer.println(command[0] + " Channel " + (i+1) + " has been tripped!");
