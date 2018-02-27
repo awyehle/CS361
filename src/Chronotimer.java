@@ -63,6 +63,13 @@ public class Chronotimer {
 		{
 			_isOn = !_isOn;
 			_printer.println(command[0] + " Power is turned " + (_isOn? "on" : "off"));
+			if(!_isOn) 
+			{
+				_channelOn = new boolean[_CHANNELS];
+				_channelTripped = new boolean[_CHANNELS];
+				_eventRunning=false;
+				event=EVENTS.IND;
+			}
 			break;
 		}
 		case "NEWRUN":
