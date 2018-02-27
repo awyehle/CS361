@@ -22,8 +22,8 @@ public class Chronotimer {
 	 *
 	 */
 	
-	private static enum EVENTS {NORUN, IND, PARIND, GRP, PARGRP};
-	private EVENTS event = EVENTS.NORUN;
+	private static enum EVENTS {IND, PARIND, GRP, PARGRP};
+	private EVENTS event = EVENTS.IND;
 	private boolean _eventRunning;
 	
 	private Printer _printer = new Printer();
@@ -67,12 +67,7 @@ public class Chronotimer {
 		}
 		case "NEWRUN":
 		{
-			if(event==EVENTS.NORUN) 
-			{
-				_printer.println(command[0] + " There is no type of event to record");
-				break;
-			}
-			if(_eventRunning = true) 
+			if(_eventRunning == true) 
 			{
 				_printer.println(command[0] + " There is an event already going on. End the current run to begin a new one.");
 				break;
