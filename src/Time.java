@@ -96,7 +96,7 @@ public class Time {
 	{
 		if(time1==null || time2 == null) return new Time(null);
 		if(time1._time < 0 || time2._time <0) return new Time(null);
-		long diff = time1.getTime()-time2.getTime();
+		long diff = time2.getTime()-time1.getTime();
 		if(diff<0) return new Time(null);
 		return new Time(diff);
 	}
