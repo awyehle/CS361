@@ -10,7 +10,7 @@ public class Simulator {
 	
 	private static Chronotimer _environment;
 	
-	static final String _fileLocation = "InputCommands.txt";
+	static final String _fileLocation = "Commands.txt";
 	static Scanner stdin = new Scanner(System.in);
 			
 	private static final ArrayList<String> _VALIDCOMMANDS = new ArrayList<String>();
@@ -18,7 +18,6 @@ public class Simulator {
 	static
 	{
 		_VALIDCOMMANDS.add("POWER");
-		_VALIDCOMMANDS.add("EXIT");
 		_VALIDCOMMANDS.add("RESET");
 		_VALIDCOMMANDS.add("TIME");
 		_VALIDCOMMANDS.add("DNF");
@@ -27,30 +26,32 @@ public class Simulator {
 		_VALIDCOMMANDS.add("TRIG");
 		_VALIDCOMMANDS.add("START");
 		_VALIDCOMMANDS.add("FINISH");
+		_VALIDCOMMANDS.add("EVENT");
+		_VALIDCOMMANDS.add("ENDRUN");
+		_VALIDCOMMANDS.add("NEWRUN");
+		_VALIDCOMMANDS.add("NUM");
+		_VALIDCOMMANDS.add("PRINT");
+		_VALIDCOMMANDS.add("CONN");
 	}
 
 	public static void main(String[] args)
 	{
-		/// Initialize testing values
-		
 		_environment = new Chronotimer();
-		// Start the simulation loop
 		simulationLoop();
 	}
 	
 	 private static void simulationLoop() {
 		 System.out.println("[C]onsole, [F]ile, or [E]xit");
-		 String input = stdin.next();
+		 String input = stdin.nextLine();
 		 if(input.equals("C") || input.equals("c")) consoleInput();
-		 else if(input.equals("F") || input.equals("f")) fileInput();
-		 else if(input.equals("E") || input.equals("e")) exitSim();
+		 else if(input.toUpperCase().equals("F")) fileInput();
+		 else if(input.toUpperCase().equals("E")) exitSim();
 		 simulationLoop();
 	 }
 	 
 	 private static void consoleInput() {
-		 System.out.println("Input ([E]xit):");
+		 System.out.println("Input ([Exit]):");
 		 String input = stdin.nextLine();
-		 if(input.equals("E") || input.equals("e")) simulationLoop();
 		 inputCommand(input);
 		 consoleInput();
 	 }
@@ -79,55 +80,25 @@ public class Simulator {
 	 }
 	 
 	 private static void inputCommand(String input) {
-		 String[] inputArray = input.split(" ");
-		 String command;
-		 String mod;
-		 boolean goodCommand = false;
-		 
-		 if(inputArray.length < 2 || inputArray.length > 3) return;
-		 if(inputArray.length == 2) {
-			 command = inputArray[0].toUpperCase();
-			 mod = inputArray[1].toUpperCase();
+		 String[] commandArray = input.split(" |	");
+		 if(commandArray.length < 2 || commandArray.length > 4 || commandArray[1] == null) {
+			 System.out.println("Invalid Command Format");
+			 return;
 		 }
-		 else {
-			 command = inputArray[1].toUpperCase();
-			 mod = inputArray[2].toUpperCase();
-		 }
-		 switch(command) {
-		 	case "CARDREAD" :
-		 	case "NUM" :
-		 	case "DIS" :
-		 	case "PRINT" : goodCommand = true;
-		 		break;
-		 	case "BUTTON" :
-		 		switch(mod) {
-		 			case "W" :
-		 			case "CB" :
-		 			case "CANCEL" :
-		 			case "D" : goodCommand = true;
-		 				break;
-		 		}
-		 }
-		 if(goodCommand) _environment.runCommand(inputArray);
+		 if(commandArray[1].toUpperCase().equals("EXIT")) exitSim(input);
+		 if(_VALIDCOMMANDS.contains(commandArray[1].toUpperCase())) _environment.runCommand(commandArray);
+		 else System.out.println("Invalid command " + commandArray[1]);
 	 }
 	 
 	 private static void exitSim() {
 		 stdin.close();
 		 System.exit(0);
 	 }
-	
-	private static void runCommand(String command)
-	{
-		Timestamp ts = new Timestamp(new Date().getTime());
-		Time timestamp = new Time(ts.toString().split(" ")[1]);
-		
-	}
-	
-	private static void runFileCommand(String command)
-	{
-		String[] cmd = command.split(" ");
-		//if()
-		Time timestamp = new Time(cmd[0]);
-	}
-	
+	 
+	 private static void exitSim(String input) {
+		 String[] commandArray = input.split(" |	");
+		 System.out.println(commandArray[0] + " The simulation has terminated");
+		 stdin.close();
+		 System.exit(0);
+	 }
 }

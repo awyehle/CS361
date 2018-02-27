@@ -76,6 +76,7 @@ public class Chronotimer {
 		case "ENDRUN":
 		{
 			_eventRunning=false;
+			break;
 		}
 		case "CONN":
 		{
@@ -171,6 +172,24 @@ public class Chronotimer {
 		case "FINISH":
 		{
 			runCommand(command[0], "TRIG",""+2);
+			break;
+		}
+		case "PRINT":
+		{
+			if(command.length < 3) {
+				printRun(0);
+				printRun(2);
+				printRun(4);
+				printRun(6);
+			}
+			else {
+				try
+				{
+					int i = Integer.parseInt(command[2])-1;
+					printRun(i);
+				}
+				catch(NumberFormatException e) {_printer.println("Invalid Channel");}
+			}
 			break;
 		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}
