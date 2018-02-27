@@ -14,6 +14,14 @@ public class Chronotimer {
 	private Time[] _startTimes = new Time[_CHANNELS/2];
 	private Time[] _finishTimes = new Time[_CHANNELS/2];
 	
+	/**
+	 * _startTimes and _finishTimes need to be eliminated. Racer times will be held in the racer class
+	 * PRINT will take a racer for an argument
+	 * There will be a queue of racers which, when a sensor is triggered, will take the time for themselves
+	 * @author huelsma2
+	 *
+	 */
+	
 	private static enum EVENTS {NORUN, IND, PARIND, GRP, PARGRP};
 	private EVENTS event = EVENTS.NORUN;
 	private boolean _eventRunning;
