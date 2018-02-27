@@ -1,3 +1,6 @@
+/**
+ * @author Andrew Yehle, Michael Davis
+ */
 import org.junit.Test;
 
 public class ChronoTester {
