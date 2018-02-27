@@ -85,6 +85,8 @@ public class Simulator {
 			 System.out.println("Invalid Command Format");
 			 return;
 		 }
+		 if(commandArray[0].equals("-"))
+			 commandArray[0] = new Time().convertRawTime();
 		 if(commandArray[1].toUpperCase().equals("EXIT")) exitSim(input);
 		 if(_VALIDCOMMANDS.contains(commandArray[1].toUpperCase())) _environment.runCommand(commandArray);
 		 else System.out.println("Invalid command " + commandArray[1]);
