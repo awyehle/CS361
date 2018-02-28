@@ -7,11 +7,11 @@ import java.util.ArrayList;
  */
 public class raceQueuer {
 	
-	ArrayList<Racer> racerQueue = new ArrayList<Racer>();
+	ArrayList<Racer> racerQueue;
 	int size;
 	
 	public raceQueuer(ArrayList<Racer> racerQueue){
-		racerQueue = this.racerQueue;
+		this.racerQueue = racerQueue;
 	}
 	
 	private Racer pop(){
@@ -58,7 +58,8 @@ public class raceQueuer {
 		newQueue.add(racer3);
 		newQueue.add(racer4);
 		raceQueuer firstQueue = new raceQueuer(newQueue);
-		firstQueue.toString();
+		System.out.println(firstQueue.toString());
+		System.out.print(firstQueue.isEmpty());
 		
 	}
 }

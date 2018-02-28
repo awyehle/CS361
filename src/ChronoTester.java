@@ -28,6 +28,7 @@ public class ChronoTester {
 		{
 			
 			
+			
 		}
 		
 		@Test
@@ -47,6 +48,13 @@ public class ChronoTester {
 		@Test
 		public void TestNewRun()
 		{
+			
+			
+		}
+		
+		@Test
+		public void TestDNF(){
+			
 			
 			
 		}
@@ -93,6 +101,18 @@ public class ChronoTester {
 			
 		}
 		
+		@Test
+		public void TestTime(){
+			
+			
+			
+		}
 		
+		@Test
+		public void raceQueuer(){
+			
+			
+			
+		}
 		
 }
