@@ -222,4 +222,9 @@ public class Chronotimer {
 		String time = Time.difference(_startTimes[startChannel], _finishTimes[startChannel]).convertRawTime();
 		_printer.println("Time for racer on channels ["+((startChannel*2)+1)+"] and ["+((startChannel*2)+2)+"] is " + time);
 	}
+	
+	public boolean isOn(){
+		
+		if (_isOn) return true; else return false;
+	}
 }

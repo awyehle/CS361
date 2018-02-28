@@ -1,16 +1,25 @@
 /**
  * @author Andrew Yehle, Michael Davis
  */
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class ChronoTester {
 		
 		static Chronotimer newChronotimer = new Chronotimer();
 		
+		
 		@Test
 		public void TestPower()
 		{
 			
+			String input = "12:01:02.0 POWER";
+			String[] command = input.split(" ");
+			newChronotimer.runCommand(command);
+			assertTrue(newChronotimer.isOn());
+			newChronotimer.runCommand(command);
+			assertFalse(newChronotimer.isOn());
 			
 		}
 		
