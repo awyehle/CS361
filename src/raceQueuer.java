@@ -61,6 +61,7 @@ public class raceQueuer {
 		System.out.println(firstQueue.toString());
 		System.out.print(firstQueue.isEmpty());
 		firstQueue.pop();
+		firstQueue.pop();
 		System.out.println(firstQueue.toString());
 		System.out.print(firstQueue.isEmpty());
 		
