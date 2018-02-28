@@ -16,7 +16,12 @@ public class raceQueuer {
 	
 	private Racer pop(){
 		
-		Racer firstRacer = racerQueue.get(0);
+		Racer firstRacer = null;
+		try{
+		firstRacer = racerQueue.get(0);
+		}catch(IndexOutOfBoundsException e){
+			System.out.println("There are no racers to pop in the raceQueuer");
+		}
 		racerQueue.remove(0);
 		return firstRacer;
 		
@@ -64,6 +69,11 @@ public class raceQueuer {
 		firstQueue.pop();
 		System.out.println(firstQueue.toString());
 		System.out.print(firstQueue.isEmpty());
+		firstQueue.pop();
+		firstQueue.pop();
+		System.out.print(firstQueue.isEmpty());
+		firstQueue.pop();
+		
 		
 	}
 }

@@ -227,4 +227,39 @@ public class Chronotimer {
 		
 		if (_isOn) return true; else return false;
 	}
+	
+	public boolean isReset(){
+		
+		for(int i = 0; i<_CHANNELS; i++){
+			if(_channelOn[i] != true && _channelTripped[i] != true){
+				continue; 
+			}else{return false;}
+		}
+		return true;
+	}
+	
+	public boolean eventIsStarted(){
+		
+		if (_channelTripped[0] == true) return true;
+		
+		return false;
+		
+	}
+	
+	public boolean eventIsFinished(){
+		
+		if(_channelTripped[1]==true) return true;
+		return false;
+	}
+	
+	public boolean isCancled(){
+        //only checking 2 channel so subtract 6 from total channels
+        for(int i = 0; i<_CHANNELS - 6; i++){ 
+          if(_channelTripped[i] != true && _channelTripped[i] != true && _startTimes[0] == null && _finishTimes[0] == null){
+            continue; 
+          }else{return false;}
+        }
+        return true;
+      }
+	
 }
