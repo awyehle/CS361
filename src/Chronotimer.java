@@ -67,6 +67,9 @@ public class Chronotimer {
 			{
 				_channelOn = new boolean[_CHANNELS];
 				_channelTripped = new boolean[_CHANNELS];
+				_sensorsConnected = new Sensor[_CHANNELS];
+				_startTimes = new Time[_CHANNELS/2];
+				_finishTimes = new Time[_CHANNELS/2];
 				_eventRunning=false;
 				event=EVENTS.IND;
 			}
@@ -286,7 +289,7 @@ public class Chronotimer {
 	    int channel1 = 0;
 	    int channel2 = 1;
 	    int channel3 = 2;
-	    int channel4 = 4;
+	    int channel4 = 3;
 	    if(_sensorsConnected[channel1] == null && _sensorsConnected[channel2] == null && 
 	       _sensorsConnected[channel3] == null && _sensorsConnected[channel4] == null) {
 	      return false;

@@ -27,6 +27,28 @@ public class ChronoTester {
 		}
 		
 		@Test
+		public void TestInvalidCommand()
+		{
+			String input = "12:01:02.0 POWER";
+			String[] command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TIDEPOD";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertTrue(newChronotimer.isOn());
+			assertFalse(newChronotimer.isNewRunTriggered());
+			assertFalse(newChronotimer.isConnected());
+			assertFalse(newChronotimer.isToggled());
+			
+			input = "12:01:02.0 POWER";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+		}
+		
+		@Test
 		public void TestReset()
 		{
 			String input = "12:01:02.0 POWER";
