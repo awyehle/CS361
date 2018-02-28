@@ -5,12 +5,12 @@ import java.util.ArrayList;
  * @author Andrew Yehle
  *
  */
-public class raceQueuer {
+public class RaceQueuer {
 	
 	ArrayList<Racer> racerQueue;
 	int size;
 	
-	public raceQueuer(ArrayList<Racer> racerQueue){
+	public RaceQueuer(ArrayList<Racer> racerQueue){
 		this.racerQueue = racerQueue;
 	}
 	
@@ -63,7 +63,7 @@ public class raceQueuer {
 		newQueue.add(racer2);
 		newQueue.add(racer3);
 		newQueue.add(racer4);
-		raceQueuer firstQueue = new raceQueuer(newQueue);
+		RaceQueuer firstQueue = new RaceQueuer(newQueue);
 		System.out.println(firstQueue.toString());
 		System.out.print(firstQueue.isEmpty());
 		firstQueue.pop();

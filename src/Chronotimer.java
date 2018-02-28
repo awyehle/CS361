@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 /**
  * System for timer...
  * @author Andrew Huelsman, whomever else
@@ -11,8 +13,12 @@ public class Chronotimer {
 	private boolean[] _channelOn = new boolean[_CHANNELS];
 	private boolean[] _channelTripped = new boolean[_CHANNELS];
 	private Sensor[] _sensorsConnected = new Sensor[_CHANNELS];
-	private Time[] _startTimes = new Time[_CHANNELS/2];
-	private Time[] _finishTimes = new Time[_CHANNELS/2];
+	@SuppressWarnings("unchecked")
+	private LinkedList<Time>[] _startTimes = new LinkedList[_CHANNELS/2]; 
+	@SuppressWarnings("unchecked")
+	private LinkedList<Time>[] _finishTimes = new LinkedList[_CHANNELS/2];
+	//private Time[] _startTimes = new Time[_CHANNELS/2];
+	//private Time[] _finishTimes = new Time[_CHANNELS/2];
 	
 	/**
 	 * _startTimes and _finishTimes need to be eliminated. Racer times will be held in the racer class
@@ -45,15 +51,24 @@ public class Chronotimer {
 	public Chronotimer()
 	{
 		_time = new Time();
+		resetTimes();
 		//_channelOn[0] = true;
 		//_sensorsConnected[0] = new Sensor();
 	}
 
+	private void resetTimes()
+	{
+		for(int i = 0; i < _startTimes.length; ++i)
+			_startTimes[i]=new LinkedList<Time>();
+		for(int i = 0; i < _finishTimes.length; ++i)
+			_finishTimes[i]=new LinkedList<Time>();
+	}
 	
 	/**
 	 * Method which contains cases for the command sent to this Chronotimer.
 	 * @param command array of strings which acts as the command with arguments
 	 */
+	@SuppressWarnings("unchecked")
 	public void runCommand(String... command)
 	{
 		if(!command[1].toUpperCase().equals("POWER") && !_isOn) return;
@@ -68,8 +83,7 @@ public class Chronotimer {
 				_channelOn = new boolean[_CHANNELS];
 				_channelTripped = new boolean[_CHANNELS];
 				_sensorsConnected = new Sensor[_CHANNELS];
-				_startTimes = new Time[_CHANNELS/2];
-				_finishTimes = new Time[_CHANNELS/2];
+				resetTimes();
 				_eventRunning=false;
 				event=EVENTS.IND;
 			}
@@ -139,11 +153,13 @@ public class Chronotimer {
 				_printer.println(command[0] + " Channel " + (i+1) + " has been tripped!");
 				if(i%2==0) 
 				{
-					_startTimes[i/2] = new Time(command[0]);
+					_startTimes[i/2].add(new Time(command[0]));
+					//_startTimes[i/2] = new Time(command[0]);
 				}
 				else 
 				{
-					_finishTimes[i/2] = new Time(command[0]);
+					_finishTimes[i/2].add(new Time(command[0]));
+					//_finishTimes[i/2] = new Time(command[0]);
 				}
 			}
 			catch(NumberFormatException e) {_printer.println("Reeeee");}
@@ -164,7 +180,7 @@ public class Chronotimer {
 		}
 		case "DNF":
 		{
-			_finishTimes[0] = new Time(null);
+			_finishTimes[0].add(new Time(null));
 			_printer.println(command[0] + " Racer for channels [1] and [2] did not finish (DNF)");
 			break;
 		}
@@ -172,8 +188,8 @@ public class Chronotimer {
 		{
 			_channelTripped[0] = false;
 			_channelTripped[1] = false;
-			_startTimes[0]=null;
-			_finishTimes[0]=null;
+			_startTimes[0].removeLast();
+			_finishTimes[0].removeLast();
 			_printer.println(command[0] + "Run for channels [1] and [2] has been canceled");
 			break;
 		}
@@ -222,8 +238,11 @@ public class Chronotimer {
 	public void printRun(int startChannel)
 	{
 		if(startChannel<0 || startChannel>3) return;
-		String time = Time.difference(_startTimes[startChannel], _finishTimes[startChannel]).convertRawTime();
-		_printer.println("Time for racer on channels ["+((startChannel*2)+1)+"] and ["+((startChannel*2)+2)+"] is " + time);
+		while(_startTimes[startChannel].size()!=0)
+		{
+			String time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[startChannel].remove()).convertRawTime();
+			_printer.println("Time for racer on channels ["+((startChannel*2)+1)+"] and ["+((startChannel*2)+2)+"] is " + time);
+		}
 	}
 	
 	public boolean isOn(){
