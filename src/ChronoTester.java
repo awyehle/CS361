@@ -124,16 +124,66 @@ public class ChronoTester {
 		}
 		
 		@Test
-		public void TestNewRun()
+		public void TestNewEndRun()
 		{
 			
+			String input = "12:01:02.0 POWER";
+			String[] command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 NEWRUN";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertTrue(newChronotimer.isNewRunTriggered());
+			
+			input = "12:01:02.0 ENDRUN";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+
+			assertFalse(newChronotimer.isNewRunTriggered());
+			
+			input = "12:01:02.0 POWER";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
 			
 		}
 		
 		@Test
 		public void TestDNF(){
 			
-			
+			String input = "12:01:02.0 POWER";
+		      String[] command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      input = "12:01:02.0 TOG 1";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      input = "12:01:02.0 TOG 2";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      assertFalse(newChronotimer.eventIsFinished());
+		      assertFalse(newChronotimer.eventIsStarted());
+		      
+		      input = "12:01:02.0 START";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      assertFalse(newChronotimer.eventIsFinished());
+		      assertTrue(newChronotimer.eventIsStarted());
+		      
+		      input = "12:01:02.0 DNF";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      assertFalse(newChronotimer.eventIsFinished());
+		      assertTrue(newChronotimer.eventIsStarted());
+		      
+		      input = "12:01:02.0 POWER";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
 			
 		}
 		
@@ -141,13 +191,31 @@ public class ChronoTester {
 		public void TestToggleSensor()
 		{
 			
-			
-		}
-		
-		@Test
-		public void TestEnterNewRacer()
-		{
-			
+			String input = "12:01:02.0 POWER";
+		      String[] command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      assertFalse(newChronotimer.isToggled());
+		      
+		      input = "12:01:02.0 TOG 1";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      input = "12:01:02.0 TOG 2";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      assertTrue(newChronotimer.isToggled());
+		      
+		      
+		      input = "12:01:02.0 START";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      
+		      input = "12:01:02.0 POWER";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
 			
 		}
 		
@@ -155,6 +223,25 @@ public class ChronoTester {
 		public void TestTripSensorChannel1()
 		{
 			
+			String input = "12:01:02.0 POWER";
+			String[] command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TOG 1";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertFalse(newChronotimer.eventIsStarted());
+			
+			input = "12:01:02.0 START";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertTrue(newChronotimer.eventIsStarted());
+			
+			input = "12:01:02.0 POWER";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
 			
 		}
 		
@@ -162,34 +249,77 @@ public class ChronoTester {
 		public void TestTripSensorChannel2()
 		{
 			
+			String input = "12:01:02.0 POWER";
+			String[] command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TOG 2";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertFalse(newChronotimer.eventIsFinished());
+			
+			input = "12:01:02.0 FINISH";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertTrue(newChronotimer.eventIsFinished());
+			
+			input = "12:01:02.0 POWER";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
 			
 		}
 		
 		@Test
-		public void TestPrint()
-		{
+		public void Testevent(){
 			
+			String input = "12:01:02.0 POWER";
+			String[] command = input.split(" ");
+			newChronotimer.runCommand(command);
 			
-		}
-		
-		@Test
-		public void TestEndRun()
-		{
+			input = "12:01:02.0 EVENT IND";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
 			
+			assertEquals(newChronotimer.getEvent(), "IND");
 			
-		}
-		
-		@Test
-		public void TestTime(){
-			
-			
+			input = "12:01:02.0 POWER";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
 			
 		}
 		
 		@Test
-		public void raceQueuer(){
+		public void TestCONN(){
 			
-			
+			String input = "12:01:02.0 POWER";
+		      String[] command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      assertFalse(newChronotimer.isConnected());
+		      
+		      input = "12:01:02.0 CONN EYE 1";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      input = "12:01:02.0 CONN EYE 2";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      input = "12:01:02.0 CONN GATE 3";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      input = "12:01:02.0 CONN GATE 4";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
+		      
+		      assertTrue(newChronotimer.isConnected());
+		      
+		      input = "12:01:02.0 POWER";
+		      command = input.split(" ");
+		      newChronotimer.runCommand(command);
 			
 		}
 		

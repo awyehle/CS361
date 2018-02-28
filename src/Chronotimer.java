@@ -225,7 +225,7 @@ public class Chronotimer {
 	
 	public boolean isOn(){
 		
-		if (_isOn) return true; else return false;
+		return _isOn;
 	}
 	
 	public boolean isReset(){
@@ -240,16 +240,13 @@ public class Chronotimer {
 	
 	public boolean eventIsStarted(){
 		
-		if (_channelTripped[0] == true) return true;
-		
-		return false;
+		return _channelTripped[0];
 		
 	}
 	
 	public boolean eventIsFinished(){
 		
-		if(_channelTripped[1]==true) return true;
-		return false;
+		return _channelTripped[1];
 	}
 	
 	public boolean isCancled(){
@@ -261,5 +258,41 @@ public class Chronotimer {
         }
         return true;
       }
+	
+	public boolean isNewRunTriggered(){
+		
+		return _eventRunning;
+		
+	}
+	
+	public String getEvent(){
+
+		return this.event.toString();
+		
+	}
+	
+	public boolean isToggled(){
+        
+	    int channel1 = 0;
+	    int channel2 = 1;
+	    if(!_channelOn[channel1] && !_channelOn[channel2])  return false ;
+	    
+	    return true;
+	  
+	}
+	
+	public boolean isConnected() {
+	    
+	    int channel1 = 0;
+	    int channel2 = 1;
+	    int channel3 = 2;
+	    int channel4 = 4;
+	    if(_sensorsConnected[channel1] == null && _sensorsConnected[channel2] == null && 
+	       _sensorsConnected[channel3] == null && _sensorsConnected[channel4] == null) {
+	      return false;
+	    }
+	        
+	    return true;
+	  }
 	
 }

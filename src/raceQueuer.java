@@ -42,7 +42,7 @@ public class raceQueuer {
 	
 	public void racerCancel(){
 		
-		
+		//Not sure what we want this to do
 		
 	}
 	
@@ -53,6 +53,7 @@ public class raceQueuer {
 	
 	public static void main(String[] args)
 	{
+		//Test this class down here
 		ArrayList<Racer> newQueue = new ArrayList<Racer>();
 		Racer racer1 = new Racer(0);
 		Racer racer2 = new Racer(1);
@@ -72,7 +73,11 @@ public class raceQueuer {
 		firstQueue.pop();
 		firstQueue.pop();
 		System.out.print(firstQueue.isEmpty());
-		firstQueue.pop();
+		System.out.println(firstQueue.toString());
+		firstQueue.push(racer1);
+		System.out.println(firstQueue.toString());
+		firstQueue.push(racer2);
+		System.out.println(firstQueue.toString());
 		
 		
 	}
