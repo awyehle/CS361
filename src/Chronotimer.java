@@ -188,8 +188,10 @@ public class Chronotimer {
 		{
 			_channelTripped[0] = false;
 			_channelTripped[1] = false;
-			_startTimes[0].removeLast();
-			_finishTimes[0].removeLast();
+			if(_startTimes[0].size()>0)
+				_startTimes[0].removeLast();
+			if(_finishTimes[0].size()>0)
+				_finishTimes[0].removeLast();
 			_printer.println(command[0] + "Run for channels [1] and [2] has been canceled");
 			break;
 		}
@@ -271,14 +273,11 @@ public class Chronotimer {
 		return _channelTripped[1];
 	}
 	
-	public boolean isCancled(){
-        //only checking 2 channel so subtract 6 from total channels
-        for(int i = 0; i<_CHANNELS - 6; i++){ 
-          if(_channelTripped[i] != true && _channelTripped[i] != true && _startTimes[0] == null && _finishTimes[0] == null){
-            continue; 
-          }else{return false;}
-        }
-        return true;
+	public int getTimeSize(int channel){
+		--channel;
+		if(channel%2 == 0)
+			return _startTimes[channel/2].size();
+		return _finishTimes[channel/2].size();
       }
 	
 	public boolean isNewRunTriggered(){

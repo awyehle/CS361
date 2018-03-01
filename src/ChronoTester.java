@@ -94,12 +94,41 @@ public class ChronoTester {
 	          command = input.split(" ");
 	          newChronotimer.runCommand(command);
 	          
-	          assertFalse(newChronotimer.isCancled());
+	          //assertFalse(newChronotimer.isCancled()); NOT PROPER IMPLEMENTATION ANYMORE. MAY COME IN HANDY IN FUTURE
+	          
+	          //Channel 1 should have 1 time within it
+	          assertEquals(1,newChronotimer.getTimeSize(1));
+	          
+	          //Since Channel 2 was never toggled on, it should not have a time in it
+	          assertEquals(0,newChronotimer.getTimeSize(2));
 	          
 	          input = "12:01:02.0 CANCEL";
 	          command = input.split(" ");
 	          newChronotimer.runCommand(command);
-	          assertTrue(newChronotimer.isCancled());
+	          assertEquals(0,newChronotimer.getTimeSize(1));
+	          assertEquals(0,newChronotimer.getTimeSize(2));
+
+	          input = "12:01:02.0 TOG 2";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+	          
+	          input = "12:01:02.0 TRIG 1";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+	          
+	          input = "12:01:02.0 TRIG 2";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+	          
+	          //Channels 1 and 2 should have 1 time within them
+	          assertEquals(1,newChronotimer.getTimeSize(1));
+	          assertEquals(1,newChronotimer.getTimeSize(2));
+	          
+	          input = "12:01:02.0 CANCEL";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+	          assertEquals(0,newChronotimer.getTimeSize(1));
+	          assertEquals(0,newChronotimer.getTimeSize(2));
 	          
 	          input = "12:01:02.0 POWER";
 				command = input.split(" ");
