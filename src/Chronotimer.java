@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 /**
  * System for timer...
@@ -162,7 +163,7 @@ public class Chronotimer {
 					//_finishTimes[i/2] = new Time(command[0]);
 				}
 			}
-			catch(NumberFormatException e) {_printer.println("Reeeee");}
+			catch(NumberFormatException e) {_printer.println("Error triggering");}
 			break;
 		}
 		case "RESET":
@@ -174,7 +175,9 @@ public class Chronotimer {
 		}
 		case "TIME":
 		{
+			try{
 			_time = new Time(command[2]);
+			}catch(ArrayIndexOutOfBoundsException e){System.out.println("Please enter a valid time"); break;}
 			_printer.println(command[0] + " Time reset");
 			break;
 		}
@@ -242,8 +245,12 @@ public class Chronotimer {
 		if(startChannel<0 || startChannel>3) return;
 		while(_startTimes[startChannel].size()!=0)
 		{
-			String time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[startChannel].remove()).convertRawTime();
-			_printer.println("Time for racer on channels ["+((startChannel*2)+1)+"] and ["+((startChannel*2)+2)+"] is " + time);
+			try{
+				String time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[startChannel].remove()).convertRawTime();
+				_printer.println("Time for racer on channels ["+((startChannel*2)+1)+"] and ["+((startChannel*2)+2)+"] is " + time);
+			}catch(NoSuchElementException e){
+				System.out.println("You must start a race before printing times.");
+			}
 		}
 	}
 	
