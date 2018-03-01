@@ -115,7 +115,6 @@ public class Chronotimer {
 				_printer.println(command[0] + " Channel " + (channel+1) + " has a sensor connected");
 			}
 			catch(NumberFormatException e) {_printer.println(command[0] + " Error connecting the sensor");}
-			break;
 		}
 		case "EVENT":
 		{
@@ -141,6 +140,7 @@ public class Chronotimer {
 				_printer.println(command[0] + " Channel " + (channel+1) + " has been turned " + (_channelOn[channel]? "on" : "off"));
 			}
 			catch(NumberFormatException e) {_printer.println(command[0] + " Error turning on or off the channel");}
+			catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
 			break;
 		}
 		case "TRIG":
@@ -164,6 +164,7 @@ public class Chronotimer {
 				}
 			}
 			catch(NumberFormatException e) {_printer.println("Error triggering");}
+			catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
 			break;
 		}
 		case "RESET":
@@ -223,6 +224,7 @@ public class Chronotimer {
 					printRun(i);
 				}
 				catch(NumberFormatException e) {_printer.println("Invalid Channel");}
+				catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
 			}
 			break;
 		}
