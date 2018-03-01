@@ -10,6 +10,10 @@ public class ChronoTester {
 		
 		static Chronotimer newChronotimer = new Chronotimer();
 		
+		
+		/**
+		 * Tests the POWER command turns on and off Chronotimer
+		 */
 		@Test
 		public void TestPower()
 		{
@@ -26,6 +30,10 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests to make sure an invalid command is not accepted and
+		 * does not mutate anything
+		 */
 		@Test
 		public void TestInvalidCommand()
 		{
@@ -48,6 +56,9 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests the reset command which calls Chronotimer's isReset method
+		 */
 		@Test
 		public void TestReset()
 		{
@@ -74,6 +85,10 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests to make sure an event is properly cancelled using
+		 * the cancel method
+		 */
 		@Test
 		public void TestCancel()
 		{
@@ -136,6 +151,9 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests the commands START and FINISH for an event
+		 */
 		@Test
 		public void TestStartFinishEvent()
 		{
@@ -174,6 +192,9 @@ public class ChronoTester {
 			newChronotimer.runCommand(command);
 		}
 		
+		/**
+		 * Tests creation of a new run and ending of a run
+		 */
 		@Test
 		public void TestNewEndRun()
 		{
@@ -200,6 +221,9 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests the did not finish command functionality
+		 */
 		@Test
 		public void TestDNF(){
 			
@@ -238,6 +262,9 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests to ensure sensors are properly toggled
+		 */
 		@Test
 		public void TestToggleSensor()
 		{
@@ -270,6 +297,9 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests to ensure sensors are correctly tripped on channel 1
+		 */
 		@Test
 		public void TestTripSensorChannel1()
 		{
@@ -296,6 +326,9 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests to ensure sensors are correctly tripped on channel 2
+		 */
 		@Test
 		public void TestTripSensorChannel2()
 		{
@@ -322,6 +355,10 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests to ensure that the individual event can be created
+		 * in working order
+		 */
 		@Test
 		public void Testevent(){
 			
@@ -341,6 +378,10 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Tests the connect command to ensure it connects a sensor
+		 * to a channel properly
+		 */
 		@Test
 		public void TestCONN(){
 			
