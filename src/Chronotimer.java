@@ -115,6 +115,7 @@ public class Chronotimer {
 				_printer.println(command[0] + " Channel " + (channel+1) + " has a sensor connected");
 			}
 			catch(NumberFormatException e) {_printer.println(command[0] + " Error connecting the sensor");}
+			catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
 			break;
 		}
 		case "EVENT":
