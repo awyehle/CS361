@@ -10,6 +10,11 @@ public class Result {
 	
 	private HashMap<String,String> _results= new HashMap<>();
 	
+	/**
+	 * Create a new result for a run
+	 * @param time The time at which this result should be created
+	 * @param runType The type of run which this result will store data for
+	 */
 	public Result(String time, String runType)
 	{
 		if(time == null || runType == null)
@@ -18,6 +23,13 @@ public class Result {
 		this._time = time;
 	}
 	
+	/**
+	 * Add's a racer's number and event time to this result
+	 * @param racer Racer's number. Will not add a duplicate racer as the same racer should not compete 
+	 * twice in one run
+	 * @param time Racer's time for this run
+	 * @return True if the racer was successfully added, false if not
+	 */
 	public boolean addResult(String racer, String time)
 	{
 		if(time == null || racer == null)
