@@ -36,7 +36,7 @@ Disciplinary actions taken: none
 -----------------------------
 
 Meeting 3
-2/15/18 3:30pm - 
+2/15/18 3:30pm - 5:45pm
 
 Meeting goal: Complete Lab 5 - ATM simulator 2 | Sprint through sprint 1
 
@@ -48,5 +48,22 @@ Highlights of meeting:
 	- clarified classes we need to make for Chronotimer
 	
 Meeting outcome: Got a lot of work done on both Sprint 1 and Lab 5 but finished neither
+
+Disciplinary actions taken: none
+
+Meeting 4
+3/8/18 3:30pm - 4:45pm
+
+Meeting goal: Complete lab 7 - Json | Delegate tasks for sprint 2
+
+Important decisions made: assigned rolls for sprint 2. Andy will implement parallel event, Steven will implement exporting results, Andrew will implement num command, Mike's working on majority of test cases with help from Andrew.
+
+Highlights of meeting:
+	- fixed small bug with Lab 7
+	- Delegated tasks for Sprint 2
+	- Clarified requirements for Sprint 2
+	- Added class Results to hold results of racers for easy exporting
+	
+Meeting outcome: Finished lab 7 and submitted it and delegated tasks for Sprint 2
 
 Disciplinary actions taken: none
