@@ -1,6 +1,6 @@
 import java.util.*;
 /**
- * Simple object to hold racer times
+ * Simple object to hold racer times.
  * @author Andrew Huelsman
  *
  */
