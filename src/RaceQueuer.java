@@ -14,6 +14,12 @@ public class RaceQueuer {
 		this.racerQueue = racerQueue;
 	}
 	
+	public boolean contains(Racer bib) {
+		if(bib == null) return false;
+		if(racerQueue.contains(bib)) return true;
+		return false;
+	}
+	
 	private Racer pop(){
 		
 		Racer firstRacer = null;
