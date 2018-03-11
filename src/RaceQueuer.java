@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class RaceQueuer {
 	
 	ArrayList<Racer> racerQueue;
+	ArrayList<Racer> _alreadyRan = new ArrayList<Racer>();
 	int size;
 	
 	public RaceQueuer(ArrayList<Racer> racerQueue){
@@ -20,11 +21,12 @@ public class RaceQueuer {
 		return false;
 	}
 	
-	private Racer pop(){
+	public Racer pop(){
 		
 		Racer firstRacer = null;
 		try{
 		firstRacer = racerQueue.get(0);
+		_alreadyRan.add(firstRacer);
 		}catch(IndexOutOfBoundsException e){
 			System.out.println("There are no racers to pop in the raceQueuer");
 		}
@@ -33,9 +35,11 @@ public class RaceQueuer {
 		
 	}
 	
-	private void push(Racer racer){
-		
-		racerQueue.add(0, racer);
+	public boolean push(Racer racer){
+		if(_alreadyRan.contains(racer) || contains(racer))
+			return false;
+		racerQueue.add(racerQueue.size(), racer);
+		return true;
 		
 	}
 	

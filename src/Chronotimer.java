@@ -1,5 +1,12 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Random;
+
+import com.google.gson.Gson;
 
 /**
  * System for timer...
@@ -20,6 +27,9 @@ public class Chronotimer {
 	private LinkedList<Time>[] _finishTimes = new LinkedList[_CHANNELS/2];
 	//private Time[] _startTimes = new Time[_CHANNELS/2];
 	//private Time[] _finishTimes = new Time[_CHANNELS/2];
+	
+	private int _runNumber = 0;
+	private ArrayList<Result> _run = new ArrayList<Result>();
 	
 	/**
 	 * _startTimes and _finishTimes need to be eliminated. Racer times will be held in the racer class
@@ -69,7 +79,6 @@ public class Chronotimer {
 	 * Method which contains cases for the command sent to this Chronotimer.
 	 * @param command array of strings which acts as the command with arguments
 	 */
-	@SuppressWarnings("unchecked")
 	public void runCommand(String... command)
 	{
 		if(!command[1].toUpperCase().equals("POWER") && !_isOn) return;
@@ -97,6 +106,8 @@ public class Chronotimer {
 				_printer.println(command[0] + " There is an event already going on. End the current run to begin a new one.");
 				break;
 			}
+			++_runNumber;
+			_run.add(new Result(new Time().convertRawTime(), event.toString()));
 			_eventRunning=true;
 			_printer.println("Event type " + event.toString() +" has been started");
 			break;
@@ -128,7 +139,13 @@ public class Chronotimer {
 				_printer.println(command[0] +" Event type set to " + event.toString());
 				break;
 			}
-			case "PARIND": case "GRP": case "PARGRP":
+			case "PARIND":
+			{
+				event = EVENTS.PARIND;
+				_printer.println(command[0] +" Event type set to " + event.toString());
+				break;
+			}
+			case "GRP": case "PARGRP":
 			default: System.out.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");
 			}
 			break;
@@ -162,6 +179,9 @@ public class Chronotimer {
 				else 
 				{
 					_finishTimes[i/2].add(new Time(command[0]));
+					//TODO
+					// Change the result to add the actual next racer in the queue
+					_run.get(_runNumber-1).addResult("racer"+new Random().nextInt(), getRacerTime(i/2));
 					//_finishTimes[i/2] = new Time(command[0]);
 				}
 			}
@@ -214,24 +234,40 @@ public class Chronotimer {
 		case "PRINT":
 		{
 			if(command.length < 3) {
-				printRun(0);
-				printRun(1);
-				printRun(2);
-				printRun(3);
+				runCommand(command[0],command[1], ""+_runNumber);
 			}
 			else {
 				try
 				{
 					int i = Integer.parseInt(command[2])-1;
-					printRun(i);
+					if(i > _run.size()) throw new ArrayIndexOutOfBoundsException();
+					System.out.println(_run.get(i).toString());
 				}
 				catch(NumberFormatException e) {_printer.println("Invalid Channel");}
 				catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
 			}
 			break;
 		}
+		case "EXPORT":
+		{
+				try
+				{
+					int i = Integer.parseInt(command[2])-1;
+					if(i > _run.size()) throw new ArrayIndexOutOfBoundsException();
+					try(PrintWriter writer = new PrintWriter(new FileOutputStream("Run_"+_runNumber+".json",false)))
+					{
+						writer.println(new Gson().toJson(_run.get(i)));
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+				catch(NumberFormatException e) {_printer.println("Invalid Channel");}
+				catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
+			break;
+		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}
 		}
+		
 	}
 
 	public int getConnection(Sensor sensor)
@@ -255,6 +291,17 @@ public class Chronotimer {
 			}catch(NoSuchElementException e){
 				System.out.println("You must start a race before printing times.");
 			}
+		}
+	}
+	
+	public String getRacerTime(int startChannel)
+	{
+		try{
+			String time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[startChannel].remove()).convertRawTime();
+			return time;
+		}catch(NoSuchElementException e){
+			System.out.println("You must start a race before printing times.");
+			return "";
 		}
 	}
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
+import com.google.gson.Gson;
 
 public class Simulator {
 	
@@ -32,6 +33,7 @@ public class Simulator {
 		_VALIDCOMMANDS.add("NUM");
 		_VALIDCOMMANDS.add("PRINT");
 		_VALIDCOMMANDS.add("CONN");
+		_VALIDCOMMANDS.add("EXPORT");
 	}
 
 	public static void main(String[] args)
