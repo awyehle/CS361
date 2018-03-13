@@ -378,6 +378,11 @@ public class ChronoTester {
 			
 		}
 		
+		@Test
+		public void TestNUM(){
+			fail();//implement test
+		}
+		
 		/**
 		 * Tests the connect command to ensure it connects a sensor
 		 * to a channel properly
