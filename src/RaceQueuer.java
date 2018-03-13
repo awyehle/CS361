@@ -7,9 +7,13 @@ import java.util.ArrayList;
  */
 public class RaceQueuer {
 	
-	ArrayList<Racer> racerQueue;
+	ArrayList<Racer> racerQueue = new ArrayList<Racer>();
 	ArrayList<Racer> _alreadyRan = new ArrayList<Racer>();
 	int size;
+	
+	public RaceQueuer(){
+		
+	}
 	
 	public RaceQueuer(ArrayList<Racer> racerQueue){
 		this.racerQueue = racerQueue;
@@ -41,6 +45,12 @@ public class RaceQueuer {
 		racerQueue.add(racerQueue.size(), racer);
 		return true;
 		
+	}
+	
+	public boolean alreadyRan(Racer racer){
+		if(racer == null) return false;
+		if(_alreadyRan.contains(racer)) return true;
+		return false;
 	}
 	
 	public boolean isEmpty(){

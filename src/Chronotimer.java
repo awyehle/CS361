@@ -30,6 +30,7 @@ public class Chronotimer {
 	
 	private int _runNumber = 0;
 	private ArrayList<Result> _run = new ArrayList<Result>();
+	private RaceQueuer _racerList = new RaceQueuer();
 	
 	/**
 	 * _startTimes and _finishTimes need to be eliminated. Racer times will be held in the racer class
@@ -263,6 +264,16 @@ public class Chronotimer {
 				}
 				catch(NumberFormatException e) {_printer.println("Invalid Channel");}
 				catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
+			break;
+		}
+		case "NUM":
+		{
+			try{
+			Racer newRacer = new Racer(Integer.parseInt(command[2]));
+			_racerList.push(newRacer);
+			}catch(NumberFormatException e){
+				_printer.println("Invalid Bib Number Entered");
+			}
 			break;
 		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}

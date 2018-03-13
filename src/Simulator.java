@@ -60,7 +60,7 @@ public class Simulator {
 	 
 	 private static void fileInput() {
 		 Scanner fileScanner = null;
-		 System.out.println("Enter in either 'Commands1.txt' or 'Commands.txt'");
+		 System.out.println("Enter in either 'Commands.txt', 'Commands1.txt', or 'Commands2.txt'");
 		 String filename = stdin.next();
 		 InputStream in = Simulator.class.getResourceAsStream(filename);
 		 String input;
