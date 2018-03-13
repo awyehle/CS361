@@ -7,28 +7,36 @@ import java.util.ArrayList;
  */
 public class RaceQueuer {
 	
-	ArrayList<Racer> racerQueue = new ArrayList<Racer>();
+	ArrayList<Racer> _waitQueue = new ArrayList<Racer>();
+	ArrayList<Racer> _inProgress = new ArrayList<Racer>();
 	ArrayList<Racer> _alreadyRan = new ArrayList<Racer>();
-	int size;
 	
 	public RaceQueuer(){
 		
 	}
 	
 	public RaceQueuer(ArrayList<Racer> racerQueue){
-		this.racerQueue = racerQueue;
+		this._waitQueue = racerQueue;
 	}
 	
 	public boolean contains(Racer bib) {
 		if(bib == null) return false;
-		if(inQueue(bib)) return true;
+		if(inWaitQueue(bib) || inProgressQueue(bib) || alreadyRan(bib)) return true;
 		return false;
 	}
 	
-	public boolean inQueue(Racer num){
+	public boolean inWaitQueue(Racer num){
 		if(num == null) return false;
-		for(int i = 0; i<racerQueue.size();i++){
-			if(racerQueue.get(i).getBib() == num.getBib()) return true;
+		for(int i = 0; i<_waitQueue.size();i++){
+			if(_waitQueue.get(i).getBib() == num.getBib()) return true;
+		}
+		return false;
+	}
+	
+	public boolean inProgressQueue(Racer num){
+		if(num == null) return false;
+		for(int i = 0; i<_inProgress.size();i++){
+			if(_inProgress.get(i).getBib() == num.getBib()) return true;
 		}
 		return false;
 	}
@@ -41,15 +49,29 @@ public class RaceQueuer {
 		return false;
 	}
 	
+	public Racer popWait(){
+		
+		Racer firstRacer = null;
+		try{
+		firstRacer = _waitQueue.get(0);
+		_inProgress.add(firstRacer);
+		_waitQueue.remove(0);
+		}catch(IndexOutOfBoundsException e){
+			System.out.println("There are no racers to pop in the raceQueuer");
+		}
+		return firstRacer;
+		
+	}
+	
 	public Racer pop(){
 		
 		Racer firstRacer = null;
 		try{
-		firstRacer = racerQueue.get(0);
+		firstRacer = _inProgress.get(0);
 		_alreadyRan.add(firstRacer);
-		racerQueue.remove(0);
+		_inProgress.remove(0);
 		}catch(IndexOutOfBoundsException e){
-			System.out.println("There are no racers to pop in the raceQueuer");
+			System.out.println("There are no racers on course to finish");
 		}
 		return firstRacer;
 		
@@ -60,7 +82,7 @@ public class RaceQueuer {
 
 		Racer firstRacer = null;
 		try{
-		firstRacer = racerQueue.get(0);
+		firstRacer = _inProgress.get(0);
 		}catch(IndexOutOfBoundsException e){
 			System.out.println("There are no racers in the raceQueuer");
 		}
@@ -68,16 +90,16 @@ public class RaceQueuer {
 	}
 	
 	public boolean push(Racer racer){
-		if(contains(racer) || alreadyRan(racer))
+		if(contains(racer))
 			return false;
-		racerQueue.add(racerQueue.size(), racer);
+		_waitQueue.add(_waitQueue.size(), racer);
 		return true;
 		
 	}
 	
 	public boolean isEmpty(){
 		
-		if(racerQueue.size() == 0) return true;
+		if(_waitQueue.size() == 0 && _inProgress.size() == 0) return true;
 		
 		return false;
 	}
@@ -89,7 +111,8 @@ public class RaceQueuer {
 	}
 	
 	public boolean clear(){
-		racerQueue.clear();
+		_waitQueue.clear();
+		_inProgress.clear();
 		_alreadyRan.clear();
 		if(isEmpty()) return true;
 		return false;
@@ -97,7 +120,7 @@ public class RaceQueuer {
 	
 	public String toString(){
 		
-		return racerQueue.toString();
+		return _inProgress.toString();
 	}
 	
 	public static void main(String[] args)

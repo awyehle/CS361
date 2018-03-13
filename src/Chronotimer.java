@@ -29,8 +29,9 @@ public class Chronotimer {
 	
 	private int _runNumber = 0;
 	private ArrayList<Result> _run = new ArrayList<Result>();
-	private RaceQueuer _racerList = new RaceQueuer();
-	private int currentQueueSize = 0;
+	private RaceQueuer _racerList12 = new RaceQueuer();
+	private RaceQueuer _racerList34 = new RaceQueuer();
+	private boolean laneOne = true;
 	
 	private int _lastTriggered = -1;
 	
@@ -113,7 +114,8 @@ public class Chronotimer {
 			++_runNumber;
 			_run.add(new Result(new Time().convertRawTime(), event.toString()));
 			_eventRunning=true;
-			_racerList = new RaceQueuer();
+			_racerList12 = new RaceQueuer();
+			_racerList34 = new RaceQueuer();
 			resetTimes();
 			_printer.println("Event type " + event.toString() +" has been started");
 			break;
@@ -121,7 +123,9 @@ public class Chronotimer {
 		case "ENDRUN":
 		{
 			_eventRunning=false;
-			_racerList.clear();
+			_racerList12.clear();
+			_racerList34.clear();
+			laneOne = true;
 			break;
 		}
 		case "CONN":
@@ -176,21 +180,52 @@ public class Chronotimer {
 				int i = Integer.parseInt(command[2])-1;
 				if(/*_sensorsConnected[i] == null || */!_channelOn[i])
 					break;
-				if(_racerList.isEmpty() || (currentQueueSize==0 && i%2==0)){
-					_printer.println("Racer queue is empty!");
-					break;
-				}
 				_channelTripped[i]=true;
 				_printer.println(command[0] + " Channel " + (i+1) + " has been tripped!");
-				if(i%2==0) 
-				{
-					_startTimes[i/2].add(new Time(command[0]));
-					currentQueueSize--;
-				}
-				else 
-				{
-					_finishTimes[i/2].add(new Time(command[0]));
-					_run.get(_runNumber-1).addResult(""+_racerList.pop().getBib(), getRacerTime(i/2));
+				if(event == EVENTS.PARIND){
+					if(i%2==0) 
+					{
+						if(i == 0){
+							try{
+								_racerList12.popWait();
+							}catch(NullPointerException e){break;}
+						}else{
+							try{
+								_racerList34.popWait();
+							}catch(NullPointerException e){break;}
+						}
+						_startTimes[i/2].add(new Time(command[0]));
+					}
+					else 
+					{
+						_finishTimes[i/2].add(new Time(command[0]));
+						if(i==1){
+							try{
+								_run.get(_runNumber-1).addResult(""+_racerList12.pop().getBib(), getRacerTime(i/2));
+							}catch(NullPointerException e){break;}
+						}else if(i==3){
+							try{
+								_run.get(_runNumber-1).addResult(""+_racerList34.pop().getBib(), getRacerTime(i/2));
+							}catch(NullPointerException e){break;}
+						}
+					}
+				}else if(event==EVENTS.IND){
+					if(i==0) 
+					{
+						try{
+							_racerList12.popWait();
+						}catch(NullPointerException e){break;}
+						_startTimes[i/2].add(new Time(command[0]));
+						
+					}
+					else if(i==1) 
+					{
+						
+						try{
+							_run.get(_runNumber-1).addResult(""+_racerList12.pop().getBib(), getRacerTime(i/2));
+						}catch(NullPointerException e){break;}
+						_finishTimes[i/2].add(new Time(command[0]));
+					}
 				}
 			}
 			catch(NumberFormatException e) {_printer.println("Error triggering");}
@@ -275,18 +310,31 @@ public class Chronotimer {
 		}
 		case "NUM":
 		{
-			try{
-			Racer newRacer = new Racer(Integer.parseInt(command[2]));
-			if(!_racerList.push(newRacer)) _printer.println("Racer already in queue or ran!");
-			else 
-				{
-				_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
-
-				currentQueueSize++;
+			
+			if(laneOne){
+				try{
+				Racer newRacer = new Racer(Integer.parseInt(command[2]));
+				if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
+				else 
+					{
+					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+					}
+				}catch(NumberFormatException e){
+					_printer.println("Invalid Bib Number Entered");
 				}
-			}catch(NumberFormatException e){
-				_printer.println("Invalid Bib Number Entered");
+			}else{
+				try{
+					Racer newRacer = new Racer(Integer.parseInt(command[2]));
+					if(!_racerList34.push(newRacer)) _printer.println("Racer already in queue or ran!");
+					else 
+						{
+						_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+						}
+					}catch(NumberFormatException e){
+						_printer.println("Invalid Bib Number Entered");
+					}
 			}
+			laneOne = !laneOne;
 			break;
 		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}
