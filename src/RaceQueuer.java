@@ -55,6 +55,18 @@ public class RaceQueuer {
 		
 	}
 	
+	public Racer peek()
+	{
+
+		Racer firstRacer = null;
+		try{
+		firstRacer = racerQueue.get(0);
+		}catch(IndexOutOfBoundsException e){
+			System.out.println("There are no racers in the raceQueuer");
+		}
+		return firstRacer;
+	}
+	
 	public boolean push(Racer racer){
 		if(contains(racer) || alreadyRan(racer))
 			return false;

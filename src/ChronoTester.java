@@ -97,7 +97,15 @@ public class ChronoTester {
 			String[] command = input.split(" ");
 			newChronotimer.runCommand(command);
 			
+	          input = "12:01:02.0 NEWRUN";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+			
 	          input = "12:01:02.0 TOG 1";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+
+	          input = "12:01:02.0 NUM 1";
 	          command = input.split(" ");
 	          newChronotimer.runCommand(command);
 	          
@@ -123,6 +131,18 @@ public class ChronoTester {
 	          assertEquals(0,newChronotimer.getTimeSize(1));
 	          assertEquals(0,newChronotimer.getTimeSize(2));
 
+	          input = "12:01:02.0 ENDRUN";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+	          
+	          input = "12:01:02.0 NEWRUN";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+
+	          input = "12:01:02.0 NUM 1";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+	          
 	          input = "12:01:02.0 TOG 2";
 	          command = input.split(" ");
 	          newChronotimer.runCommand(command);
@@ -161,7 +181,15 @@ public class ChronoTester {
 			String input = "12:01:02.0 POWER";
 			String[] command = input.split(" ");
 			newChronotimer.runCommand(command);
-			
+
+	          input = "12:01:02.0 NEWRUN";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+
+	          input = "12:01:02.0 NUM 1";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+	          
 			input = "12:01:02.0 TOG 1";
 			command = input.split(" ");
 			newChronotimer.runCommand(command);
@@ -307,7 +335,11 @@ public class ChronoTester {
 			String input = "12:01:02.0 POWER";
 			String[] command = input.split(" ");
 			newChronotimer.runCommand(command);
-			
+
+	          input = "12:01:02.0 NUM 1";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+	          
 			input = "12:01:02.0 TOG 1";
 			command = input.split(" ");
 			newChronotimer.runCommand(command);

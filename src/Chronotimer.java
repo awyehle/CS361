@@ -21,17 +21,18 @@ public class Chronotimer {
 	private boolean[] _channelOn = new boolean[_CHANNELS];
 	private boolean[] _channelTripped = new boolean[_CHANNELS];
 	private Sensor[] _sensorsConnected = new Sensor[_CHANNELS];
+	
 	@SuppressWarnings("unchecked")
 	private LinkedList<Time>[] _startTimes = new LinkedList[_CHANNELS/2]; 
 	@SuppressWarnings("unchecked")
 	private LinkedList<Time>[] _finishTimes = new LinkedList[_CHANNELS/2];
-	//private Time[] _startTimes = new Time[_CHANNELS/2];
-	//private Time[] _finishTimes = new Time[_CHANNELS/2];
 	
 	private int _runNumber = 0;
 	private ArrayList<Result> _run = new ArrayList<Result>();
 	private RaceQueuer _racerList = new RaceQueuer();
 	private int currentQueueSize = 0;
+	
+	private int _lastTriggered = -1;
 	
 	/**
 	 * _startTimes and _finishTimes need to be eliminated. Racer times will be held in the racer class
@@ -81,6 +82,7 @@ public class Chronotimer {
 	 * Method which contains cases for the command sent to this Chronotimer.
 	 * @param command array of strings which acts as the command with arguments
 	 */
+	@SuppressWarnings("unchecked")
 	public void runCommand(String... command)
 	{
 		if(!command[1].toUpperCase().equals("POWER") && !_isOn) return;
@@ -111,6 +113,8 @@ public class Chronotimer {
 			++_runNumber;
 			_run.add(new Result(new Time().convertRawTime(), event.toString()));
 			_eventRunning=true;
+			_racerList = new RaceQueuer();
+			resetTimes();
 			_printer.println("Event type " + event.toString() +" has been started");
 			break;
 		}
@@ -182,15 +186,11 @@ public class Chronotimer {
 				{
 					_startTimes[i/2].add(new Time(command[0]));
 					currentQueueSize--;
-					//_startTimes[i/2] = new Time(command[0]);
 				}
 				else 
 				{
 					_finishTimes[i/2].add(new Time(command[0]));
-					//TODO
-					// Change the result to add the actual next racer in the queue
-					_run.get(_runNumber-1).addResult("racer "+_racerList.pop().getBib(), getRacerTime(i/2));
-					//_finishTimes[i/2] = new Time(command[0]);
+					_run.get(_runNumber-1).addResult(""+_racerList.pop().getBib(), getRacerTime(i/2));
 				}
 			}
 			catch(NumberFormatException e) {_printer.println("Error triggering");}
@@ -226,7 +226,7 @@ public class Chronotimer {
 				_startTimes[0].removeLast();
 			if(_finishTimes[0].size()>0)
 				_finishTimes[0].removeLast();
-			_printer.println(command[0] + "Run for channels [1] and [2] has been canceled");
+			_printer.println(command[0] + " Run for channels [1] and [2] has been canceled");
 			break;
 		}
 		case "START":
@@ -278,10 +278,15 @@ public class Chronotimer {
 			try{
 			Racer newRacer = new Racer(Integer.parseInt(command[2]));
 			if(!_racerList.push(newRacer)) _printer.println("Racer already in queue or ran!");
+			else 
+				{
+				_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+
+				currentQueueSize++;
+				}
 			}catch(NumberFormatException e){
 				_printer.println("Invalid Bib Number Entered");
 			}
-			currentQueueSize++;
 			break;
 		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}
