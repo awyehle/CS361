@@ -21,7 +21,23 @@ public class RaceQueuer {
 	
 	public boolean contains(Racer bib) {
 		if(bib == null) return false;
-		if(racerQueue.contains(bib)) return true;
+		if(inQueue(bib) || alreadyRan(bib)) return true;
+		return false;
+	}
+	
+	public boolean inQueue(Racer num){
+		if(num == null) return false;
+		for(int i = 0; i<racerQueue.size();i++){
+			if(racerQueue.get(i).bib == num.getBib()) return true;
+		}
+		return false;
+	}
+	
+	public boolean alreadyRan(Racer num){
+		if(num == null) return false;
+		for(int i = 0; i<_alreadyRan.size();i++){
+			if(_alreadyRan.get(i).bib == num.getBib()) return true;
+		}
 		return false;
 	}
 	
@@ -40,17 +56,11 @@ public class RaceQueuer {
 	}
 	
 	public boolean push(Racer racer){
-		if(_alreadyRan.contains(racer) || contains(racer))
+		if(contains(racer))
 			return false;
 		racerQueue.add(racerQueue.size(), racer);
 		return true;
 		
-	}
-	
-	public boolean alreadyRan(Racer racer){
-		if(racer == null) return false;
-		if(_alreadyRan.contains(racer)) return true;
-		return false;
 	}
 	
 	public boolean isEmpty(){

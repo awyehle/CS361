@@ -270,7 +270,7 @@ public class Chronotimer {
 		{
 			try{
 			Racer newRacer = new Racer(Integer.parseInt(command[2]));
-			_racerList.push(newRacer);
+			if(!_racerList.push(newRacer)) _printer.println("Racer already in queue or ran!");
 			}catch(NumberFormatException e){
 				_printer.println("Invalid Bib Number Entered");
 			}
