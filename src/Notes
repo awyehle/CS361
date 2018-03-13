@@ -1,3 +1,7 @@
 Write any comments/concerns about program here
 
-Please work on raceQueuer Class - Andrew needs help
+
+TODO:
+
+Queue needs to be split up between lanes for PARIND races. NUM commands alternate between adding to the queues
+ONLY FOR PARIND EVENTS. NUM for IND adds to only one queue.
