@@ -56,7 +56,7 @@ public class RaceQueuer {
 	}
 	
 	public boolean push(Racer racer){
-		if(contains(racer))
+		if(contains(racer) || alreadyRan(racer))
 			return false;
 		racerQueue.add(racerQueue.size(), racer);
 		return true;
