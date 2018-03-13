@@ -31,6 +31,7 @@ public class Chronotimer {
 	private int _runNumber = 0;
 	private ArrayList<Result> _run = new ArrayList<Result>();
 	private RaceQueuer _racerList = new RaceQueuer();
+	private int currentQueueSize = 0;
 	
 	/**
 	 * _startTimes and _finishTimes need to be eliminated. Racer times will be held in the racer class
@@ -116,6 +117,7 @@ public class Chronotimer {
 		case "ENDRUN":
 		{
 			_eventRunning=false;
+			_racerList.clear();
 			break;
 		}
 		case "CONN":
@@ -170,11 +172,16 @@ public class Chronotimer {
 				int i = Integer.parseInt(command[2])-1;
 				if(/*_sensorsConnected[i] == null || */!_channelOn[i])
 					break;
+				if(_racerList.isEmpty() || (currentQueueSize==0 && i%2==0)){
+					_printer.println("Racer queue is empty!");
+					break;
+				}
 				_channelTripped[i]=true;
 				_printer.println(command[0] + " Channel " + (i+1) + " has been tripped!");
 				if(i%2==0) 
 				{
 					_startTimes[i/2].add(new Time(command[0]));
+					currentQueueSize--;
 					//_startTimes[i/2] = new Time(command[0]);
 				}
 				else 
@@ -182,7 +189,7 @@ public class Chronotimer {
 					_finishTimes[i/2].add(new Time(command[0]));
 					//TODO
 					// Change the result to add the actual next racer in the queue
-					_run.get(_runNumber-1).addResult("racer"+new Random().nextInt(), getRacerTime(i/2));
+					_run.get(_runNumber-1).addResult("racer "+_racerList.pop().getBib(), getRacerTime(i/2));
 					//_finishTimes[i/2] = new Time(command[0]);
 				}
 			}
@@ -274,6 +281,7 @@ public class Chronotimer {
 			}catch(NumberFormatException e){
 				_printer.println("Invalid Bib Number Entered");
 			}
+			currentQueueSize++;
 			break;
 		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}

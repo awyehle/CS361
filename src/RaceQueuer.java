@@ -21,14 +21,14 @@ public class RaceQueuer {
 	
 	public boolean contains(Racer bib) {
 		if(bib == null) return false;
-		if(inQueue(bib) || alreadyRan(bib)) return true;
+		if(inQueue(bib)) return true;
 		return false;
 	}
 	
 	public boolean inQueue(Racer num){
 		if(num == null) return false;
 		for(int i = 0; i<racerQueue.size();i++){
-			if(racerQueue.get(i).bib == num.getBib()) return true;
+			if(racerQueue.get(i).getBib() == num.getBib()) return true;
 		}
 		return false;
 	}
@@ -36,7 +36,7 @@ public class RaceQueuer {
 	public boolean alreadyRan(Racer num){
 		if(num == null) return false;
 		for(int i = 0; i<_alreadyRan.size();i++){
-			if(_alreadyRan.get(i).bib == num.getBib()) return true;
+			if(_alreadyRan.get(i).getBib() == num.getBib()) return true;
 		}
 		return false;
 	}
@@ -47,10 +47,10 @@ public class RaceQueuer {
 		try{
 		firstRacer = racerQueue.get(0);
 		_alreadyRan.add(firstRacer);
+		racerQueue.remove(0);
 		}catch(IndexOutOfBoundsException e){
 			System.out.println("There are no racers to pop in the raceQueuer");
 		}
-		racerQueue.remove(0);
 		return firstRacer;
 		
 	}
@@ -74,6 +74,13 @@ public class RaceQueuer {
 		
 		//Not sure what we want this to do
 		
+	}
+	
+	public boolean clear(){
+		racerQueue.clear();
+		_alreadyRan.clear();
+		if(isEmpty()) return true;
+		return false;
 	}
 	
 	public String toString(){

@@ -6,7 +6,7 @@
  */
 public class Racer {
 
-	int bib = -1;
+	private int bib = -1;
 	
 	public Racer(int bib){
 		this.bib = bib;
@@ -15,11 +15,6 @@ public class Racer {
 	public int getBib(){
 		
 		return this.bib;
-	}
-	
-	public void setBib(int bibNum){
-		
-			this.bib = bibNum;
 	}
 	
 }
