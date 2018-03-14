@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 import com.google.gson.Gson;
 
@@ -33,7 +32,6 @@ public class Chronotimer {
 	private RaceQueuer _racerList34 = new RaceQueuer();
 	private boolean laneOne = true;
 	
-	private int _lastTriggered = -1;
 	
 	/**
 	 * _startTimes and _finishTimes need to be eliminated. Racer times will be held in the racer class
@@ -83,7 +81,6 @@ public class Chronotimer {
 	 * Method which contains cases for the command sent to this Chronotimer.
 	 * @param command array of strings which acts as the command with arguments
 	 */
-	@SuppressWarnings("unchecked")
 	public void runCommand(String... command)
 	{
 		if(!command[1].toUpperCase().equals("POWER") && !_isOn) return;
@@ -91,266 +88,329 @@ public class Chronotimer {
 		{
 		case "POWER":
 		{
-			_isOn = !_isOn;
-			_printer.println(command[0] + " Power is turned " + (_isOn? "on" : "off"));
-			if(!_isOn) 
-			{
-				_channelOn = new boolean[_CHANNELS];
-				_channelTripped = new boolean[_CHANNELS];
-				_sensorsConnected = new Sensor[_CHANNELS];
-				resetTimes();
-				_eventRunning=false;
-				event=EVENTS.IND;
-			}
+			power(command);
 			break;
 		}
 		case "NEWRUN":
 		{
-			if(_eventRunning == true) 
-			{
-				_printer.println(command[0] + " There is an event already going on. End the current run to begin a new one.");
-				break;
-			}
-			++_runNumber;
-			_run.add(new Result(command[0], event.toString()));
-			_eventRunning=true;
-			resetTimes();
-			_printer.println("Event type " + event.toString() +" has been started");
+			newrun(command);
 			break;
 		}
 		case "ENDRUN":
 		{
-			_eventRunning=false;
-			_racerList12 = new RaceQueuer();
-			_racerList34 = new RaceQueuer();
-			laneOne = true;
+			endrun();
 			break;
 		}
 		case "CONN":
 		{
-			try
-			{
-				int channel = Integer.parseInt(command[3])-1;
-				_sensorsConnected[channel] = new Sensor();
-				_printer.println(command[0] + " Channel " + (channel+1) + " has a sensor connected");
-			}
-			catch(NumberFormatException e) {_printer.println(command[0] + " Error connecting the sensor");}
-			catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
+			connect(command);
 			break;
 		}
 		case "EVENT":
 		{
-			switch(command[2].toUpperCase())
-			{
-			case "IND":
-			{
-				event = EVENTS.IND;
-				_printer.println(command[0] +" Event type set to " + event.toString());
-				break;
-			}
-			case "PARIND":
-			{
-				event = EVENTS.PARIND;
-				_printer.println(command[0] +" Event type set to " + event.toString());
-				break;
-			}
-			case "GRP": case "PARGRP":
-			default: System.out.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");
-			}
+			event(command);
 			break;
 		}
 		case "TOG":
 		{
-			try
-			{
-				int channel = Integer.parseInt(command[2])-1;
-				_channelOn[channel]=!_channelOn[channel];
-				_printer.println(command[0] + " Channel " + (channel+1) + " has been turned " + (_channelOn[channel]? "on" : "off"));
-			}
-			catch(NumberFormatException e) {_printer.println(command[0] + " Error turning on or off the channel");}
-			catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
+			toggle(command);
 			break;
 		}
 		case "TRIG":
 		{
-			try
-			{
-				int i = Integer.parseInt(command[2])-1;
-				if(/*_sensorsConnected[i] == null || */!_channelOn[i])
-					break;
-				_channelTripped[i]=true;
-				_printer.println(command[0] + " Channel " + (i+1) + " has been tripped!");
-				if(event == EVENTS.PARIND){
-					if(i%2==0) 
-					{
-						if(i == 0){
-							try{
-								_racerList12.popWait();
-							}catch(NullPointerException e){break;}
-						}else{
-							try{
-								_racerList34.popWait();
-							}catch(NullPointerException e){break;}
-						}
-						_startTimes[i/2].add(new Time(command[0]));
-					}
-					else 
-					{
-						_finishTimes[i/2].add(new Time(command[0]));
-						if(i==1){
-							try{
-								_run.get(_runNumber-1).addResult(""+_racerList12.pop().getBib(), getRacerTime(i/2));
-							}catch(NullPointerException e){break;}
-						}else if(i==3){
-							try{
-								_run.get(_runNumber-1).addResult(""+_racerList34.pop().getBib(), getRacerTime(i/2));
-							}catch(NullPointerException e){break;}
-						}
-					}
-				}else if(event==EVENTS.IND){
-					if(i==0) 
-					{
-						try{
-							_racerList12.popWait();
-						}catch(NullPointerException e){_printer.println("No racers in queue");break;}
-						_startTimes[i/2].add(new Time(command[0]));
-						
-					}
-					else if(i==1) 
-					{
-						
-						try{
-							_run.get(_runNumber-1).addResult(""+_racerList12.pop().getBib(), getRacerTime(i/2));
-						}catch(NullPointerException e){_printer.println("No racers in queue");break;}
-						_finishTimes[i/2].add(new Time(command[0]));
-					}
-				}
-			}
-			catch(NumberFormatException e) {_printer.println("Error triggering");}
-			catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
+			trigger(command);
 			break;
 		}
 		case "RESET":
 		{
-			_channelOn = new boolean[_CHANNELS];
-			_channelTripped = new boolean[_CHANNELS];
-			_printer.println(command[0] + " All channels have been reset and turned off");
+			reset(command);
 			break;
 		}
 		case "TIME":
 		{
-			try{
-			_time = new Time(command[2]);
-			}catch(ArrayIndexOutOfBoundsException e){System.out.println("Please enter a valid time"); break;}
-			_printer.println(command[0] + " Time reset");
+			time(command);
 			break;
 		}
 		case "DNF":
 		{
-			_finishTimes[0].add(new Time(null));
-			_printer.println(command[0] + " Racer for channels [1] and [2] did not finish (DNF)");
+			dnf(command);
 			break;
 		}
 		case "CANCEL":
 		{
-			_channelTripped[0] = false;
-			_channelTripped[1] = false;
-			if(_startTimes[0].size()>0)
-				_startTimes[0].removeLast();
-			if(_finishTimes[0].size()>0)
-				_finishTimes[0].removeLast();
-			_printer.println(command[0] + " Run for channels [1] and [2] has been canceled");
+			cancel(command);
 			break;
 		}
 		case "START":
 		{
-			runCommand(command[0], "TRIG",""+1);
+			trigger(command[0], "TRIG",""+1);
 			break;
 		}
 		case "FINISH":
 		{
-			runCommand(command[0], "TRIG",""+2);
+			trigger(command[0], "TRIG",""+2);
 			break;
 		}
 		case "PRINT":
 		{
-			if(command.length < 3) {
-				runCommand(command[0],command[1], ""+_runNumber);
-			}
-			else {
-				try
-				{
-					int i = Integer.parseInt(command[2])-1;
-					if(i > _run.size()) throw new ArrayIndexOutOfBoundsException();
-					System.out.println(_run.get(i).toString());
-				}
-				catch(NumberFormatException e) {_printer.println("Invalid Channel");}
-				catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
-			}
+			print(command);
 			break;
 		}
 		case "EXPORT":
 		{
-				try
-				{
-					int i = Integer.parseInt(command[2]);
-					if(i > _run.size()) throw new ArrayIndexOutOfBoundsException();
-					try(PrintWriter writer = new PrintWriter(new FileOutputStream("Run_"+i+".json",false)))
-					{
-						writer.println(new Gson().toJson(_run.get(i-1)));
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-					_printer.println("Run " + i + " has been saved");
-				}
-				catch(NumberFormatException e) {_printer.println("Invalid Channel");}
-				catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
+				export(command);
 			break;
 		}
 		case "NUM":
 		{
-			if(event == EVENTS.PARIND){
-				if(laneOne){
-					try{
-					Racer newRacer = new Racer(Integer.parseInt(command[2]));
-					if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
-					else 
-						{
-						_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
-						}
-					}catch(NumberFormatException e){
-						_printer.println("Invalid Bib Number Entered");
-					}
-				}else{
-					try{
-						Racer newRacer = new Racer(Integer.parseInt(command[2]));
-						if(!_racerList34.push(newRacer)) _printer.println("Racer already in queue or ran!");
-						else 
-							{
-							_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
-							}
-						}catch(NumberFormatException e){
-							_printer.println("Invalid Bib Number Entered");
-						}
-				}
-				laneOne = !laneOne;
-			}else if (event == EVENTS.IND){
-				try{
-					Racer newRacer = new Racer(Integer.parseInt(command[2]));
-					if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
-					else 
-						{
-						_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
-						}
-					}catch(NumberFormatException e){
-						_printer.println("Invalid Bib Number Entered");
-					}
-			}
+			addRacer(command);
 			break;
 		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}
 		}
 		
+	}
+
+	private void addRacer(String... command) {
+		if(event == EVENTS.PARIND){
+			if(laneOne){
+				try{
+				Racer newRacer = new Racer(Integer.parseInt(command[2]));
+				if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
+				else 
+					{
+					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+					}
+				}catch(NumberFormatException e){
+					_printer.println("Invalid Bib Number Entered");
+				}catch(IllegalArgumentException e){
+					_printer.println(e.getMessage());
+				}
+			}else{
+				try{
+					Racer newRacer = new Racer(Integer.parseInt(command[2]));
+					if(!_racerList34.push(newRacer)) _printer.println("Racer already in queue or ran!");
+					else 
+						{
+						_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+						}
+					}catch(NumberFormatException e){
+						_printer.println("Invalid Bib Number Entered");
+					}catch(IllegalArgumentException e){
+						_printer.println(e.getMessage());
+					}
+			}
+			laneOne = !laneOne;
+		}else if (event == EVENTS.IND){
+			try{
+				Racer newRacer = new Racer(Integer.parseInt(command[2]));
+				if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
+				else 
+					{
+					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+					}
+				}catch(NumberFormatException e){
+					_printer.println("Invalid Bib Number Entered");
+				}catch(IllegalArgumentException e){
+					_printer.println(e.getMessage());
+				}
+		}
+	}
+
+	private void export(String... command) {
+		try
+		{
+			int i = Integer.parseInt(command[2]);
+			if(i > _run.size()) throw new ArrayIndexOutOfBoundsException();
+			try(PrintWriter writer = new PrintWriter(new FileOutputStream("Run_"+i+".json",false)))
+			{
+				writer.println(new Gson().toJson(_run.get(i-1)));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			_printer.println("Run " + i + " has been saved");
+		}
+		catch(NumberFormatException e) {_printer.println("Invalid Channel");}
+		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid run");}
+	}
+
+	private void print(String... command) {
+		if(command.length < 3) {
+			runCommand(command[0],command[1], ""+_runNumber);
+		}
+		else {
+			try
+			{
+				int i = Integer.parseInt(command[2])-1;
+				if(i > _run.size()) throw new IndexOutOfBoundsException();
+				System.out.println(_run.get(i).toString());
+			}
+			catch(NumberFormatException e) {_printer.println("Invalid Channel");}
+			catch(IndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid run");}
+		}
+	}
+
+	private void cancel(String... command) {
+		_channelTripped[0] = false;
+		_channelTripped[1] = false;
+		if(_startTimes[0].size()>0)
+			_startTimes[0].removeLast();
+		if(_finishTimes[0].size()>0)
+			_finishTimes[0].removeLast();
+		_printer.println(command[0] + " Run for channels [1] and [2] has been canceled");
+	}
+
+	private void dnf(String... command) {
+		_finishTimes[0].add(new Time(null));
+		_printer.println(command[0] + " Racer for channels [1] and [2] did not finish (DNF)");
+	}
+
+	private void time(String... command) {
+		try{
+		_time = new Time(command[2]);
+		}catch(ArrayIndexOutOfBoundsException e){System.out.println("Please enter a valid time"); return;}
+		_printer.println(command[0] + " Time reset");
+	}
+
+	private void reset(String... command) {
+		_channelOn = new boolean[_CHANNELS];
+		_channelTripped = new boolean[_CHANNELS];
+		_run.clear();
+		_runNumber=0;
+		_printer.println(command[0] + " All channels have been reset and turned off. Runs have been erased");
+	}
+
+	private void trigger(String... command) {
+		try
+		{
+			int channel = Integer.parseInt(command[2])-1;
+			if(/*_sensorsConnected[i] == null || */!_channelOn[channel])
+				return;
+			_channelTripped[channel]=true;
+			_printer.println(command[0] + " Channel " + (channel+1) + " has been tripped!");
+			if(event == EVENTS.PARIND){
+				if(channel%2==0) 
+				{
+					if(channel == 0){
+						try{
+							_racerList12.popWait();
+						}catch(NullPointerException e){return;}
+					}else{
+						try{
+							_racerList34.popWait();
+						}catch(NullPointerException e){return;}
+					}
+					_startTimes[channel/2].add(new Time(command[0]));
+				}
+				else 
+				{
+					_finishTimes[channel/2].add(new Time(command[0]));
+					if(channel==1){
+						try{
+							_run.get(_runNumber-1).addResult(""+_racerList12.pop().getBib(), getRacerTime(channel/2));
+						}catch(NullPointerException e){return;}
+					}else if(channel==3){
+						try{
+							_run.get(_runNumber-1).addResult(""+_racerList34.pop().getBib(), getRacerTime(channel/2));
+						}catch(NullPointerException e){return;}
+					}
+				}
+			}else if(event==EVENTS.IND){
+				if(channel==0) 
+				{
+					try{
+						_racerList12.popWait();
+					}catch(NullPointerException e){_printer.println("No racers in queue");return;}
+					_startTimes[channel/2].add(new Time(command[0]));
+					
+				}
+				else if(channel==1) 
+				{
+					_finishTimes[channel/2].add(new Time(command[0]));
+					try{
+						_run.get(_runNumber-1).addResult(""+_racerList12.pop().getBib(), getRacerTime(channel/2));
+					}catch(NullPointerException e){_printer.println("No racers in queue");return;}
+				}
+			}
+		}
+		catch(NumberFormatException e) {_printer.println("Error triggering");}
+		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
+	}
+
+	private void toggle(String... command) {
+		try
+		{
+			int channel = Integer.parseInt(command[2])-1;
+			_channelOn[channel]=!_channelOn[channel];
+			_printer.println(command[0] + " Channel " + (channel+1) + " has been turned " + (_channelOn[channel]? "on" : "off"));
+		}
+		catch(NumberFormatException e) {_printer.println(command[0] + " Error turning on or off the channel");}
+		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
+	}
+
+	private void event(String... command) {
+		switch(command[2].toUpperCase())
+		{
+		case "IND":
+		{
+			event = EVENTS.IND;
+			_printer.println(command[0] +" Event type set to " + event.toString());
+			break;
+		}
+		case "PARIND":
+		{
+			event = EVENTS.PARIND;
+			_printer.println(command[0] +" Event type set to " + event.toString());
+			break;
+		}
+		case "GRP": case "PARGRP":
+		default: System.out.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");
+		}
+	}
+
+	private void connect(String... command) {
+		try
+		{
+			int channel = Integer.parseInt(command[3])-1;
+			_sensorsConnected[channel] = new Sensor();
+			_printer.println(command[0] + " Channel " + (channel+1) + " has a sensor connected");
+		}
+		catch(NumberFormatException e) {_printer.println(command[0] + " Error connecting the sensor");}
+		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
+	}
+
+	private void endrun() {
+		_eventRunning=false;
+		_racerList12 = new RaceQueuer();
+		_racerList34 = new RaceQueuer();
+		laneOne = true;
+	}
+
+	private void newrun(String... command) {
+		if(_eventRunning == true) 
+		{
+			_printer.println(command[0] + " There is an event already going on. End the current run to begin a new one.");
+			return;
+		}
+		++_runNumber;
+		_run.add(new Result(command[0], event.toString()));
+		_eventRunning=true;
+		resetTimes();
+		_printer.println("Event type " + event.toString() +" has been started");
+	}
+
+	private void power(String... command) {
+		_isOn = !_isOn;
+		_printer.println(command[0] + " Power is turned " + (_isOn? "on" : "off"));
+		if(!_isOn) 
+		{
+			_channelOn = new boolean[_CHANNELS];
+			_channelTripped = new boolean[_CHANNELS];
+			_sensorsConnected = new Sensor[_CHANNELS];
+			resetTimes();
+			_eventRunning=false;
+			event=EVENTS.IND;
+		}
 	}
 
 	public int getConnection(Sensor sensor)
@@ -407,6 +467,11 @@ public class Chronotimer {
 		
 		return _channelTripped[0];
 		
+	}
+	
+	public int getResultSize(int run)
+	{
+		return _run.get(run-1).results();
 	}
 	
 	public boolean eventIsFinished(){

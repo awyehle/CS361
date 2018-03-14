@@ -7,6 +7,7 @@ import java.util.*;
 public class Result {
 
 	private String _runType, _time;
+	private int _manyResults;
 	
 	private HashMap<String,String> _results= new HashMap<>();
 	
@@ -35,9 +36,20 @@ public class Result {
 		if(time == null || racer == null)
 			throw new IllegalArgumentException("Cannot store null results");
 		if(_results.containsKey(racer)) return false;
-		else
-			_results.put(racer, time);
+		
+		++_manyResults;
+		_results.put(racer, time);
+		
 		return true;
+	}
+	
+	/**
+	 * Utilized for testing purposes; returns how many racers are stored in this result
+	 * @return number of racers used to create this result
+	 */
+	public int results()
+	{
+		return _manyResults;
 	}
 	
 	@Override

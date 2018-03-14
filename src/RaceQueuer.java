@@ -92,7 +92,14 @@ public class RaceQueuer {
 	public boolean push(Racer racer){
 		if(contains(racer))
 			return false;
-		_waitQueue.add(_waitQueue.size(), racer);
+		try
+		{
+			_waitQueue.add(_waitQueue.size(), racer);
+		}
+		catch(IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
 		return true;
 		
 	}

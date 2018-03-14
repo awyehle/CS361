@@ -157,9 +157,11 @@ public class ChronoTester {
 	          command = input.split(" ");
 	          newChronotimer.runCommand(command);
 	          
-	          //Channels 1 and 2 should have 1 time within them
-	          assertEquals(1,newChronotimer.getTimeSize(1));
-	          assertEquals(1,newChronotimer.getTimeSize(2));
+	          //Channels 1 and 2 should have not have time within them, as the times are removed and stored into a result
+	          assertEquals(0,newChronotimer.getTimeSize(1));
+	          assertEquals(0,newChronotimer.getTimeSize(2));
+	          
+	          assertEquals(1,newChronotimer.getResultSize(2));
 	          
 	          input = "12:01:02.0 CANCEL";
 	          command = input.split(" ");
@@ -232,6 +234,7 @@ public class ChronoTester {
 		@Test
 		public void TestNewEndRun()
 		{
+			newChronotimer = new Chronotimer();
 			
 			String input = "12:01:02.0 POWER";
 			String[] command = input.split(" ");
@@ -422,6 +425,7 @@ public class ChronoTester {
 		 */
 		@Test
 		public void TestNUM(){
+			newChronotimer = new Chronotimer();
 			
 			ArrayList<RaceQueuer> queueState = newChronotimer.queueState();
 			queueState.get(0).isEmpty();
