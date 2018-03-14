@@ -278,7 +278,6 @@ public class Chronotimer {
 		_run.clear();
 		_runNumber=0;
 		endrun();
-		event = EVENTS.IND;
 		_printer.println(command[0] + " All channels have been reset and turned off. Runs have been erased");
 	}
 
