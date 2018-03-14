@@ -18,6 +18,7 @@ public class MiscTester {
 		assertTrue(r.addResult("111", new Time().convertRawTime()));
 		assertTrue(r.addResult("101", new Time().convertRawTime()));
 		assertFalse(r.addResult("111", new Time().convertRawTime()));
+		assertEquals(2,r.results());
 	}
 	
 	@Test
@@ -78,12 +79,11 @@ public class MiscTester {
 		assertTrue(r.push(_102));
 		assertTrue(r.push(_103));
 		assertTrue(r.push(_104));
-		
+
 		assertFalse(r.push(_101));
 		assertFalse(r.push(_102));
 		assertFalse(r.push(_103));
 		assertFalse(r.push(_104));
-		
 		/*
 		 * The block below is necessary to
 		 * move racers from wait queue to in progress queue.
@@ -103,6 +103,33 @@ public class MiscTester {
 		assertFalse(r.push(_103));
 		assertFalse(r.push(_104));
 
+	}
+	
+	@Test
+	public void testRacer()
+	{
+		Racer r = new Racer(0);
+		assertEquals(0,r.getBib());
+		r = new Racer(123);
+		assertEquals(123,r.getBib());
+		r = new Racer(9999);
+		assertEquals(9999,r.getBib());
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testInvalidRacer1()
+	{
+		Racer r = new Racer(-1);
+	}
+	@Test (expected = IllegalArgumentException.class)
+	public void testInvalidRacer2()
+	{
+		Racer r = new Racer(10000);
+	}
+	@Test (expected = IllegalArgumentException.class)
+	public void testInvalidRacer3()
+	{
+		Racer r = new Racer(Integer.MAX_VALUE);
 	}
 	
 }

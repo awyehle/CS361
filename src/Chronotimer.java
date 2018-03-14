@@ -277,6 +277,7 @@ public class Chronotimer {
 		_channelTripped = new boolean[_CHANNELS];
 		_run.clear();
 		_runNumber=0;
+		_eventRunning=false;
 		_printer.println(command[0] + " All channels have been reset and turned off. Runs have been erased");
 	}
 
@@ -498,6 +499,11 @@ public class Chronotimer {
 		
 	}
 	
+	public int getRun()
+	{
+		return _runNumber;
+	}
+	
 	public boolean isToggled(){
         
 	    int channel1 = 0;
@@ -521,10 +527,20 @@ public class Chronotimer {
 	        
 	    return true;
 	  }
-	
+
 	public ArrayList<RaceQueuer> queueState(){
 		ArrayList<RaceQueuer> copy = new ArrayList<RaceQueuer>();
 		copy.add(_racerList12);
+		copy.add(_racerList34);
+		return copy;
+		
+	}
+	
+	public ArrayList<RaceQueuer> queueState(int channels){
+		ArrayList<RaceQueuer> copy = new ArrayList<RaceQueuer>();
+		if(channels==1)
+		copy.add(_racerList12);
+		else
 		copy.add(_racerList34);
 		return copy;
 		
