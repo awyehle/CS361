@@ -355,14 +355,24 @@ public class Chronotimer {
 			{
 			case "IND":
 			{
+				if(_eventRunning){
+					_printer.println("You must end the current run before switching event types");
+					break;
+				}
 				event = EVENTS.IND;
 				_printer.println(command[0] +" Event type set to " + event.toString());
+				endrun();
 				break;
 			}
 			case "PARIND":
 			{
+				if(_eventRunning){
+					_printer.println("You must end the current run before switching event types");
+					break;
+				}
 				event = EVENTS.PARIND;
 				_printer.println(command[0] +" Event type set to " + event.toString());
+				endrun();
 				break;
 			}
 			case "GRP": case "PARGRP":
