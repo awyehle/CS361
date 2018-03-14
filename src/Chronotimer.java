@@ -350,23 +350,26 @@ public class Chronotimer {
 	}
 
 	private void event(String... command) {
-		switch(command[2].toUpperCase())
-		{
-		case "IND":
-		{
-			event = EVENTS.IND;
-			_printer.println(command[0] +" Event type set to " + event.toString());
-			break;
+		try{
+			switch(command[2].toUpperCase())
+			{
+			case "IND":
+			{
+				event = EVENTS.IND;
+				_printer.println(command[0] +" Event type set to " + event.toString());
+				break;
+			}
+			case "PARIND":
+			{
+				event = EVENTS.PARIND;
+				_printer.println(command[0] +" Event type set to " + event.toString());
+				break;
+			}
+			case "GRP": case "PARGRP":
+			default: System.out.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");
+			}
 		}
-		case "PARIND":
-		{
-			event = EVENTS.PARIND;
-			_printer.println(command[0] +" Event type set to " + event.toString());
-			break;
-		}
-		case "GRP": case "PARGRP":
-		default: System.out.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");
-		}
+		catch(ArrayIndexOutOfBoundsException e) {_printer.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");}
 	}
 
 	private void connect(String... command) {
