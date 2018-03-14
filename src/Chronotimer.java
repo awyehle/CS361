@@ -112,7 +112,7 @@ public class Chronotimer {
 				break;
 			}
 			++_runNumber;
-			_run.add(new Result(new Time().convertRawTime(), event.toString()));
+			_run.add(new Result(command[0], event.toString()));
 			_eventRunning=true;
 			_racerList12 = new RaceQueuer();
 			_racerList34 = new RaceQueuer();
@@ -295,14 +295,15 @@ public class Chronotimer {
 		{
 				try
 				{
-					int i = Integer.parseInt(command[2])-1;
+					int i = Integer.parseInt(command[2]);
 					if(i > _run.size()) throw new ArrayIndexOutOfBoundsException();
-					try(PrintWriter writer = new PrintWriter(new FileOutputStream("Run_"+_runNumber+".json",false)))
+					try(PrintWriter writer = new PrintWriter(new FileOutputStream("Run_"+i+".json",false)))
 					{
-						writer.println(new Gson().toJson(_run.get(i)));
+						writer.println(new Gson().toJson(_run.get(i-1)));
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
+					_printer.println("Run " + i + " has been saved");
 				}
 				catch(NumberFormatException e) {_printer.println("Invalid Channel");}
 				catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
