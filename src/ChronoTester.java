@@ -3,6 +3,8 @@
  */
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -180,6 +182,10 @@ public class ChronoTester {
 			
 			String input = "12:01:02.0 POWER";
 			String[] command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 EVENT IND";
+			command = input.split(" ");
 			newChronotimer.runCommand(command);
 
 	          input = "12:01:02.0 NEWRUN";
@@ -410,9 +416,134 @@ public class ChronoTester {
 			
 		}
 		
+		/**
+		 * Validate NUM command enters a racer into the queue
+		 * and never duplicates in the same race
+		 */
 		@Test
 		public void TestNUM(){
-			fail();//implement test
+			
+			ArrayList<RaceQueuer> queueState = newChronotimer.queueState();
+			queueState.get(0).isEmpty();
+			
+			String input = "12:01:02.0 POWER";
+			String[] command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 EVENT IND";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 NUM 1";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 NUM 2";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertFalse(queueState.get(0).isEmpty());
+			assertTrue(queueState.get(1).isEmpty());
+			
+			input = "12:01:02.0 TOG 1";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TOG 2";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TOG 3";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TOG 4";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TRIG 1";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TRIG 1";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertFalse(queueState.get(0).isEmpty());
+			assertTrue(queueState.get(1).isEmpty());
+			
+			input = "12:01:02.0 TRIG 2";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertFalse(queueState.get(0).isEmpty());
+			assertTrue(queueState.get(1).isEmpty());
+			
+			input = "12:01:02.0 TRIG 2";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertTrue(queueState.get(0).isEmpty());
+			assertTrue(queueState.get(1).isEmpty());
+			
+			input = "12:01:02.0 ENDRUN";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 EVENT PARIND";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 NEWRUN";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertTrue(queueState.get(0).isEmpty());
+			assertTrue(queueState.get(1).isEmpty());
+			
+			input = "12:01:02.0 NUM 1";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 NUM 2";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertFalse(queueState.get(0).isEmpty());
+			assertFalse(queueState.get(1).isEmpty());
+			
+			input = "12:01:02.0 TRIG 1";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TRIG 3";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertFalse(queueState.get(0).isEmpty());
+			assertFalse(queueState.get(1).isEmpty());
+			
+			input = "12:01:02.0 TRIG 2";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			input = "12:01:02.0 TRIG 4";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertTrue(queueState.get(0).isEmpty());
+			assertTrue(queueState.get(1).isEmpty());
+			
+			input = "12:01:02.0 ENDRUN";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertTrue(queueState.get(0).isEmpty());
+			assertTrue(queueState.get(1).isEmpty());
+			
+			input = "12:01:02.0 POWER";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
 		}
 		
 		/**

@@ -114,8 +114,6 @@ public class Chronotimer {
 			++_runNumber;
 			_run.add(new Result(command[0], event.toString()));
 			_eventRunning=true;
-			_racerList12 = new RaceQueuer();
-			_racerList34 = new RaceQueuer();
 			resetTimes();
 			_printer.println("Event type " + event.toString() +" has been started");
 			break;
@@ -123,8 +121,8 @@ public class Chronotimer {
 		case "ENDRUN":
 		{
 			_eventRunning=false;
-			_racerList12.clear();
-			_racerList34.clear();
+			_racerList12 = new RaceQueuer();
+			_racerList34 = new RaceQueuer();
 			laneOne = true;
 			break;
 		}
@@ -214,7 +212,7 @@ public class Chronotimer {
 					{
 						try{
 							_racerList12.popWait();
-						}catch(NullPointerException e){break;}
+						}catch(NullPointerException e){_printer.println("No racers in queue");break;}
 						_startTimes[i/2].add(new Time(command[0]));
 						
 					}
@@ -223,7 +221,7 @@ public class Chronotimer {
 						
 						try{
 							_run.get(_runNumber-1).addResult(""+_racerList12.pop().getBib(), getRacerTime(i/2));
-						}catch(NullPointerException e){break;}
+						}catch(NullPointerException e){_printer.println("No racers in queue");break;}
 						_finishTimes[i/2].add(new Time(command[0]));
 					}
 				}
@@ -311,22 +309,35 @@ public class Chronotimer {
 		}
 		case "NUM":
 		{
-			
-			if(laneOne){
-				try{
-				Racer newRacer = new Racer(Integer.parseInt(command[2]));
-				if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
-				else 
-					{
-					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+			if(event == EVENTS.PARIND){
+				if(laneOne){
+					try{
+					Racer newRacer = new Racer(Integer.parseInt(command[2]));
+					if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
+					else 
+						{
+						_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+						}
+					}catch(NumberFormatException e){
+						_printer.println("Invalid Bib Number Entered");
 					}
-				}catch(NumberFormatException e){
-					_printer.println("Invalid Bib Number Entered");
+				}else{
+					try{
+						Racer newRacer = new Racer(Integer.parseInt(command[2]));
+						if(!_racerList34.push(newRacer)) _printer.println("Racer already in queue or ran!");
+						else 
+							{
+							_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+							}
+						}catch(NumberFormatException e){
+							_printer.println("Invalid Bib Number Entered");
+						}
 				}
-			}else{
+				laneOne = !laneOne;
+			}else if (event == EVENTS.IND){
 				try{
 					Racer newRacer = new Racer(Integer.parseInt(command[2]));
-					if(!_racerList34.push(newRacer)) _printer.println("Racer already in queue or ran!");
+					if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
 					else 
 						{
 						_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
@@ -335,7 +346,6 @@ public class Chronotimer {
 						_printer.println("Invalid Bib Number Entered");
 					}
 			}
-			laneOne = !laneOne;
 			break;
 		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}
@@ -446,5 +456,13 @@ public class Chronotimer {
 	        
 	    return true;
 	  }
+	
+	public ArrayList<RaceQueuer> queueState(){
+		ArrayList<RaceQueuer> copy = new ArrayList<RaceQueuer>();
+		copy.add(_racerList12);
+		copy.add(_racerList34);
+		return copy;
+		
+	}
 	
 }

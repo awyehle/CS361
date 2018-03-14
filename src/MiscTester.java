@@ -83,6 +83,15 @@ public class MiscTester {
 		assertFalse(r.push(_102));
 		assertFalse(r.push(_103));
 		assertFalse(r.push(_104));
+		
+		/*
+		 * The block below is necessary to
+		 * move racers from wait queue to in progress queue.
+		 */
+		r.popWait();
+		r.popWait();
+		r.popWait();
+		r.popWait();
 
 		assertEquals(_101,r.pop());
 		assertEquals(_102,r.pop());
