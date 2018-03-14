@@ -308,11 +308,11 @@ public class Chronotimer {
 					_finishTimes[channel/2].add(new Time(command[0]));
 					if(channel==1){
 						try{
-							_run.get(_runNumber-1).addResult(""+_racerList12.pop().getBib(), getRacerTime(channel/2));
+							_run.get(_runNumber-1).addResult(""+_racerList12.peek().getBib(), getRacerTime(channel/2));
 						}catch(NullPointerException e){return;}
 					}else if(channel==3){
 						try{
-							_run.get(_runNumber-1).addResult(""+_racerList34.pop().getBib(), getRacerTime(channel/2));
+							_run.get(_runNumber-1).addResult(""+_racerList34.peek().getBib(), getRacerTime(channel/2));
 						}catch(NullPointerException e){return;}
 					}
 				}
@@ -322,14 +322,14 @@ public class Chronotimer {
 					try{
 						_racerList12.popWait();
 					}catch(NullPointerException e){_printer.println("No racers in queue");return;}
-					_startTimes[channel/2].add(new Time(command[0]));
+					_startTimes[0].add(new Time(command[0]));
 					
 				}
 				else if(channel==1) 
 				{
-					_finishTimes[channel/2].add(new Time(command[0]));
+					_finishTimes[0].add(new Time(command[0]));
 					try{
-						_run.get(_runNumber-1).addResult(""+_racerList12.pop().getBib(), getRacerTime(channel/2));
+						_run.get(_runNumber-1).addResult(""+_racerList12.peek().getBib(), getRacerTime(0));
 					}catch(NullPointerException e){_printer.println("No racers in queue");return;}
 				}
 			}
