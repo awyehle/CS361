@@ -221,7 +221,7 @@ public class Chronotimer {
 		try
 		{
 			int i = Integer.parseInt(command[2]);
-			if(i > _run.size()) throw new ArrayIndexOutOfBoundsException();
+			if(i > _run.size() || i < 1) throw new ArrayIndexOutOfBoundsException();
 			try(PrintWriter writer = new PrintWriter(new FileOutputStream("Run_"+i+".json",false)))
 			{
 				writer.println(new Gson().toJson(_run.get(i-1)));
