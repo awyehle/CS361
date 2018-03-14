@@ -241,9 +241,9 @@ public class Chronotimer {
 		else {
 			try
 			{
-				int i = Integer.parseInt(command[2])-1;
-				if(i > _run.size()) throw new IndexOutOfBoundsException();
-				System.out.println(_run.get(i).toString());
+				int i = Integer.parseInt(command[2]);
+				if(i > _run.size() || i < 1) throw new IndexOutOfBoundsException();
+				_printer.println(_run.get(i-1).toString());
 			}
 			catch(NumberFormatException e) {_printer.println("Invalid Channel");}
 			catch(IndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid run");}
@@ -424,6 +424,7 @@ public class Chronotimer {
 		return -1;
 	}
 	
+	@Deprecated
 	public void printRun(int startChannel)
 	{
 		if(startChannel<0 || startChannel>3) return;
