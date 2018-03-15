@@ -3,5 +3,26 @@ Write any comments/concerns about program here
 
 TODO:
 
+Split ChronoTester
+
+
+---Fixed---
+- Being able to add same racer twice 
+- Changed RaceQueue to 4 queues for final implementation (vs. 2)
+	- Trig became shorter as result (more efficient)!
+- RaceQueuer updated to support publics methods and works with Queue (updated from stack)
+- MiscTester added to test additional functionality
+	- DNF
+	- TimeTimeStamp
+	- TestRacer
+	- TestRaceQueue
+	- TestTime_nanoseconds
+
+
+(does not need to be done - if time permets)
+-Test IND
+-Test Parallel (PARIND)
+
+
 Queue needs to be split up between lanes for PARIND races. NUM commands alternate between adding to the queues
 ONLY FOR PARIND EVENTS. NUM for IND adds to only one queue.
