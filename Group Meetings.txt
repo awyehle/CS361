@@ -51,6 +51,8 @@ Meeting outcome: Got a lot of work done on both Sprint 1 and Lab 5 but finished 
 
 Disciplinary actions taken: none
 
+-----------------------------
+
 Meeting 4
 3/8/18 3:30pm - 4:45pm
 
@@ -65,5 +67,22 @@ Highlights of meeting:
 	- Added class Results to hold results of racers for easy exporting
 	
 Meeting outcome: Finished lab 7 and submitted it and delegated tasks for Sprint 2
+
+Disciplinary actions taken: none
+
+-----------------------------
+
+Meeting 5
+3/15/18 3:30pm - 4:30pm
+
+Meeting goal: Work/attempt to finish Sprint 2
+
+Important decisions made: none
+
+Highlights of meeting:
+	- worked on bug fixes
+	
+Meeting outcome: Sprint 2 is mostly done, needs test cases to be split up into 
+	ind and parind and general bug fixing after those are done.
 
 Disciplinary actions taken: none
