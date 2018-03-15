@@ -28,6 +28,7 @@ public class Chronotimer {
 	
 	private int _runNumber = 0;
 	private ArrayList<Result> _run = new ArrayList<Result>();
+	private RaceQueuer[] _queues = new RaceQueuer[_CHANNELS/2];
 	private RaceQueuer _racerList12 = new RaceQueuer();
 	private RaceQueuer _racerList34 = new RaceQueuer();
 	private boolean laneOne = true;
@@ -65,6 +66,7 @@ public class Chronotimer {
 	{
 		_time = new Time();
 		resetTimes();
+		resetQueues();
 		//_channelOn[0] = true;
 		//_sensorsConnected[0] = new Sensor();
 	}
@@ -74,6 +76,12 @@ public class Chronotimer {
 		return _time;
 	}
 
+	private void resetQueues()
+	{
+		for(int i = 0; i < _queues.length; ++i)
+			_queues[i]=new RaceQueuer();
+	}
+	
 	private void resetTimes()
 	{
 		for(int i = 0; i < _startTimes.length; ++i)
@@ -177,10 +185,9 @@ public class Chronotimer {
 	}
 
 	private void addRacer(String... command) {
-		if(event == EVENTS.PARIND){
 				try{
 				Racer newRacer = new Racer(Integer.parseInt(command[2]));
-				if(!(laneOne?_racerList12.push(newRacer):_racerList34.push(newRacer))) 
+				if(!(laneOne || event == EVENTS.IND ? _queues[0].push(newRacer):_queues[1].push(newRacer))) 
 					_printer.println("Racer already in queue or ran!");
 				else 
 					{
@@ -191,22 +198,7 @@ public class Chronotimer {
 				}catch(IllegalArgumentException e){
 					_printer.println(e.getMessage());
 				}
-				laneOne = !laneOne;
-			}
-		else if (event == EVENTS.IND){
-			try{
-				Racer newRacer = new Racer(Integer.parseInt(command[2]));
-				if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
-				else 
-					{
-					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
-					}
-				}catch(NumberFormatException e){
-					_printer.println("Invalid Bib Number Entered");
-				}catch(IllegalArgumentException e){
-					_printer.println(e.getMessage());
-				}
-		}
+				laneOne = (!laneOne || event == EVENTS.IND);
 	}
 
 	private void export(String... command) {
@@ -228,7 +220,7 @@ public class Chronotimer {
 
 	private void print(String... command) {
 		if(command.length < 3) {
-			runCommand(command[0],command[1], ""+_runNumber);
+			print(command[0],command[1], ""+_runNumber);
 		}
 		else {
 			try
@@ -279,55 +271,26 @@ public class Chronotimer {
 	private void trigger(String... command) {
 		try
 		{
-			int channel = Integer.parseInt(command[2])-1;
-			if(/*_sensorsConnected[i] == null || */!_channelOn[channel])
+			int channel = Integer.parseInt(command[2]);
+			if(/*_sensorsConnected[i] == null || */!_channelOn[channel-1])
 				return;
-			_channelTripped[channel]=true;
-			if(event == EVENTS.PARIND){
-				if(channel%2==0) 
-				{
-					if(channel == 0){
-						try{
-							_racerList12.popWait();
-						}catch(NullPointerException e){return;}
-					}else{
-						try{
-							_racerList34.popWait();
-						}catch(NullPointerException e){return;}
-					}
-					_startTimes[(channel+1)/2].add(new Time(command[0]));
-				}
-				else 
-				{
-					_finishTimes[(channel+1)/2].add(new Time(command[0]));
-					if(channel==1){
-						try{
-							_run.get(_runNumber-1).addResult(""+_racerList12.peek().getBib(), getRacerTime((channel+1)/2));
-						}catch(NullPointerException e){_printer.println("no racer here");return;}
-					}else if(channel==3){
-						try{
-							_run.get(_runNumber-1).addResult(""+_racerList34.peek().getBib(), getRacerTime((channel+1)/2));
-						}catch(NullPointerException e){_printer.println("no racer here");return;}
-					}
-				}
-			}else if(event==EVENTS.IND){
-				if(channel==0) 
-				{
-					try{
-						_racerList12.popWait();
-					}catch(NullPointerException e){_printer.println("No racers in queue");return;}
-					_startTimes[0].add(new Time(command[0]));
-					
-				}
-				else if(channel==1) 
-				{
-					_finishTimes[0].add(new Time(command[0]));
-					try{
-						_run.get(_runNumber-1).addResult(""+_racerList12.peek().getBib(), getRacerTime(0));
-					}catch(NullPointerException e){_printer.println("No racers in queue");return;}
-				}
+			if(channel%2==1) 
+			{
+				try{
+					_queues[channel/2].popWait();
+					_startTimes[channel/2].add(new Time(command[0]));
+				}catch(NullPointerException e){return;}
 			}
-			_printer.println(command[0] + " Channel " + (channel+1) + " has been tripped!");
+			else 
+			{
+				try{
+					Racer finisher = _queues[(channel-1)/2].pop();
+					_finishTimes[(channel-1)/2].add(new Time(command[0]));
+					_run.get(_runNumber-1).addResult(""+finisher.getBib(), getRacerTime((channel-1)/2));
+				}catch(NullPointerException e){_printer.println("no racer here");return;}
+			}
+			_printer.println(command[0] + " Channel " + (channel) + " has been tripped!");
+			_channelTripped[channel-1]=true;
 		}
 		catch(NumberFormatException e) {_printer.println("Error triggering");}
 		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
@@ -390,8 +353,7 @@ public class Chronotimer {
 
 	private void endrun() {
 		_eventRunning=false;
-		_racerList12 = new RaceQueuer();
-		_racerList34 = new RaceQueuer();
+		resetQueues();
 		laneOne = true;
 	}
 
