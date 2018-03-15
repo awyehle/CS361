@@ -12,7 +12,11 @@ public class ChronoTester {
 		
 		static Chronotimer newChronotimer = new Chronotimer();
 		
-		
+		@Before
+		public void fijfesgsdfgd()
+		{
+		newChronotimer= new Chronotimer();
+		}
 		/**
 		 * Tests the POWER command turns on and off Chronotimer
 		 */
@@ -276,6 +280,8 @@ public class ChronoTester {
 		      command = input.split(" ");
 		      newChronotimer.runCommand(command);
 		      
+		      rc(newChronotimer, "newrun");
+		      
 		      assertFalse(newChronotimer.eventIsFinished());
 		      assertFalse(newChronotimer.eventIsStarted());
 		      
@@ -345,6 +351,8 @@ public class ChronoTester {
 			String[] command = input.split(" ");
 			newChronotimer.runCommand(command);
 
+			rc(newChronotimer, "newrun");
+			
 	          input = "12:01:02.0 NUM 1";
 	          command = input.split(" ");
 	          newChronotimer.runCommand(command);
@@ -377,6 +385,24 @@ public class ChronoTester {
 			String input = "12:01:02.0 POWER";
 			String[] command = input.split(" ");
 			newChronotimer.runCommand(command);
+
+			rc(newChronotimer, "newrun");
+
+	          input = "12:01:02.0 NUM 1";
+	          command = input.split(" ");
+	          newChronotimer.runCommand(command);
+	          
+			input = "12:01:02.0 TOG 1";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertFalse(newChronotimer.eventIsStarted());
+			
+			input = "12:01:02.0 START";
+			command = input.split(" ");
+			newChronotimer.runCommand(command);
+			
+			assertTrue(newChronotimer.eventIsStarted());
 			
 			input = "12:01:02.0 TOG 2";
 			command = input.split(" ");
@@ -387,6 +413,8 @@ public class ChronoTester {
 			input = "12:01:02.0 FINISH";
 			command = input.split(" ");
 			newChronotimer.runCommand(command);
+			
+			
 			
 			assertTrue(newChronotimer.eventIsFinished());
 			
@@ -446,6 +474,8 @@ public class ChronoTester {
 			command = input.split(" ");
 			newChronotimer.runCommand(command);
 			
+			queueState = newChronotimer.queueState();
+			
 			assertFalse(queueState.get(0).isEmpty());
 			assertTrue(queueState.get(1).isEmpty());
 			
@@ -486,6 +516,8 @@ public class ChronoTester {
 			input = "12:01:02.0 TRIG 2";
 			command = input.split(" ");
 			newChronotimer.runCommand(command);
+			
+			queueState = newChronotimer.queueState();
 			
 			assertTrue(queueState.get(0).isEmpty());
 			assertTrue(queueState.get(1).isEmpty());

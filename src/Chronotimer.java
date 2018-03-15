@@ -543,10 +543,7 @@ public class Chronotimer {
 	
 	public ArrayList<RaceQueuer> queueState(int channels){
 		ArrayList<RaceQueuer> copy = new ArrayList<RaceQueuer>();
-		if(channels==1)
-		copy.add(_queues[0]);
-		else
-		copy.add(_queues[1]);
+		copy.add(_queues[channels/2]);
 		return copy;
 		
 	}
