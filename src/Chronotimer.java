@@ -200,7 +200,7 @@ public class Chronotimer {
 					}
 				}catch(NumberFormatException e){
 					_printer.println("Invalid Bib Number Entered");
-				}catch(IllegalArgumentException e){
+				}catch(IllegalArgumentException e){//s
 					_printer.println(e.getMessage());
 				}catch(IndexOutOfBoundsException e){
 					_printer.println("bad boy");
