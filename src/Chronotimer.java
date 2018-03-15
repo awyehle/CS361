@@ -29,18 +29,11 @@ public class Chronotimer {
 	private int _runNumber = 0;
 	private ArrayList<Result> _run = new ArrayList<Result>();
 	private RaceQueuer[] _queues = new RaceQueuer[_CHANNELS/2];
-	private RaceQueuer _racerList12 = new RaceQueuer();
-	private RaceQueuer _racerList34 = new RaceQueuer();
+	
+	// Deprecated due to using an array of queues. I think it will help more for the future sprints to do so
+	//private RaceQueuer _racerList12 = new RaceQueuer();
+	//private RaceQueuer _racerList34 = new RaceQueuer();
 	private boolean laneOne = true;
-	
-	
-	/**
-	 * _startTimes and _finishTimes need to be eliminated. Racer times will be held in the racer class
-	 * PRINT will take a racer for an argument
-	 * There will be a queue of racers which, when a sensor is triggered, will take the time for themselves
-	 * @author huelsma2
-	 *
-	 */
 	
 	private static enum EVENTS {IND, PARIND, GRP, PARGRP};
 	private EVENTS event = EVENTS.IND;
@@ -184,6 +177,10 @@ public class Chronotimer {
 		
 	}
 
+	/**
+	 * Adds a racer to a queue which holds racers ready to begin a race 
+	 * @param command Command in the format <timestamp> <NUM> <bibNumber>
+	 */
 	private void addRacer(String... command) {
 				try{
 				Racer newRacer = new Racer(Integer.parseInt(command[2]));
@@ -201,6 +198,11 @@ public class Chronotimer {
 				laneOne = (!laneOne || event == EVENTS.IND);
 	}
 
+	/**
+	 * Exports the indicated run number to a JSON file. It holds a result, which contains
+	 * the time the run was started, along with the race type, and the racer's (who participated) times
+	 * @param command Command in the format <timestamp> <EXPORT> <runNumber>
+	 */
 	private void export(String... command) {
 		try
 		{
@@ -218,6 +220,12 @@ public class Chronotimer {
 		catch(IndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid run");}
 	}
 
+	/**
+	 * Prints the current run or a specific run out to the paper tape. It prints out the result of the 
+	 * run, which contains the time the run was started, along with the race type, 
+	 * and the racer's (who participated) times
+	 * @param command Command in the format <timestamp> <PRINT> [<runNumber>]
+	 */
 	private void print(String... command) {
 		if(command.length < 3) {
 			print(command[0],command[1], ""+_runNumber);
@@ -234,6 +242,10 @@ public class Chronotimer {
 		}
 	}
 
+	/**
+	 * Cancels a racer's time in lane 1
+	 * @param command
+	 */
 	private void cancel(String... command) {
 		_channelTripped[0] = false;
 		_channelTripped[1] = false;
@@ -244,11 +256,21 @@ public class Chronotimer {
 		_printer.println(command[0] + " Run for channels [1] and [2] has been canceled");
 	}
 
+	
+	/**
+	 * Causes a racer in lane 1 to have a DNF time
+	 * @param command
+	 */
 	private void dnf(String... command) {
 		_finishTimes[0].add(new Time(null));
+		_queues[0].pop();
 		_printer.println(command[0] + " Racer for channels [1] and [2] did not finish (DNF)");
 	}
 
+	/**
+	 * Resets this system's clock. I don't think this has any use at all until qe implement a GUI
+	 * @param command
+	 */
 	private void time(String... command) {
 		try{
 		_time = new Time(command[2]);
@@ -256,6 +278,10 @@ public class Chronotimer {
 		_printer.println(command[0] + " Time reset");
 	}
 
+	/**
+	 * Resets the chronotimer to its initial state
+	 * @param command
+	 */
 	private void reset(String... command) {
 		_channelOn = new boolean[_CHANNELS];
 		_channelTripped = new boolean[_CHANNELS];
@@ -268,6 +294,11 @@ public class Chronotimer {
 		_printer.println(command[0] + " All channels have been reset and turned off. Runs have been erased");
 	}
 
+	/**
+	 * Triggers a sensor, which adds a trigger time to an arraylist if it is a starting trigger, and
+	 * adds a result to this run if the trigger was a finishing trigger
+	 * @param command Command in the format <timestamp> <TRIG> <channelNum>
+	 */
 	private void trigger(String... command) {
 		try
 		{
@@ -296,6 +327,10 @@ public class Chronotimer {
 		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
 	}
 
+	/**
+	 * turns specified channel on or off
+	 * @param command
+	 */
 	private void toggle(String... command) {
 		try
 		{
@@ -307,6 +342,10 @@ public class Chronotimer {
 		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
 	}
 
+	/**
+	 * changes the event type
+	 * @param command
+	 */
 	private void event(String... command) {
 		try{
 			switch(command[2].toUpperCase())
@@ -394,21 +433,12 @@ public class Chronotimer {
 		return -1;
 	}
 	
-	@Deprecated
-	public void printRun(int startChannel)
-	{
-		if(startChannel<0 || startChannel>3) return;
-		while(_startTimes[startChannel].size()!=0)
-		{
-			try{
-				String time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[startChannel].remove()).convertRawTime();
-				_printer.println("Time for racer on channels ["+((startChannel*2)+1)+"] and ["+((startChannel*2)+2)+"] is " + time);
-			}catch(NoSuchElementException e){
-				System.out.println("You must start a race before printing times.");
-			}
-		}
-	}
-	
+	/**
+	 * Gets a racer's time at the point at which they finish the race. This happens as soon as a racer
+	 * finishes, so this method is not useful outside of the trigger context
+	 * @param startChannel
+	 * @return
+	 */
 	public String getRacerTime(int startChannel)
 	{
 		try{
@@ -501,8 +531,8 @@ public class Chronotimer {
 
 	public ArrayList<RaceQueuer> queueState(){
 		ArrayList<RaceQueuer> copy = new ArrayList<RaceQueuer>();
-		copy.add(_racerList12);
-		copy.add(_racerList34);
+		copy.add(_queues[0]);
+		copy.add(_queues[1]);
 		return copy;
 		
 	}
@@ -510,9 +540,9 @@ public class Chronotimer {
 	public ArrayList<RaceQueuer> queueState(int channels){
 		ArrayList<RaceQueuer> copy = new ArrayList<RaceQueuer>();
 		if(channels==1)
-		copy.add(_racerList12);
+		copy.add(_queues[0]);
 		else
-		copy.add(_racerList34);
+		copy.add(_queues[1]);
 		return copy;
 		
 	}
