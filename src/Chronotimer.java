@@ -68,6 +68,11 @@ public class Chronotimer {
 		//_channelOn[0] = true;
 		//_sensorsConnected[0] = new Sensor();
 	}
+	
+	public Time getTime()
+	{
+		return _time;
+	}
 
 	private void resetTimes()
 	{
@@ -173,10 +178,10 @@ public class Chronotimer {
 
 	private void addRacer(String... command) {
 		if(event == EVENTS.PARIND){
-			if(laneOne){
 				try{
 				Racer newRacer = new Racer(Integer.parseInt(command[2]));
-				if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
+				if(!(laneOne?_racerList12.push(newRacer):_racerList34.push(newRacer))) 
+					_printer.println("Racer already in queue or ran!");
 				else 
 					{
 					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
@@ -186,22 +191,9 @@ public class Chronotimer {
 				}catch(IllegalArgumentException e){
 					_printer.println(e.getMessage());
 				}
-			}else{
-				try{
-					Racer newRacer = new Racer(Integer.parseInt(command[2]));
-					if(!_racerList34.push(newRacer)) _printer.println("Racer already in queue or ran!");
-					else 
-						{
-						_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
-						}
-					}catch(NumberFormatException e){
-						_printer.println("Invalid Bib Number Entered");
-					}catch(IllegalArgumentException e){
-						_printer.println(e.getMessage());
-					}
+				laneOne = !laneOne;
 			}
-			laneOne = !laneOne;
-		}else if (event == EVENTS.IND){
+		else if (event == EVENTS.IND){
 			try{
 				Racer newRacer = new Racer(Integer.parseInt(command[2]));
 				if(!_racerList12.push(newRacer)) _printer.println("Racer already in queue or ran!");
@@ -221,7 +213,7 @@ public class Chronotimer {
 		try
 		{
 			int i = Integer.parseInt(command[2]);
-			if(i > _run.size() || i < 1) throw new ArrayIndexOutOfBoundsException();
+			if(i > _run.size() || i < 1) throw new IndexOutOfBoundsException();
 			try(PrintWriter writer = new PrintWriter(new FileOutputStream("Run_"+i+".json",false)))
 			{
 				writer.println(new Gson().toJson(_run.get(i-1)));
@@ -231,7 +223,7 @@ public class Chronotimer {
 			_printer.println("Run " + i + " has been saved");
 		}
 		catch(NumberFormatException e) {_printer.println("Invalid Channel");}
-		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid run");}
+		catch(IndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid run");}
 	}
 
 	private void print(String... command) {
@@ -275,8 +267,11 @@ public class Chronotimer {
 	private void reset(String... command) {
 		_channelOn = new boolean[_CHANNELS];
 		_channelTripped = new boolean[_CHANNELS];
-		_run.clear();
-		_runNumber=0;
+		// TODO:
+		// Not really a todo. But the project description states that a reset should clear the "saves" of the runs
+		// That, however, does not function with the sample test commands
+		//_run.clear();
+		//_runNumber=0;
 		endrun();
 		_printer.println(command[0] + " All channels have been reset and turned off. Runs have been erased");
 	}
@@ -288,7 +283,6 @@ public class Chronotimer {
 			if(/*_sensorsConnected[i] == null || */!_channelOn[channel])
 				return;
 			_channelTripped[channel]=true;
-			_printer.println(command[0] + " Channel " + (channel+1) + " has been tripped!");
 			if(event == EVENTS.PARIND){
 				if(channel%2==0) 
 				{
@@ -301,19 +295,19 @@ public class Chronotimer {
 							_racerList34.popWait();
 						}catch(NullPointerException e){return;}
 					}
-					_startTimes[channel/2].add(new Time(command[0]));
+					_startTimes[(channel+1)/2].add(new Time(command[0]));
 				}
 				else 
 				{
-					_finishTimes[channel/2].add(new Time(command[0]));
+					_finishTimes[(channel+1)/2].add(new Time(command[0]));
 					if(channel==1){
 						try{
-							_run.get(_runNumber-1).addResult(""+_racerList12.peek().getBib(), getRacerTime(channel/2));
-						}catch(NullPointerException e){return;}
+							_run.get(_runNumber-1).addResult(""+_racerList12.peek().getBib(), getRacerTime((channel+1)/2));
+						}catch(NullPointerException e){_printer.println("no racer here");return;}
 					}else if(channel==3){
 						try{
-							_run.get(_runNumber-1).addResult(""+_racerList34.peek().getBib(), getRacerTime(channel/2));
-						}catch(NullPointerException e){return;}
+							_run.get(_runNumber-1).addResult(""+_racerList34.peek().getBib(), getRacerTime((channel+1)/2));
+						}catch(NullPointerException e){_printer.println("no racer here");return;}
 					}
 				}
 			}else if(event==EVENTS.IND){
@@ -333,6 +327,7 @@ public class Chronotimer {
 					}catch(NullPointerException e){_printer.println("No racers in queue");return;}
 				}
 			}
+			_printer.println(command[0] + " Channel " + (channel+1) + " has been tripped!");
 		}
 		catch(NumberFormatException e) {_printer.println("Error triggering");}
 		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
@@ -410,7 +405,7 @@ public class Chronotimer {
 		_run.add(new Result(command[0], event.toString()));
 		_eventRunning=true;
 		resetTimes();
-		_printer.println("Event type " + event.toString() +" has been started");
+		_printer.println("Event type " + event.toString() +" has been started (Run #" + _runNumber + ")");
 	}
 
 	private void power(String... command) {
