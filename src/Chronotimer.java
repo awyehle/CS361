@@ -184,7 +184,14 @@ public class Chronotimer {
 	private void addRacer(String... command) {
 				try{
 				Racer newRacer = new Racer(Integer.parseInt(command[2]));
-				if(!(laneOne || event == EVENTS.IND ? _queues[0].push(newRacer):_queues[1].push(newRacer))) 
+				
+				boolean canAdd = true;
+				for(RaceQueuer r : _queues)
+				{
+					if(r.contains(newRacer.getBib())) {canAdd=false; break;}
+				}
+				
+				if(!(laneOne || event == EVENTS.IND ? _queues[0].push(newRacer):_queues[1].push(newRacer)) || !canAdd) 
 					_printer.println("Racer already in queue or ran!");
 				else 
 					{

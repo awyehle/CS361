@@ -25,6 +25,25 @@ public class RaceQueuer {
 		return false;
 	}
 	
+	public boolean contains(int bib) {
+		boolean has = false;
+		for(Racer r : _waitQueue)
+		{
+			if(r.getBib()==bib) {has = true; break;}
+		}
+		if(has) return true;
+		for(Racer r : _inProgress)
+		{
+			if(r.getBib()==bib) {has = true; break;}
+		}
+		if(has) return true;
+		for(Racer r : _alreadyRan)
+		{
+			if(r.getBib()==bib) {has = true; break;}
+		}
+		return has;
+	}
+	
 	public boolean inWaitQueue(Racer num){
 		if(num == null) return false;
 		for(int i = 0; i<_waitQueue.size();i++){
