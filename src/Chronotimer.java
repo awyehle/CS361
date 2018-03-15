@@ -191,11 +191,12 @@ public class Chronotimer {
 					if(r.contains(newRacer.getBib())) {canAdd=false; break;}
 				}
 				
-				if(!(laneOne || event == EVENTS.IND ? _queues[0].push(newRacer):_queues[1].push(newRacer)) || !canAdd) 
+				if(!canAdd || !(laneOne || event == EVENTS.IND ? _queues[0].push(newRacer):_queues[1].push(newRacer)))
 					_printer.println("Racer already in queue or ran!");
 				else 
 					{
 					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+					laneOne = (!laneOne || event == EVENTS.IND);
 					}
 				}catch(NumberFormatException e){
 					_printer.println("Invalid Bib Number Entered");
@@ -204,7 +205,6 @@ public class Chronotimer {
 				}catch(IndexOutOfBoundsException e){
 					_printer.println("bad boy");
 				}
-				laneOne = (!laneOne || event == EVENTS.IND);
 	}
 
 	/**
