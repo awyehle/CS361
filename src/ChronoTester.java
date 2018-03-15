@@ -660,6 +660,7 @@ public class ChronoTester {
 			assertEquals(2,ct.getRun());
 			assertEquals(0,ct.getResultSize(2));
 			
+			rc(ct, "POWER");				
 			//rc(ct, "reset");
 			//assertEquals(0,ct.getRun());
 		}
