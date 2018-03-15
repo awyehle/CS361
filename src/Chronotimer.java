@@ -300,6 +300,10 @@ public class Chronotimer {
 	 * @param command Command in the format <timestamp> <TRIG> <channelNum>
 	 */
 	private void trigger(String... command) {
+		if(!_eventRunning) {
+			_printer.println("No event is underway");
+			return;
+		}
 		try
 		{
 			int channel = Integer.parseInt(command[2]);
