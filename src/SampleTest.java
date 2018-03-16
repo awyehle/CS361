@@ -18,7 +18,6 @@ public class SampleTest {
 		c.runCommand(new Time().convertRawTime(), "START");
 		Thread.sleep(16462);
 		c.runCommand(new Time().convertRawTime(), "FINISH");
-		c.printRun(0);
 	}
 	
 	private static void printString(String[] a)
