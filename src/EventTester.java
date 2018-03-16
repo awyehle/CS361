@@ -53,8 +53,6 @@ public class EventTester {
 			
 			assertEquals(newChronotimer.getEvent(), "IND");
 			
-			assertEquals(0, newChronotimer.queueState(2).size());
-			assertEquals(0, newChronotimer.queueState(1).size());
 			rc(newChronotimer, "tog 1");
 			rc(newChronotimer, "tog 2");
 			rc(newChronotimer, "num 1");
@@ -67,6 +65,7 @@ public class EventTester {
 			
 			rc(newChronotimer, "start");
 			assertTrue(newChronotimer.eventIsStarted());
+			assertEquals(2, newChronotimer.queueState(1).size());
 			
 			rc(newChronotimer, "trig 2");
 			assertEquals(1, newChronotimer.queueState(2).size());
@@ -84,11 +83,7 @@ public class EventTester {
 			assertEquals(0, newChronotimer.queueState(1).size());
 			
 			rc(newChronotimer, "trig 1");
-			assertEquals(4, newChronotimer.queueState(2).size());
-			assertEquals(1, newChronotimer.queueState(1).size());
-			
-			rc(newChronotimer, "trig 1");
-			assertEquals(5, newChronotimer.queueState(2).size());
+			assertEquals(3, newChronotimer.queueState(2).size());
 			assertEquals(0, newChronotimer.queueState(1).size());
 			
 			rc(newChronotimer, "power");
