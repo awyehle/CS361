@@ -331,10 +331,11 @@ public class ChronoTester {
 		@Test
 		public void TestNUM(){
 			
-			ArrayList<RaceQueuer> queueState = newChronotimer.queueState();
-			queueState.get(0).isEmpty();
 			
-			rc(newChronotimer, "power");
+			powerUpAndToggleAllChannels(newChronotimer);
+			
+			assertTrue(newChronotimer.queueState().get(0).isEmpty());
+			assertTrue(newChronotimer.queueState().get(1).isEmpty());
 			
 			rc(newChronotimer, "event ind");
 			
@@ -342,72 +343,58 @@ public class ChronoTester {
 			
 			rc(newChronotimer, "num 2");
 			
-			queueState = newChronotimer.queueState();
 			
-			assertFalse(queueState.get(0).isEmpty());
-			assertTrue(queueState.get(1).isEmpty());
-			
-			rc(newChronotimer, "tog 1");
-			
-			rc(newChronotimer, "tog 2");
-			
-			rc(newChronotimer, "tog 3");
-			
-			rc(newChronotimer, "tog 4");
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(0).contains(2));
 			
 			rc(newChronotimer, "trig 1");
 			
 			rc(newChronotimer, "trig 1");
 			
-			assertFalse(queueState.get(0).isEmpty());
-			assertTrue(queueState.get(1).isEmpty());
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(0).contains(2));
 			
 			rc(newChronotimer, "trig 2");
 			
-			assertFalse(queueState.get(0).isEmpty());
-			assertTrue(queueState.get(1).isEmpty());
-			
 			rc(newChronotimer, "trig 2");
 			
-			queueState = newChronotimer.queueState();
-			
-			assertTrue(queueState.get(0).isEmpty());
-			assertTrue(queueState.get(1).isEmpty());
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(0).contains(2));
 			
 			rc(newChronotimer, "endrun");
+			
+			assertTrue(newChronotimer.queueState().get(0).isEmpty());
+			assertTrue(newChronotimer.queueState().get(1).isEmpty());
 			
 			rc(newChronotimer, "event parind");
 			
 			rc(newChronotimer, "newrun");
 			
-			assertTrue(queueState.get(0).isEmpty());
-			assertTrue(queueState.get(1).isEmpty());
-			
 			rc(newChronotimer, "num 1");
 			
 			rc(newChronotimer, "num 2");
 			
-			assertFalse(queueState.get(0).isEmpty());
-			assertFalse(queueState.get(1).isEmpty());
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(1).contains(2));
 			
 			rc(newChronotimer, "trig 1");
 			
 			rc(newChronotimer, "trig 3");
 			
-			assertFalse(queueState.get(0).isEmpty());
-			assertFalse(queueState.get(1).isEmpty());
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(1).contains(2));
 			
 			rc(newChronotimer, "trig 2");
 			
 			rc(newChronotimer, "trig 4");
 			
-			assertTrue(queueState.get(0).isEmpty());
-			assertTrue(queueState.get(1).isEmpty());
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(1).contains(2));
 			
 			rc(newChronotimer, "endrun");
 			
-			assertTrue(queueState.get(0).isEmpty());
-			assertTrue(queueState.get(1).isEmpty());
+			assertTrue(newChronotimer.queueState().get(0).isEmpty());
+			assertTrue(newChronotimer.queueState().get(1).isEmpty());
 			
 			rc(newChronotimer, "power");
 		}
