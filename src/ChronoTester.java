@@ -13,7 +13,7 @@ public class ChronoTester {
 		static Chronotimer newChronotimer = new Chronotimer();
 		
 		@Before
-		public void fijfesgsdfgd()
+		public void initiate()
 		{
 		newChronotimer= new Chronotimer();
 		}
@@ -24,14 +24,10 @@ public class ChronoTester {
 		public void TestPower()
 		{
 			assertFalse(newChronotimer.isOn());
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "POWER");
 			assertTrue(newChronotimer.isOn());
 			
-			input = "12:01:02.0 POWER";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 			assertFalse(newChronotimer.isOn());
 			
 		}
@@ -43,22 +39,16 @@ public class ChronoTester {
 		@Test
 		public void TestInvalidCommand()
 		{
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 			
-			input = "12:01:02.0 TIDEPOD";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "tidepod");
 			
 			assertTrue(newChronotimer.isOn());
 			assertFalse(newChronotimer.isNewRunTriggered());
 			assertFalse(newChronotimer.isConnected());
 			assertFalse(newChronotimer.isToggled());
 			
-			input = "12:01:02.0 POWER";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 			
 		}
 		
@@ -68,26 +58,38 @@ public class ChronoTester {
 		@Test
 		public void TestReset()
 		{
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
-			
-			assertTrue(newChronotimer.isReset());
-			
-			input = "12:01:02.0 TOG 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			powerUpAndToggleAllChannels(newChronotimer);
+			String[] todo = 
+				{
+						
+						"12:12:12.122 NUM 1",
+						"12:12:12.122 NUM 2",
+						"12:12:12.122 NUM 3",
+						"12:12:12.122 NUM 4",
+						"12:12:12.122 NEWRUN",
+						"12:12:12.122 TRIG 1",
+						"12:12:12.122 TRIG 2",
+						"12:12:12.122 TRIG 3",
+						"12:12:12.122 TRIG 4"
+				};
+			runCommandSeries(newChronotimer, todo);
 			
 			assertFalse(newChronotimer.isReset());
 			
-			input = "12:01:02.0 RESET";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "reset");
 			assertTrue(newChronotimer.isReset());
 			
-			input = "12:01:02.0 POWER";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "event parind");
+			
+			runCommandSeries(newChronotimer, todo);
+			assertFalse(newChronotimer.isReset());
+			
+			rc(newChronotimer, "reset");
+			assertTrue(newChronotimer.isReset());
+			
+			assertTrue(newChronotimer.isReset());
+			
+			rc(newChronotimer, "power");
 			
 		}
 		
@@ -99,83 +101,53 @@ public class ChronoTester {
 		public void TestCancel()
 		{
 
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 			
-	          input = "12:01:02.0 NEWRUN";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "newrun");
 			
-	          input = "12:01:02.0 TOG 1";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 1");
 
-	          input = "12:01:02.0 NUM 1";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "num 1");
 	          
-	          input = "12:01:02.0 TRIG 1";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 1");
 	          
-	          input = "12:01:02.0 TRIG 2";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 2");
 	          
-	          //assertFalse(newChronotimer.isCancled()); NOT PROPER IMPLEMENTATION ANYMORE. MAY COME IN HANDY IN FUTURE
+			//assertFalse(newChronotimer.isCancled()); NOT PROPER IMPLEMENTATION ANYMORE. MAY COME IN HANDY IN FUTURE
 	          
-	          //Channel 1 should have 1 time within it
-	          assertEquals(1,newChronotimer.getTimeSize(1));
+			//Channel 1 should have 1 time within it
+			assertEquals(1,newChronotimer.getTimeSize(1));
 	          
-	          //Since Channel 2 was never toggled on, it should not have a time in it
-	          assertEquals(0,newChronotimer.getTimeSize(2));
+			//Since Channel 2 was never toggled on, it should not have a time in it
+			assertEquals(0,newChronotimer.getTimeSize(2));
 	          
-	          input = "12:01:02.0 CANCEL";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
-	          assertEquals(0,newChronotimer.getTimeSize(1));
-	          assertEquals(0,newChronotimer.getTimeSize(2));
+			rc(newChronotimer, "cancel");
+			assertEquals(0,newChronotimer.getTimeSize(1));
+			assertEquals(0,newChronotimer.getTimeSize(2));
 
-	          input = "12:01:02.0 ENDRUN";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "endrun");
 	          
-	          input = "12:01:02.0 NEWRUN";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "newrun");
 
-	          input = "12:01:02.0 NUM 1";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "num 1");
 	          
-	          input = "12:01:02.0 TOG 2";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+	     	rc(newChronotimer, "tog 2");
 	          
-	          input = "12:01:02.0 TRIG 1";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+	    	rc(newChronotimer, "trig 1");
 	          
-	          input = "12:01:02.0 TRIG 2";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+	    	rc(newChronotimer, "trig 2");
 	          
-	          //Channels 1 and 2 should have not have time within them, as the times are removed and stored into a result
-	          assertEquals(0,newChronotimer.getTimeSize(1));
-	          assertEquals(0,newChronotimer.getTimeSize(2));
+	    	//Channels 1 and 2 should have not have time within them, as the times are removed and stored into a result
+	    	assertEquals(0,newChronotimer.getTimeSize(1));
+	    	assertEquals(0,newChronotimer.getTimeSize(2));
 	          
-	          assertEquals(1,newChronotimer.getResultSize(2));
+	    	assertEquals(1,newChronotimer.getResultSize(2));
 	          
-	          input = "12:01:02.0 CANCEL";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
-	          assertEquals(0,newChronotimer.getTimeSize(1));
-	          assertEquals(0,newChronotimer.getTimeSize(2));
+	    	rc(newChronotimer, "cancel");
+	    	assertEquals(0,newChronotimer.getTimeSize(1));
+	    	assertEquals(0,newChronotimer.getTimeSize(2));
 	          
-	          input = "12:01:02.0 POWER";
-				command = input.split(" ");
-				newChronotimer.runCommand(command);
+	    	rc(newChronotimer, "power");
 			
 		}
 		
@@ -186,50 +158,35 @@ public class ChronoTester {
 		public void TestStartFinishEvent()
 		{
 			
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
+			powerUpAndToggleAllChannels(newChronotimer);
 			
-			input = "12:01:02.0 EVENT IND";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
-
-	          input = "12:01:02.0 NEWRUN";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
-
-	          input = "12:01:02.0 NUM 1";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
-	          
-			input = "12:01:02.0 TOG 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			String[] todo = 
+				{
+						"12:01:02.0 NEWRUN",
+						"12:01:02.0 NUM 1"
+				};
+			runCommandSeries(newChronotimer, todo);
 			
-			input = "12:01:02.0 TOG 2";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "event parind");
+
+			rc(newChronotimer, "newrun");
+
+			rc(newChronotimer, "num 1");
 			
 			assertFalse(newChronotimer.eventIsFinished());
 			assertFalse(newChronotimer.eventIsStarted());
 			
-			input = "12:01:02.0 START";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "start");
 			
 			assertFalse(newChronotimer.eventIsFinished());
 			assertTrue(newChronotimer.eventIsStarted());
 			
-			input = "12:01:02.0 FINISH";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "finish");
 			
 			assertTrue(newChronotimer.eventIsFinished());
 			assertTrue(newChronotimer.eventIsStarted());
 			
-			input = "12:01:02.0 POWER";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 		}
 		
 		/**
@@ -238,27 +195,18 @@ public class ChronoTester {
 		@Test
 		public void TestNewEndRun()
 		{
-			newChronotimer = new Chronotimer();
 			
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
+			powerUpAndToggleAllChannels(newChronotimer);
 			
-			input = "12:01:02.0 NEWRUN";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "newrun");
 			
 			assertTrue(newChronotimer.isNewRunTriggered());
 			
-			input = "12:01:02.0 ENDRUN";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "endrun");
 
 			assertFalse(newChronotimer.isNewRunTriggered());
 			
-			input = "12:01:02.0 POWER";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 			
 		}
 		
@@ -268,40 +216,28 @@ public class ChronoTester {
 		@Test
 		public void TestDNF(){
 			
-			String input = "12:01:02.0 POWER";
-		      String[] command = input.split(" ");
-		      newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 		      
-		      input = "12:01:02.0 TOG 1";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 1");
 		      
-		      input = "12:01:02.0 TOG 2";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 2");
 		      
 		      rc(newChronotimer, "newrun");
 		      
 		      assertFalse(newChronotimer.eventIsFinished());
 		      assertFalse(newChronotimer.eventIsStarted());
 		      
-		      input = "12:01:02.0 START";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "start");
 		      
 		      assertFalse(newChronotimer.eventIsFinished());
 		      assertTrue(newChronotimer.eventIsStarted());
 		      
-		      input = "12:01:02.0 DNF";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "dnf");
 		      
 		      assertFalse(newChronotimer.eventIsFinished());
 		      assertTrue(newChronotimer.eventIsStarted());
 		      
-		      input = "12:01:02.0 POWER";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "power");
 			
 		}
 		
@@ -312,31 +248,19 @@ public class ChronoTester {
 		public void TestToggleSensor()
 		{
 			
-			String input = "12:01:02.0 POWER";
-		      String[] command = input.split(" ");
-		      newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 		      
 		      assertFalse(newChronotimer.isToggled());
 		      
-		      input = "12:01:02.0 TOG 1";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "tog 1");
 		      
-		      input = "12:01:02.0 TOG 2";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "tog 2");
 		      
 		      assertTrue(newChronotimer.isToggled());
 		      
+		      rc(newChronotimer, "start");
 		      
-		      input = "12:01:02.0 START";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
-		      
-		      
-		      input = "12:01:02.0 POWER";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "power");
 			
 		}
 		
@@ -347,31 +271,21 @@ public class ChronoTester {
 		public void TestTripSensorChannel1()
 		{
 			
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 
 			rc(newChronotimer, "newrun");
 			
-	          input = "12:01:02.0 NUM 1";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "num 1");
 	          
-			input = "12:01:02.0 TOG 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 1");
 			
 			assertFalse(newChronotimer.eventIsStarted());
 			
-			input = "12:01:02.0 START";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "start");
 			
 			assertTrue(newChronotimer.eventIsStarted());
 			
-			input = "12:01:02.0 POWER";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 			
 		}
 		
@@ -382,68 +296,31 @@ public class ChronoTester {
 		public void TestTripSensorChannel2()
 		{
 			
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 
 			rc(newChronotimer, "newrun");
 
-	          input = "12:01:02.0 NUM 1";
-	          command = input.split(" ");
-	          newChronotimer.runCommand(command);
+			rc(newChronotimer, "num 1");
 	          
-			input = "12:01:02.0 TOG 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 1");
 			
 			assertFalse(newChronotimer.eventIsStarted());
 			
-			input = "12:01:02.0 START";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "start");
 			
 			assertTrue(newChronotimer.eventIsStarted());
 			
-			input = "12:01:02.0 TOG 2";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 2");
 			
 			assertFalse(newChronotimer.eventIsFinished());
 			
-			input = "12:01:02.0 FINISH";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "finish");
 			
 			
 			
 			assertTrue(newChronotimer.eventIsFinished());
 			
-			input = "12:01:02.0 POWER";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
-			
-		}
-		
-		/**
-		 * Tests to ensure that the individual event can be created
-		 * in working order
-		 */
-		@Test
-		public void Testevent(){
-			
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
-			
-			input = "12:01:02.0 EVENT IND";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
-			
-			assertEquals(newChronotimer.getEvent(), "IND");
-			
-			input = "12:01:02.0 POWER";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 			
 		}
 		
@@ -453,133 +330,86 @@ public class ChronoTester {
 		 */
 		@Test
 		public void TestNUM(){
-			newChronotimer = new Chronotimer();
 			
 			ArrayList<RaceQueuer> queueState = newChronotimer.queueState();
 			queueState.get(0).isEmpty();
 			
-			String input = "12:01:02.0 POWER";
-			String[] command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 			
-			input = "12:01:02.0 EVENT IND";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "event ind");
 			
-			input = "12:01:02.0 NUM 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "num 1");
 			
-			input = "12:01:02.0 NUM 2";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "num 2");
 			
 			queueState = newChronotimer.queueState();
 			
 			assertFalse(queueState.get(0).isEmpty());
 			assertTrue(queueState.get(1).isEmpty());
 			
-			input = "12:01:02.0 TOG 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 1");
 			
-			input = "12:01:02.0 TOG 2";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 2");
 			
-			input = "12:01:02.0 TOG 3";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 3");
 			
-			input = "12:01:02.0 TOG 4";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "tog 4");
 			
-			input = "12:01:02.0 TRIG 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 1");
 			
-			input = "12:01:02.0 TRIG 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 1");
 			
 			assertFalse(queueState.get(0).isEmpty());
 			assertTrue(queueState.get(1).isEmpty());
 			
-			input = "12:01:02.0 TRIG 2";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 2");
 			
 			assertFalse(queueState.get(0).isEmpty());
 			assertTrue(queueState.get(1).isEmpty());
 			
-			input = "12:01:02.0 TRIG 2";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 2");
 			
 			queueState = newChronotimer.queueState();
 			
 			assertTrue(queueState.get(0).isEmpty());
 			assertTrue(queueState.get(1).isEmpty());
 			
-			input = "12:01:02.0 ENDRUN";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "endrun");
 			
-			input = "12:01:02.0 EVENT PARIND";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "event parind");
 			
-			input = "12:01:02.0 NEWRUN";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "newrun");
 			
 			assertTrue(queueState.get(0).isEmpty());
 			assertTrue(queueState.get(1).isEmpty());
 			
-			input = "12:01:02.0 NUM 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "num 1");
 			
-			input = "12:01:02.0 NUM 2";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "num 2");
 			
 			assertFalse(queueState.get(0).isEmpty());
 			assertFalse(queueState.get(1).isEmpty());
 			
-			input = "12:01:02.0 TRIG 1";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 1");
 			
-			input = "12:01:02.0 TRIG 3";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 3");
 			
 			assertFalse(queueState.get(0).isEmpty());
 			assertFalse(queueState.get(1).isEmpty());
 			
-			input = "12:01:02.0 TRIG 2";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 2");
 			
-			input = "12:01:02.0 TRIG 4";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "trig 4");
 			
 			assertTrue(queueState.get(0).isEmpty());
 			assertTrue(queueState.get(1).isEmpty());
 			
-			input = "12:01:02.0 ENDRUN";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "endrun");
 			
 			assertTrue(queueState.get(0).isEmpty());
 			assertTrue(queueState.get(1).isEmpty());
 			
-			input = "12:01:02.0 POWER";
-			command = input.split(" ");
-			newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 		}
 		
 		/**
@@ -589,80 +419,22 @@ public class ChronoTester {
 		@Test
 		public void TestCONN(){
 			
-			String input = "12:01:02.0 POWER";
-		      String[] command = input.split(" ");
-		      newChronotimer.runCommand(command);
+			rc(newChronotimer, "power");
 		      
 		      assertFalse(newChronotimer.isConnected());
 		      
-		      input = "12:01:02.0 CONN EYE 1";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "conn eye 1");
 		      
-		      input = "12:01:02.0 CONN EYE 2";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "conn eye 2");
 		      
-		      input = "12:01:02.0 CONN GATE 3";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "gate 3");
 		      
-		      input = "12:01:02.0 CONN GATE 4";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "gate 4");
 		      
 		      assertTrue(newChronotimer.isConnected());
 		      
-		      input = "12:01:02.0 POWER";
-		      command = input.split(" ");
-		      newChronotimer.runCommand(command);
+		      rc(newChronotimer, "power");
 			
-		}
-
-		@Test
-		public void testParInd()
-		{
-			Chronotimer ct = new Chronotimer();
-			powerUpAndToggleAllChannels(ct);
-			assertEquals("IND", ct.getEvent());
-			
-			rc(ct, "EVENT PARIND");
-			assertEquals("PARIND", ct.getEvent());
-			rc(ct, "NUM 4123");
-			rc(ct, "NUM 2545");
-
-			assertEquals(2, ct.queueState().size());
-			assertEquals(1, ct.queueState(1).size());
-			assertEquals(1, ct.queueState(3).size());
-
-			assertEquals(0,ct.getRun());
-			rc(ct, "newrun");
-			
-			rc(ct, "trig 1");
-			assertEquals(1, ct.getTimeSize(1));
-			rc(ct, "trig 3");
-			assertEquals(1, ct.getTimeSize(3));
-			
-			rc(ct, "trig 2");
-			assertEquals(0, ct.getTimeSize(1));
-			rc(ct, "trig 4");
-			assertEquals(0, ct.getTimeSize(3));
-			
-			assertEquals(2,ct.getResultSize(1));
-			
-			rc(ct, "print 1");
-			assertEquals(1,ct.getRun());
-			
-			rc(ct, "endrun");
-			assertEquals(1,ct.getRun());
-
-			rc(ct, "newrun");
-			assertEquals(2,ct.getRun());
-			assertEquals(0,ct.getResultSize(2));
-			
-			rc(ct, "POWER");				
-			//rc(ct, "reset");
-			//assertEquals(0,ct.getRun());
 		}
 		
 		private void rc(Chronotimer c, String cmd)

@@ -469,12 +469,18 @@ public class Chronotimer {
 	}
 	
 	public boolean isReset(){
-		
 		for(int i = 0; i<_CHANNELS; i++){
-			if(_channelOn[i] != true && _channelTripped[i] != true){
+			if(_channelOn[i] != true && _channelTripped[i] != true 
+					&& laneOne == true && _eventRunning == false){
 				continue; 
 			}else{return false;}
 		}
+		for(int i = 0; i<_queues.length; i++){
+			if(_queues[i].isEmpty()){
+				continue; 
+			}else{return false;}
+		}
+		
 		return true;
 	}
 	
