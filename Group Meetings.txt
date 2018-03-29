@@ -86,3 +86,20 @@ Meeting outcome: Sprint 2 is mostly done, needs test cases to be split up into
 	ind and parind and general bug fixing after those are done.
 
 Disciplinary actions taken: none
+
+
+------------------------------
+
+Meeting 6
+3/29/18 3:30 - 4:00pm
+
+Meeting goal: Go over team goals for the project
+
+Important decisions made: none
+
+Highlights of meeting:
+	- went over our tasks and goals from lab
+	
+Meeting outcome: Everyone is up to date on what should be done for sprint 3
+
+Disciplinary actions taken: none
