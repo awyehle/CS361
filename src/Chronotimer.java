@@ -64,7 +64,7 @@ public class Chronotimer {
 		{
 			switch(event)
 			{
-			case IND:
+			case IND:break;
 				
 			default:break;
 			}
