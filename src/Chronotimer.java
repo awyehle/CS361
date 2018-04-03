@@ -39,7 +39,10 @@ public class Chronotimer {
 	private EVENTS event = EVENTS.IND;
 	private boolean _eventRunning;
 	
+	private int _bibNumber = 0;
+	
 	private Printer _printer = new Printer();
+	private Display _display = new Display();
 	
 	
 	/**
@@ -52,6 +55,20 @@ public class Chronotimer {
 		public void println(String echo)
 		{
 			System.out.println(echo);
+		}
+	}
+	
+	private class Display
+	{
+		public String display()
+		{
+			switch(event)
+			{
+			case IND:
+				
+			default:break;
+			}
+			return "";
 		}
 	}
 	
@@ -182,8 +199,12 @@ public class Chronotimer {
 	 * @param command Command in the format <timestamp> <NUM> <bibNumber>
 	 */
 	private void addRacer(String... command) {
-				try{
-				Racer newRacer = new Racer(Integer.parseInt(command[2]));
+			try{
+				Racer newRacer;
+				if(event!= EVENTS.GRP)
+					newRacer = new Racer(Integer.parseInt(command[2]));
+				else
+					newRacer = new Racer(++_bibNumber);
 				
 				boolean canAdd = true;
 				for(RaceQueuer r : _queues)
@@ -191,12 +212,12 @@ public class Chronotimer {
 					if(r.contains(newRacer.getBib())) {canAdd=false; break;}
 				}
 				
-				if(!canAdd || !(laneOne || event == EVENTS.IND ? _queues[0].push(newRacer):_queues[1].push(newRacer)))
+				if(!canAdd || !(laneOne || event != EVENTS.PARIND ? _queues[0].push(newRacer):_queues[1].push(newRacer)))
 					_printer.println("Racer already in queue or ran!");
 				else 
 					{
 					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
-					laneOne = (!laneOne || event == EVENTS.IND);
+					laneOne = (!laneOne || event != EVENTS.PARIND);
 					}
 				}catch(NumberFormatException e){
 					_printer.println("Invalid Bib Number Entered");
@@ -204,7 +225,7 @@ public class Chronotimer {
 					_printer.println(e.getMessage());
 				}catch(IndexOutOfBoundsException e){
 					_printer.println("bad boy");
-				}
+			}
 	}
 
 	/**
@@ -365,31 +386,34 @@ public class Chronotimer {
 			{
 			case "IND":
 			{
-				if(_eventRunning){
-					_printer.println("You must end the current run before switching event types");
-					break;
-				}
-				event = EVENTS.IND;
-				_printer.println(command[0] +" Event type set to " + event.toString());
-				endrun();
+				setEvent(EVENTS.IND,command);
 				break;
 			}
 			case "PARIND":
 			{
-				if(_eventRunning){
-					_printer.println("You must end the current run before switching event types");
-					break;
-				}
-				event = EVENTS.PARIND;
-				_printer.println(command[0] +" Event type set to " + event.toString());
-				endrun();
+				setEvent(EVENTS.PARIND,command);
 				break;
 			}
-			case "GRP": case "PARGRP":
+			case "GRP":
+			{
+				setEvent(EVENTS.GRP,command);
+				break;
+			}
+			case "PARGRP":
 			default: System.out.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");
 			}
 		}
 		catch(ArrayIndexOutOfBoundsException e) {_printer.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");}
+	}
+
+	private void setEvent(EVENTS type,String... command) {
+		if(_eventRunning){
+			_printer.println("You must end the current run before switching event types");
+			return;
+		}
+		event = type;
+		_printer.println(command[0] +" Event type set to " + event.toString());
+		endrun();
 	}
 
 	private void connect(String... command) {
@@ -406,6 +430,7 @@ public class Chronotimer {
 	private void endrun() {
 		_eventRunning=false;
 		resetQueues();
+		_bibNumber = 0;
 		laneOne = true;
 	}
 
