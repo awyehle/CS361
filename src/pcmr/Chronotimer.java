@@ -48,29 +48,44 @@ public class Chronotimer {
 	
 	private int _bibNumber = 0;
 	
+	//private Racer _lastFinished;
+	
 	private Printer _printer = new Printer();
 	private Display _display = new Display();
 	
 	
 	/**
 	 * stupid ugly printer class it echos crap
+	 * Printer also now extends Arraylist so that
+	 * all echos can be retrieved as a display on the paper tape
 	 * @author Andrew Huelsman
 	 *
 	 */
-	private class Printer
+	private class Printer extends ArrayList<String>
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public void println(String echo)
 		{
+			add(0,echo);
 			System.out.println(echo);
 		}
 	}
 	
 	private class Display
 	{
+		Thread _getDisplay = new Thread() {public void run() {display();}};
 		private String _queue;
 		private String _running;
 		private String _finished;
-		public void display()
+		public void activate()
+		{
+			_getDisplay.start();
+		}
+		private void display()
 		{
 			switch(event)
 			{
@@ -79,24 +94,24 @@ public class Chronotimer {
 				try
 				{
 					_queue="";
-					_queue+=_queues[0].peekWaiting(0);
+					_queue+=_queues[0].peekWaiting(0).toString();
 					for(int i = 1; i < 3; ++i)
-						_queue+=", " + _queues[0].peekWaiting(i);
+						_queue+=", " + _queues[0].peekWaiting(i).toString();
 				}
 				catch(NullPointerException e) {}
 				try
 				{
 					_running="";
 					Racer[] running = _queues[0].peekAll();
-					_running += running[0];
+					_running += running[0].toString();
 					for(int i = 1; i < running.length; ++i)
-						_running+=", " + running[i];
+						_running+=", " + running[i].toString();
 				}
 				catch(IndexOutOfBoundsException e) {}
 				try
 				{
 					_finished="";
-					_finished+=_queues[0].peekRan();
+					_finished+=_queues[0].peekRan().toString();
 				}
 				catch(NullPointerException e) {}
 				break;
@@ -106,22 +121,42 @@ public class Chronotimer {
 				try
 				{
 					_queue="";
-					_queue+=_queues[0].peekWaiting(0);
-					_queue+=_queues[1].peekWaiting(0);
+					_queue+=_queues[0].peekWaiting(0).toString();
+					_queue+=_queues[1].peekWaiting(0).toString();
 				}
 				catch(NullPointerException e) {}
 				try
 				{
 					_running="";
-					_queue+=_queues[0].peek();
-					_queue+=_queues[1].peek();
+					_running+=_queues[0].peek().toString();
+					_running+=_queues[1].peek().toString();
 				}
 				catch(IndexOutOfBoundsException e) {}
 				try
 				{
 					_finished="";
-					_finished+=_queues[0].peekRan();
-					_finished+=_queues[1].peekRan();
+					_finished+=_queues[0].peekRan().toString();
+					_finished+=_queues[1].peekRan().toString();
+				}
+				catch(NullPointerException e) {}
+				break;
+			}
+			case GRP:
+			{
+				_queue="";
+				try
+				{
+					_running="";
+					_queue+=_queues[0].peek().toString();
+					_queue+=_queues[1].peek().toString();
+				}
+				catch(IndexOutOfBoundsException e) {}
+				try
+				{
+					_finished="";
+					// TODO 
+					//This must be the last of all lanes.
+					_finished+=_queues[0].peekRan().toString();
 				}
 				catch(NullPointerException e) {}
 				break;

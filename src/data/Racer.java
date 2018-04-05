@@ -19,4 +19,10 @@ public class Racer {
 		return this.bib;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return bib + "";
+	}
+	
 }
