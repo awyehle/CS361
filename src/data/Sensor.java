@@ -1,3 +1,5 @@
+package data;
+import pcmr.Chronotimer;
 
 public class Sensor {
 

@@ -1,3 +1,5 @@
+import data.Time;
+import pcmr.Chronotimer;
 
 public class SampleTest {
 
@@ -20,6 +22,7 @@ public class SampleTest {
 		c.runCommand(new Time().convertRawTime(), "FINISH");
 	}
 	
+	@SuppressWarnings("unused")
 	private static void printString(String[] a)
 	{
 		for(String b : a)

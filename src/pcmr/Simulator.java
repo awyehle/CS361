@@ -1,7 +1,10 @@
+package pcmr;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import data.Time;
 
 public class Simulator {
 	

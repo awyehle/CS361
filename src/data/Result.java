@@ -1,3 +1,4 @@
+package data;
 import java.util.*;
 /**
  * Simple object to hold racer times.

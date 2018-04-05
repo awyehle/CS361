@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import data.RaceQueuer;
+import data.Racer;
+import data.Result;
+import data.Time;
+
 /**
  * Tests various classes to make sure usage is proper
  * @author Andrew Huelsman
@@ -119,16 +124,19 @@ public class MiscTester {
 	@Test (expected = IllegalArgumentException.class)
 	public void testInvalidRacer1()
 	{
+		@SuppressWarnings("unused")
 		Racer r = new Racer(-1);
 	}
 	@Test (expected = IllegalArgumentException.class)
 	public void testInvalidRacer2()
 	{
+		@SuppressWarnings("unused")
 		Racer r = new Racer(10000);
 	}
 	@Test (expected = IllegalArgumentException.class)
 	public void testInvalidRacer3()
 	{
+		@SuppressWarnings("unused")
 		Racer r = new Racer(Integer.MAX_VALUE);
 	}
 	

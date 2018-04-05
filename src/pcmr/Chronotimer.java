@@ -1,3 +1,4 @@
+package pcmr;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -6,6 +7,12 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import com.google.gson.Gson;
+
+import data.RaceQueuer;
+import data.Racer;
+import data.Result;
+import data.Sensor;
+import data.Time;
 
 /**
  * System for timer...
@@ -60,16 +67,72 @@ public class Chronotimer {
 	
 	private class Display
 	{
-		public String display()
+		private String _queue;
+		private String _running;
+		private String _finished;
+		public void display()
 		{
 			switch(event)
 			{
-			case IND:break;
-				
+			case IND:
+			{
+				try
+				{
+					_queue="";
+					_queue+=_queues[0].peekWaiting(0);
+					for(int i = 1; i < 3; ++i)
+						_queue+=", " + _queues[0].peekWaiting(i);
+				}
+				catch(NullPointerException e) {}
+				try
+				{
+					_running="";
+					Racer[] running = _queues[0].peekAll();
+					_running += running[0];
+					for(int i = 1; i < running.length; ++i)
+						_running+=", " + running[i];
+				}
+				catch(IndexOutOfBoundsException e) {}
+				try
+				{
+					_finished="";
+					_finished+=_queues[0].peekRan();
+				}
+				catch(NullPointerException e) {}
+				break;
+			}
+			case PARIND:
+			{
+				try
+				{
+					_queue="";
+					_queue+=_queues[0].peekWaiting(0);
+					_queue+=_queues[1].peekWaiting(0);
+				}
+				catch(NullPointerException e) {}
+				try
+				{
+					_running="";
+					_queue+=_queues[0].peek();
+					_queue+=_queues[1].peek();
+				}
+				catch(IndexOutOfBoundsException e) {}
+				try
+				{
+					_finished="";
+					_finished+=_queues[0].peekRan();
+					_finished+=_queues[1].peekRan();
+				}
+				catch(NullPointerException e) {}
+				break;
+			}
 			default:break;
 			}
-			return "";
 		}
+
+		public String getQueue() {return _queue;}
+		public String getRunning() {return _running;}
+		public String getFinished() {return _finished;}
 	}
 	
 	public Chronotimer()

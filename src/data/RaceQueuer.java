@@ -1,3 +1,4 @@
+package data;
 import java.util.ArrayList;
 
 /**
@@ -87,7 +88,7 @@ public class RaceQueuer {
 		Racer firstRacer = null;
 		try{
 		firstRacer = _inProgress.get(0);
-		_alreadyRan.add(firstRacer);
+		_alreadyRan.add(0, firstRacer);
 		_inProgress.remove(0);
 		}catch(IndexOutOfBoundsException e){
 			System.out.println("There are no racers on course to finish");
@@ -95,13 +96,41 @@ public class RaceQueuer {
 		return firstRacer;
 		
 	}
-	
+
 	public Racer peek()
 	{
 
 		Racer firstRacer = null;
 		try{
 		firstRacer = _inProgress.get(0);
+		}catch(IndexOutOfBoundsException e){
+			System.out.println("There are no racers in the raceQueuer");
+		}
+		return firstRacer;
+	}
+	
+	public Racer[] peekAll()
+	{
+		return _inProgress.toArray(new Racer[0]);
+	}
+	
+	public Racer peekRan()
+	{
+
+		Racer firstRacer = null;
+		try{
+		firstRacer = _alreadyRan.get(0);
+		}catch(IndexOutOfBoundsException e){
+			System.out.println("There are no racers in the raceQueuer");
+		}
+		return firstRacer;
+	}
+	
+	public Racer peekWaiting(int index)
+	{
+		Racer firstRacer = null;
+		try{
+		firstRacer = _waitQueue.get(index);
 		}catch(IndexOutOfBoundsException e){
 			System.out.println("There are no racers in the raceQueuer");
 		}
