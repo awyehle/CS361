@@ -128,8 +128,8 @@ public class Chronotimer {
 				try
 				{
 					_running="";
-					_running+=_queues[0].peek().toString();
-					_running+=_queues[1].peek().toString();
+					_running+=_queues[0].peek().toString() + ": " + Time.difference(new Time(), _startTimes[0].getFirst());
+					_running+=_queues[1].peek().toString() + ": " + Time.difference(new Time(), _startTimes[1].getFirst());
 				}
 				catch(IndexOutOfBoundsException e) {}
 				try
@@ -147,8 +147,7 @@ public class Chronotimer {
 				try
 				{
 					_running="";
-					_queue+=_queues[0].peek().toString();
-					_queue+=_queues[1].peek().toString();
+					_running+=_queues[0].peek().toString() + ": " + Time.difference(new Time(), _startTimes[0].getFirst());;
 				}
 				catch(IndexOutOfBoundsException e) {}
 				try
