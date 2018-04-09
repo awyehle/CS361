@@ -77,7 +77,8 @@ public class RaceQueuer {
 		_inProgress.add(firstRacer);
 		_waitQueue.remove(0);
 		}catch(IndexOutOfBoundsException e){
-			System.out.println("There are no racers to pop in the raceQueuer");
+			//I disabled this fuck you lol
+			//System.out.println("There are no racers to pop in the raceQueuer");
 		}
 		return firstRacer;
 		
@@ -91,7 +92,8 @@ public class RaceQueuer {
 		_alreadyRan.add(0, firstRacer);
 		_inProgress.remove(0);
 		}catch(IndexOutOfBoundsException e){
-			System.out.println("There are no racers on course to finish");
+			//I disabled this fuck you lol
+			//System.out.println("There are no racers on course to finish");
 		}
 		return firstRacer;
 		
@@ -104,7 +106,8 @@ public class RaceQueuer {
 		try{
 		firstRacer = _inProgress.get(0);
 		}catch(IndexOutOfBoundsException e){
-			System.out.println("There are no racers in the raceQueuer");
+			//I disabled this fuck you lol
+			//System.out.println("There are no racers in the raceQueuer");
 		}
 		return firstRacer;
 	}
@@ -121,7 +124,8 @@ public class RaceQueuer {
 		try{
 		firstRacer = _alreadyRan.get(0);
 		}catch(IndexOutOfBoundsException e){
-			System.out.println("There are no racers in the raceQueuer");
+			//I disabled this fuck you lol
+			//System.out.println("There are no racers in the raceQueuer");
 		}
 		return firstRacer;
 	}
@@ -132,7 +136,8 @@ public class RaceQueuer {
 		try{
 		firstRacer = _waitQueue.get(index);
 		}catch(IndexOutOfBoundsException e){
-			System.out.println("There are no racers in the raceQueuer");
+			//I disabled this fuck you lol
+			//System.out.println("There are no racers in the raceQueuer");
 		}
 		return firstRacer;
 	}

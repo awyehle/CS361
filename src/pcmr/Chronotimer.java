@@ -77,13 +77,32 @@ public class Chronotimer {
 	
 	private class Display
 	{
-		Thread _getDisplay = new Thread() {public void run() {display();}};
+		Thread _getDisplay = new Thread() {public void run() {while(true)display();}};
 		private String _queue;
 		private String _running;
 		private String _finished;
+		
+		@Override
+		protected void finalize() throws Throwable
+		{
+			super.finalize();
+			deactivate();
+		}
 		public void activate()
 		{
 			_getDisplay.start();
+		}
+		public void deactivate()
+		{
+			try {
+				_getDisplay.join();
+			} catch (InterruptedException e) {
+				System.out.println("Display was unable to successful stop.\n"
+						+ "This should not cause any issues.\n"
+						+ "In case of further malfunction, restart\n"
+						+ "the ChronoTimer system.");
+				e.printStackTrace();
+			}
 		}
 		private void display()
 		{
@@ -128,10 +147,12 @@ public class Chronotimer {
 				try
 				{
 					_running="";
-					_running+=_queues[0].peek().toString() + ": " + Time.difference(new Time(), _startTimes[0].getFirst());
-					_running+=_queues[1].peek().toString() + ": " + Time.difference(new Time(), _startTimes[1].getFirst());
+					_running+=_queues[0].peek().toString() + ": " 
+					+ Time.difference(_startTimes[0].getFirst(), new Time()).convertRawTime();
+					_running+=_queues[1].peek().toString() + ": " 
+					+ Time.difference(_startTimes[1].getFirst(), new Time()).convertRawTime();
 				}
-				catch(IndexOutOfBoundsException e) {}
+				catch(Exception e) {}
 				try
 				{
 					_finished="";
@@ -147,7 +168,7 @@ public class Chronotimer {
 				try
 				{
 					_running="";
-					_running+=_queues[0].peek().toString() + ": " + Time.difference(new Time(), _startTimes[0].getFirst());;
+					_running+=_queues[0].peek().toString() + ": " + Time.difference( _startTimes[0].getFirst(),new Time());
 				}
 				catch(IndexOutOfBoundsException e) {}
 				try
@@ -163,10 +184,6 @@ public class Chronotimer {
 			default:break;
 			}
 		}
-
-		public String getQueue() {return _queue;}
-		public String getRunning() {return _running;}
-		public String getFinished() {return _finished;}
 	}
 	
 	public Chronotimer()
@@ -558,6 +575,26 @@ public class Chronotimer {
 		}
 	}
 
+	public void startDisplay()
+	{
+		_display.activate();
+	}
+	
+	public String getQueueS()
+	{
+		return _display._queue;
+	}
+	
+	public String getRunningS()
+	{
+		return _display._running;
+	}
+	
+	public String getRanS()
+	{
+		return _display._finished;
+	}
+	
 	public int getConnection(Sensor sensor)
 	{
 		for(int i = 0; i< _CHANNELS; ++i)
@@ -685,4 +722,11 @@ public class Chronotimer {
 		
 	}
 	
+	
+	@Override
+	protected void finalize() throws Throwable
+	{
+		super.finalize();
+		_display.deactivate();
+	}
 }
