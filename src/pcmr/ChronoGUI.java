@@ -96,19 +96,19 @@ public class ChronoGUI {
 		frame.getContentPane().add(btnSwap);
 		
 		JButton button = new JButton("1");
-		button.setBounds(480, 253, 41, 30);
+		button.setBounds(488, 221, 41, 45);
 		frame.getContentPane().add(button);
 		
 		JButton button_9 = new JButton("*");
-		button_9.setBounds(480, 340, 41, 30);
+		button_9.setBounds(488, 353, 41, 45);
 		frame.getContentPane().add(button_9);
 		
 		JButton button_10 = new JButton("0");
-		button_10.setBounds(517, 340, 41, 30);
+		button_10.setBounds(527, 353, 41, 45);
 		frame.getContentPane().add(button_10);
 		
 		JButton button_11 = new JButton("#");
-		button_11.setBounds(553, 340, 41, 30);
+		button_11.setBounds(562, 353, 41, 45);
 		frame.getContentPane().add(button_11);
 		
 		textField = new JTextField();
@@ -206,35 +206,35 @@ public class ChronoGUI {
 		frame.getContentPane().add(button_23);
 		
 		JButton button_1 = new JButton("2");
-		button_1.setBounds(517, 253, 41, 30);
+		button_1.setBounds(527, 221, 41, 45);
 		frame.getContentPane().add(button_1);
 		
 		JButton button_2 = new JButton("3");
-		button_2.setBounds(553, 253, 41, 30);
+		button_2.setBounds(562, 221, 41, 45);
 		frame.getContentPane().add(button_2);
 		
 		JButton button_3 = new JButton("4");
-		button_3.setBounds(480, 282, 41, 30);
+		button_3.setBounds(488, 265, 41, 45);
 		frame.getContentPane().add(button_3);
 		
 		JButton button_4 = new JButton("5");
-		button_4.setBounds(517, 282, 41, 30);
+		button_4.setBounds(527, 265, 41, 45);
 		frame.getContentPane().add(button_4);
 		
 		JButton button_5 = new JButton("6");
-		button_5.setBounds(553, 282, 41, 30);
+		button_5.setBounds(562, 265, 41, 45);
 		frame.getContentPane().add(button_5);
 		
 		JButton button_6 = new JButton("7");
-		button_6.setBounds(480, 311, 41, 30);
+		button_6.setBounds(488, 309, 41, 45);
 		frame.getContentPane().add(button_6);
 		
 		JButton button_7 = new JButton("8");
-		button_7.setBounds(517, 311, 41, 30);
+		button_7.setBounds(527, 309, 41, 45);
 		frame.getContentPane().add(button_7);
 		
 		JButton button_8 = new JButton("9");
-		button_8.setBounds(553, 311, 41, 30);
+		button_8.setBounds(562, 309, 41, 45);
 		frame.getContentPane().add(button_8);
 		
 		JLabel lblStart = new JLabel("Start");
