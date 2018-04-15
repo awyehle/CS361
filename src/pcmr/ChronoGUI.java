@@ -54,6 +54,7 @@ public class ChronoGUI {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setSize(700, 500);
+		frame.setResizable(false);
 		frame.setTitle("ChronoTimer");
 		//frame.setBounds(100, 100, 450, 300);
 
@@ -111,7 +112,7 @@ public class ChronoGUI {
 		frame.getContentPane().add(button_11);
 		
 		textField = new JTextField();
-		textField.setBounds(190, 221, 239, 154);
+		textField.setBounds(190, 221, 239, 177);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
