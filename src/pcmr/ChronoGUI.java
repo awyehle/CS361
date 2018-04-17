@@ -57,7 +57,7 @@ public class ChronoGUI {
 	 * Create the application.
 	 */
 	public ChronoGUI() {
-		_chrono =  new Chronotimer(this);
+		_chrono =  new Chronotimer();
 		initialize();
 	}
 	
