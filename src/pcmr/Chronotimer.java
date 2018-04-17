@@ -141,6 +141,10 @@ public class Chronotimer {
 				{
 					_queue="";
 					_queue+=_queues[0].peekWaiting(0).toString();
+				}
+				catch(NullPointerException e) {}
+				try
+				{
 					_queue+=_queues[1].peekWaiting(0).toString();
 				}
 				catch(NullPointerException e) {}
@@ -149,6 +153,10 @@ public class Chronotimer {
 					_running="";
 					_running+=_queues[0].peek().toString() + ": " 
 					+ Time.difference(_startTimes[0].getFirst(), new Time()).convertRawTime();
+				}
+				catch(Exception e) {}
+				try
+				{
 					_running+=_queues[1].peek().toString() + ": " 
 					+ Time.difference(_startTimes[1].getFirst(), new Time()).convertRawTime();
 				}
@@ -157,6 +165,10 @@ public class Chronotimer {
 				{
 					_finished="";
 					_finished+=_queues[0].peekRan().toString();
+				}
+				catch(NullPointerException e) {}
+				try
+				{
 					_finished+=_queues[1].peekRan().toString();
 				}
 				catch(NullPointerException e) {}
