@@ -34,6 +34,8 @@ public class ChronoGUI {
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
+	private boolean functionBool = false;
+	private String[] mainDisplay = new String[11];
 
 	/**
 	 * Launch the application.
@@ -150,9 +152,21 @@ public class ChronoGUI {
 		txtChronotimer.setColumns(10);
 		txtChronotimer.setEditable(false);
 		
+		// Begin Function Button
+		
 		JButton btnFunction = new JButton("Function");
 		btnFunction.setBounds(10, 250, 101, 23);
 		frame.getContentPane().add(btnFunction);
+		class Function implements ActionListener{
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				function();
+			}
+		}
+		Function functionListener = new Function();
+		btnFunction.addActionListener(functionListener);
+		
+		// End Function Button
 		
 		JButton btnSwap = new JButton("Swap");
 		btnSwap.setBounds(10, 375, 101, 23);
@@ -412,20 +426,87 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_9);
 	}
 	
-	public void addLine(String s) {
-	    int lineCount = mainTextArea.getLineCount();
-
-	    if (lineCount <= mainTextArea.getRows()) {                
-	        mainTextArea.append(s + "\n");    
-	    } else if (lineCount > mainTextArea.getRows()) {
-
-	        String output = mainTextArea.getText() + "\n" + s;    
-	        int begin = output.indexOf("\n");    
-	        output = output.substring(begin + 1);    
-	        mainTextArea.setText(output);    
-	    }
+	private String createMainTextString(String[] stringArray) {
+		String output = "";
+		for(String s: stringArray) {
+			output = output + s + "\n";
+		}
+		output = output.substring(0, output.length() - 2);
+		return output;
 	}
 	
+	private void updateLine(int lineNumber, String s) {
+	    lineNumber --;
+	    mainDisplay[lineNumber] = s;
+	    if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
+	}
+	
+	/** This is for IND races only
+	 * Shows the racer 3 back in the queue or is blank if there is no such racer
+	 * 
+	 * @param s String including racer number
+	 */
+	public void setQueuedRacerNext(String s) {
+		updateLine(2, s);
+	}
+	
+	/** This is for IND and PARIND races
+	 * IND: Shows the racer 2 back in the queue or is blank if there is no such racer
+	 * PARIND: Shows the second of the next two racers to go or is blank if there are no more racers
+	 * 
+	 * @param s String including racer number
+	 */
+	public void setQueuedRacerSecond(String s) {
+		updateLine(3, s);
+	}
+	
+	/** This is for IND and PARIND races
+	 * IND: Shows the next racer in the queue or is blank if there are no more racers
+	 * PARIND: Shows the first of the next two racers to go or is blank if there are no more racers
+	 * 
+	 * @param s String including racer number
+	 */
+	public void setQueuedRacerThird(String s) {
+		updateLine(4, s);
+	}
+	
+	/** This is for IND and PARIND races
+	 * IND: Shows the current racer on the course or is blank if there are no racers
+	 * @param s String including racer number and current time
+	 */
+	public void setCurrentRacer(String s) {
+		updateLine(6, s);
+	}
+	
+	/** This is for PARIND races only
+	 * Shows the second of two current racers on the course or is blank if there are no racers
+	 * @param s String including racer number and current time
+	 */
+	public void setCurrentRacerTwo(String s) {
+		updateLine(7, s);
+	}
+	
+	/** This is for ALL race types
+	 * Shows the last racer's bib number and finish time
+	 * 
+	 * @param s String including racer number and finish time
+	 */
+	public void setLastFinish(String s) {
+		updateLine(9, s);
+	}
+	
+	/** This is for PARIND races only
+	 * Shows the 2nd of the last two racers bib number and finish time
+	 * @param s String including racer number and finish time
+	 */
+	public void setLastFinishTwo(String s) {
+		updateLine(10, s);
+	}
+	
+	public void clearMainDisplay() {
+		mainTextArea.setText("\n\n\n\n\n\n\n\n\n\n");
+	}
+
 	public void addPrinterLine(String s) {
 	    int lineCount = printerTextArea.getLineCount();
 
@@ -438,5 +519,17 @@ public class ChronoGUI {
 	        output = output.substring(begin + 1);    
 	        printerTextArea.setText(output);    
 	    }
+	}
+	
+	private void function() {
+		if(functionBool) {
+			functionBool = false;
+			// TODO:
+			createMainTextString(mainDisplay);
+		}
+		else {
+			functionBool = true;
+			mainTextArea.setText("");
+		}
 	}
 }
