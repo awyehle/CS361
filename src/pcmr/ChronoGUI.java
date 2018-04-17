@@ -62,7 +62,7 @@ public class ChronoGUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	public void initialize() {
+	private void initialize() {
 		frame = new JFrame();
 		frame.setSize(700, 500);
 		frame.setResizable(false);
