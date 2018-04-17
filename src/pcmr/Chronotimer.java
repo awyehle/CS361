@@ -67,13 +67,16 @@ public class Chronotimer {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
+		boolean _powered = true;
 
 		public void println(String echo)
 		{
-			add(0,echo);
+			if(_powered)
+				add(0,echo);
 			System.out.println(echo);
 		}
 	}
+	public void powerPrinter() {_printer._powered=!_printer._powered;}
 	
 	private class Display
 	{
@@ -94,15 +97,7 @@ public class Chronotimer {
 		}
 		public void deactivate()
 		{
-			try {
-				_getDisplay.join();
-			} catch (InterruptedException e) {
-				System.out.println("Display was unable to successful stop.\n"
-						+ "This should not cause any issues.\n"
-						+ "In case of further malfunction, restart\n"
-						+ "the ChronoTimer system.");
-				e.printStackTrace();
-			}
+				_getDisplay.interrupt();
 		}
 		private void display()
 		{
