@@ -18,6 +18,8 @@ import java.awt.SystemColor;
 import javax.swing.JLabel;
 
 public class ChronoGUI {
+	
+	private static Chronotimer _chrono;
 
 	private JFrame frame;
 	private JTextField txtChronotimer;
@@ -36,6 +38,7 @@ public class ChronoGUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		_chrono =  new Chronotimer();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -73,9 +76,28 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 		
+		/* This is an example of how all buttons and action listeners
+		 * should be implemented
+		 * ~Steven
+		 */
 		JButton btnPower = new JButton("Power");
 		btnPower.setBounds(10, 11, 101, 23);
 		frame.getContentPane().add(btnPower);
+		class Power implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[2];
+				commandArray[0] = "-";
+				commandArray[1] = "POWER";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		Power powerListener = new Power();
+		btnPower.addActionListener(powerListener);
+		
+		// End Power button example
 		
 		JButton btnPrinterPwr = new JButton("Printer Pwr");
 		btnPrinterPwr.setBounds(502, 11, 101, 23);
