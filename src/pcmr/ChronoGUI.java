@@ -36,6 +36,9 @@ public class ChronoGUI {
 	private JTextField textField_9;
 	private boolean functionBool = false;
 	private String[] mainDisplay = new String[11];
+	private boolean power = false;
+	private Thread updaterThread;
+	private int functionLine;
 
 	/**
 	 * Launch the application.
@@ -100,19 +103,18 @@ public class ChronoGUI {
 		JButton btnPower = new JButton("Power");
 		btnPower.setBounds(10, 11, 101, 23);
 		frame.getContentPane().add(btnPower);
-		class Power implements ActionListener{
-
-			@Override
+		btnPower.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[2];
 				commandArray[0] = "-";
 				commandArray[1] = "POWER";
 				_chrono.runCommand(commandArray);
+				power = !power;
+				threader();
+				updaterThread.start();
 			}
-			
-		}
-		Power powerListener = new Power();
-		btnPower.addActionListener(powerListener);
+		});
+				
 		
 		// End Power button example
 		
@@ -121,21 +123,12 @@ public class ChronoGUI {
 		JButton btnPrinterPwr = new JButton("Printer Pwr");
 		btnPrinterPwr.setBounds(502, 11, 101, 23);
 		frame.getContentPane().add(btnPrinterPwr);
-		
-		class Printer implements ActionListener{
-
-			@Override
+		btnPrinterPwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[] commandArray = new String[2];
-				commandArray[0] = "-";
-				commandArray[1] = "PRINT";
-				_chrono.runCommand(commandArray);
+				_chrono.powerPrinter();
 			}
-			
-		}
-		Printer printerListener = new Printer();
-		btnPrinterPwr.addActionListener(printerListener);
-		
+		});
+				
 		//end printer
 		
 		txtChronotimer = new JTextField(){
@@ -157,14 +150,11 @@ public class ChronoGUI {
 		JButton btnFunction = new JButton("Function");
 		btnFunction.setBounds(10, 250, 101, 23);
 		frame.getContentPane().add(btnFunction);
-		class Function implements ActionListener{
-			@Override
+		btnFunction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				function();
+				functionBtn();
 			}
-		}
-		Function functionListener = new Function();
-		btnFunction.addActionListener(functionListener);
+		});
 		
 		// End Function Button
 		
@@ -260,22 +250,34 @@ public class ChronoGUI {
 		JButton button_20 = new JButton("<");
 		button_20.setBounds(10, 284, 50, 23);
 		frame.getContentPane().add(button_20);
+		button_20.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		
 		JButton button_21 = new JButton(">");
 		button_21.setBounds(72, 284, 50, 23);
 		frame.getContentPane().add(button_21);
+		button_21.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		
 		JButton button_22 = new JButton("^");
 		button_22.setBounds(10, 320, 50, 23);
 		frame.getContentPane().add(button_22);
+		button_22.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		
 		JButton button_23 = new JButton("\u02C5");
+		button_23.setBounds(72, 320, 50, 23);
+		frame.getContentPane().add(button_23);
 		button_23.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		button_23.setBounds(72, 320, 50, 23);
-		frame.getContentPane().add(button_23);
 		
 		JButton button_1 = new JButton("2");
 		button_1.setBounds(527, 221, 41, 45);
@@ -435,76 +437,14 @@ public class ChronoGUI {
 		return output;
 	}
 	
-	private void updateLine(int lineNumber, String s) {
-	    lineNumber --;
-	    mainDisplay[lineNumber] = s;
-	    if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
-	}
-	
-	/** This is for IND races only
-	 * Shows the racer 3 back in the queue or is blank if there is no such racer
-	 * 
-	 * @param s String including racer number
-	 */
-	public void setQueuedRacerNext(String s) {
-		updateLine(2, s);
-	}
-	
-	/** This is for IND and PARIND races
-	 * IND: Shows the racer 2 back in the queue or is blank if there is no such racer
-	 * PARIND: Shows the second of the next two racers to go or is blank if there are no more racers
-	 * 
-	 * @param s String including racer number
-	 */
-	public void setQueuedRacerSecond(String s) {
-		updateLine(3, s);
-	}
-	
-	/** This is for IND and PARIND races
-	 * IND: Shows the next racer in the queue or is blank if there are no more racers
-	 * PARIND: Shows the first of the next two racers to go or is blank if there are no more racers
-	 * 
-	 * @param s String including racer number
-	 */
-	public void setQueuedRacerThird(String s) {
-		updateLine(4, s);
-	}
-	
-	/** This is for IND and PARIND races
-	 * IND: Shows the current racer on the course or is blank if there are no racers
-	 * @param s String including racer number and current time
-	 */
-	public void setCurrentRacer(String s) {
-		updateLine(6, s);
-	}
-	
-	/** This is for PARIND races only
-	 * Shows the second of two current racers on the course or is blank if there are no racers
-	 * @param s String including racer number and current time
-	 */
-	public void setCurrentRacerTwo(String s) {
-		updateLine(7, s);
-	}
-	
-	/** This is for ALL race types
-	 * Shows the last racer's bib number and finish time
-	 * 
-	 * @param s String including racer number and finish time
-	 */
-	public void setLastFinish(String s) {
-		updateLine(9, s);
-	}
-	
-	/** This is for PARIND races only
-	 * Shows the 2nd of the last two racers bib number and finish time
-	 * @param s String including racer number and finish time
-	 */
-	public void setLastFinishTwo(String s) {
-		updateLine(10, s);
-	}
-	
-	public void clearMainDisplay() {
+	private void clearMainDisplay() {
 		mainTextArea.setText("\n\n\n\n\n\n\n\n\n\n");
+	}
+	
+	private void updateDisplay() {
+		// TODO: Chronotimer needs a getDisplay() method
+		//mainDisplay = _chrono.getDisplay();
+		if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
 	}
 
 	public void addPrinterLine(String s) {
@@ -521,7 +461,7 @@ public class ChronoGUI {
 	    }
 	}
 	
-	private void function() {
+	private void functionBtn() {
 		if(functionBool) {
 			functionBool = false;
 			// TODO:
@@ -529,7 +469,33 @@ public class ChronoGUI {
 		}
 		else {
 			functionBool = true;
+			functionLine = 0;
 			mainTextArea.setText("");
 		}
+	}
+	
+	private void function(String command) {
+		
+	}
+	
+	private void update() {
+		updateDisplay();
+		//TODO: Add updatePrinter class (Chronotimer needs a getPrinterFeed() method)
+		//updatePrinter();
+	}
+	
+	private void threader() {
+		updaterThread = new Thread() {
+			public void run() {
+				while(power) {
+					update();
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+					}
+				}
+				
+			}
+		};
 	}
 }

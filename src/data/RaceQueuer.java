@@ -124,7 +124,6 @@ public class RaceQueuer {
 		try{
 		firstRacer = _alreadyRan.get(0);
 		}catch(IndexOutOfBoundsException e){
-			//I disabled this fuck you lol
 			//System.out.println("There are no racers in the raceQueuer");
 		}
 		return firstRacer;
@@ -136,7 +135,6 @@ public class RaceQueuer {
 		try{
 		firstRacer = _waitQueue.get(index);
 		}catch(IndexOutOfBoundsException e){
-			//I disabled this fuck you lol
 			//System.out.println("There are no racers in the raceQueuer");
 		}
 		return firstRacer;
