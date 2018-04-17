@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -23,8 +24,8 @@ public class ChronoGUI {
 
 	private JFrame frame;
 	private JTextField txtChronotimer;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextArea mainTextArea;
+	private JTextArea printerTextArea;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
@@ -71,10 +72,17 @@ public class ChronoGUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(488, 43, 130, 133);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		mainTextArea = new JTextArea();
+		mainTextArea.setBounds(190, 221, 239, 177);
+		frame.getContentPane().add(mainTextArea);
+		mainTextArea.setRows(10);
+		mainTextArea.setText("\n\n\n\n\n\n\n\n\n\n");
+		
+		printerTextArea = new JTextArea();
+		printerTextArea.setBounds(488, 43, 130, 133);
+		frame.getContentPane().add(printerTextArea);
+		printerTextArea.setRows(7);
+		printerTextArea.setText("\n\n\n\n\n\n\n");
 		
 		/* This is an example of how all buttons and action listeners
 		 * should be implemented
@@ -139,11 +147,6 @@ public class ChronoGUI {
 		JButton button_11 = new JButton("#");
 		button_11.setBounds(562, 353, 41, 45);
 		frame.getContentPane().add(button_11);
-		
-		textField = new JTextField();
-		textField.setBounds(190, 221, 239, 177);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
 		
 		JButton button_12 = new JButton("");
 		button_12.setBounds(238, 48, 27, 23);
@@ -381,5 +384,19 @@ public class ChronoGUI {
 		textField_9.setBackground(SystemColor.menu);
 		textField_9.setBounds(238, 108, 27, 14);
 		frame.getContentPane().add(textField_9);
+	}
+	
+	public void addLine(String s) {
+	    int lineCount = mainTextArea.getLineCount();
+
+	    if (lineCount <= mainTextArea.getRows()) {                
+	        mainTextArea.append(s + "\n");    
+	    } else if (lineCount > mainTextArea.getRows()) {
+
+	        String output = mainTextArea.getText() + "\n" + s;    
+	        int begin = output.indexOf("\n");    
+	        output = output.substring(begin + 1);    
+	        mainTextArea.setText(output);    
+	    }
 	}
 }
