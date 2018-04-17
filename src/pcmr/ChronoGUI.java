@@ -107,9 +107,27 @@ public class ChronoGUI {
 		
 		// End Power button example
 		
+		//Begin Printer Power
+		
 		JButton btnPrinterPwr = new JButton("Printer Pwr");
 		btnPrinterPwr.setBounds(502, 11, 101, 23);
 		frame.getContentPane().add(btnPrinterPwr);
+		
+		class Printer implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[2];
+				commandArray[0] = "-";
+				commandArray[1] = "PRINT";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		Printer printerListener = new Printer();
+		btnPrinterPwr.addActionListener(printerListener);
+		
+		//end printer
 		
 		txtChronotimer = new JTextField(){
 			@Override public void setBorder(Border border) {

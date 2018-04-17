@@ -67,13 +67,16 @@ public class Chronotimer {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
+		boolean _powered = true;
 
 		public void println(String echo)
 		{
-			add(0,echo);
+			if(_powered)
+				add(0,echo);
 			System.out.println(echo);
 		}
 	}
+	public void powerPrinter() {_printer._powered=!_printer._powered;}
 	
 	private class Display
 	{
@@ -94,15 +97,7 @@ public class Chronotimer {
 		}
 		public void deactivate()
 		{
-			try {
-				_getDisplay.join();
-			} catch (InterruptedException e) {
-				System.out.println("Display was unable to successful stop.\n"
-						+ "This should not cause any issues.\n"
-						+ "In case of further malfunction, restart\n"
-						+ "the ChronoTimer system.");
-				e.printStackTrace();
-			}
+				_getDisplay.interrupt();
 		}
 		private void display()
 		{
@@ -141,6 +136,10 @@ public class Chronotimer {
 				{
 					_queue="";
 					_queue+=_queues[0].peekWaiting(0).toString();
+				}
+				catch(NullPointerException e) {}
+				try
+				{
 					_queue+=_queues[1].peekWaiting(0).toString();
 				}
 				catch(NullPointerException e) {}
@@ -149,6 +148,10 @@ public class Chronotimer {
 					_running="";
 					_running+=_queues[0].peek().toString() + ": " 
 					+ Time.difference(_startTimes[0].getFirst(), new Time()).convertRawTime();
+				}
+				catch(Exception e) {}
+				try
+				{
 					_running+=_queues[1].peek().toString() + ": " 
 					+ Time.difference(_startTimes[1].getFirst(), new Time()).convertRawTime();
 				}
@@ -157,6 +160,10 @@ public class Chronotimer {
 				{
 					_finished="";
 					_finished+=_queues[0].peekRan().toString();
+				}
+				catch(NullPointerException e) {}
+				try
+				{
 					_finished+=_queues[1].peekRan().toString();
 				}
 				catch(NullPointerException e) {}
