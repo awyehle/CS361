@@ -27,6 +27,7 @@ public class Chronotimer {
 	private boolean[] _channelOn = new boolean[_CHANNELS];
 	private boolean[] _channelTripped = new boolean[_CHANNELS];
 	private Sensor[] _sensorsConnected = new Sensor[_CHANNELS];
+	private ChronoGUI _GUI;
 	
 	@SuppressWarnings("unchecked")
 	private LinkedList<Time>[] _startTimes = new LinkedList[_CHANNELS/2]; 
@@ -196,6 +197,16 @@ public class Chronotimer {
 	public Chronotimer()
 	{
 		_time = new Time();
+		resetTimes();
+		resetQueues();
+		//_channelOn[0] = true;
+		//_sensorsConnected[0] = new Sensor();
+	}
+	
+	public Chronotimer(ChronoGUI gui)
+	{
+		_time = new Time();
+		_GUI = gui;
 		resetTimes();
 		resetQueues();
 		//_channelOn[0] = true;

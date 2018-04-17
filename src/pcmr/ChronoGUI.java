@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 
 public class ChronoGUI {
 	
-	private static Chronotimer _chrono;
+	private  Chronotimer _chrono;
 
 	private JFrame frame;
 	private JTextField txtChronotimer;
@@ -39,7 +39,6 @@ public class ChronoGUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		_chrono =  new Chronotimer();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -56,6 +55,7 @@ public class ChronoGUI {
 	 * Create the application.
 	 */
 	public ChronoGUI() {
+		_chrono =  new Chronotimer(this);
 		initialize();
 	}
 
