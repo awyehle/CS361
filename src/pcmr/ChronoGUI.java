@@ -77,12 +77,14 @@ public class ChronoGUI {
 		frame.getContentPane().add(mainTextArea);
 		mainTextArea.setRows(10);
 		mainTextArea.setText("\n\n\n\n\n\n\n\n\n\n");
+		mainTextArea.setEditable(false);
 		
 		printerTextArea = new JTextArea();
 		printerTextArea.setBounds(488, 43, 130, 133);
 		frame.getContentPane().add(printerTextArea);
 		printerTextArea.setRows(7);
 		printerTextArea.setText("\n\n\n\n\n\n\n");
+		printerTextArea.setEditable(false);
 		
 		/* This is an example of how all buttons and action listeners
 		 * should be implemented
@@ -141,6 +143,7 @@ public class ChronoGUI {
 		txtChronotimer.setBounds(228, 12, 148, 20);
 		frame.getContentPane().add(txtChronotimer);
 		txtChronotimer.setColumns(10);
+		txtChronotimer.setEditable(false);
 		
 		JButton btnFunction = new JButton("Function");
 		btnFunction.setBounds(10, 250, 101, 23);
