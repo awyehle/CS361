@@ -417,4 +417,18 @@ public class ChronoGUI {
 	        mainTextArea.setText(output);    
 	    }
 	}
+	
+	public void addPrinterLine(String s) {
+	    int lineCount = printerTextArea.getLineCount();
+
+	    if (lineCount <= printerTextArea.getRows()) {                
+	        printerTextArea.append(s + "\n");    
+	    } else if (lineCount > printerTextArea.getRows()) {
+
+	        String output = printerTextArea.getText() + "\n" + s;    
+	        int begin = output.indexOf("\n");    
+	        output = output.substring(begin + 1);    
+	        printerTextArea.setText(output);    
+	    }
+	}
 }
