@@ -58,6 +58,11 @@ public class ChronoGUI {
 		_chrono =  new Chronotimer(this);
 		initialize();
 	}
+	
+	public ChronoGUI(Chronotimer chrono) {
+		_chrono = chrono;
+		initialize();
+	}
 
 	/**
 	 * Initialize the contents of the frame.

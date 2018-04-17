@@ -197,7 +197,7 @@ public class Chronotimer {
 	public Chronotimer()
 	{
 		_time = new Time();
-		_GUI = new ChronoGUI();
+		_GUI = new ChronoGUI(this);
 		resetTimes();
 		resetQueues();
 		//_channelOn[0] = true;
