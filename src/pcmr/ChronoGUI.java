@@ -14,6 +14,8 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import data.Time;
+
 import java.awt.Font;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
@@ -236,7 +238,7 @@ public class ChronoGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[3];
-				commandArray[0] = "-";
+				commandArray[0] = new Time().convertRawTime();
 				commandArray[1] = "TRIG";
 				commandArray[2] = "1";
 				_chrono.runCommand(commandArray);
@@ -258,7 +260,7 @@ public class ChronoGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[3];
-				commandArray[0] = "-";
+				commandArray[0] = new Time().convertRawTime();
 				commandArray[1] = "TRIG";
 				commandArray[2] = "3";
 				_chrono.runCommand(commandArray);
@@ -278,7 +280,7 @@ public class ChronoGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[3];
-				commandArray[0] = "-";
+				commandArray[0] = new Time().convertRawTime();
 				commandArray[1] = "TRIG";
 				commandArray[2] = "5";
 				_chrono.runCommand(commandArray);
@@ -298,7 +300,7 @@ public class ChronoGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[3];
-				commandArray[0] = "-";
+				commandArray[0] = new Time().convertRawTime();
 				commandArray[1] = "TRIG";
 				commandArray[2] = "7";
 				_chrono.runCommand(commandArray);
@@ -319,7 +321,7 @@ public class ChronoGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[3];
-				commandArray[0] = "-";
+				commandArray[0] = new Time().convertRawTime();
 				commandArray[1] = "TRIG";
 				commandArray[2] = "2";
 				_chrono.runCommand(commandArray);
@@ -338,7 +340,7 @@ public class ChronoGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[3];
-				commandArray[0] = "-";
+				commandArray[0] = new Time().convertRawTime();
 				commandArray[1] = "TRIG";
 				commandArray[2] = "4";
 				_chrono.runCommand(commandArray);
@@ -359,7 +361,7 @@ public class ChronoGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[3];
-				commandArray[0] = "-";
+				commandArray[0] = new Time().convertRawTime();
 				commandArray[1] = "TRIG";
 				commandArray[2] = "6";
 				_chrono.runCommand(commandArray);
@@ -379,7 +381,7 @@ public class ChronoGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[3];
-				commandArray[0] = "-";
+				commandArray[0] = new Time().convertRawTime();
 				commandArray[1] = "TRIG";
 				commandArray[2] = "8";
 				_chrono.runCommand(commandArray);
