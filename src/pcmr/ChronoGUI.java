@@ -42,6 +42,9 @@ public class ChronoGUI {
 	private int functionLine;
 	private int functionLength;
 	private boolean event = false;
+	private int numLength;
+	private boolean num = false;
+	private boolean time = false;
 
 	/**
 	 * Launch the application.
@@ -488,18 +491,13 @@ public class ChronoGUI {
 	
 	private void functionBtn() {
 		if(functionBool) {
+			if(num) return;
 			if(functionLine == 5) {
 				event = true;
 				eventDisplay();
 				return;
 			}
-			if(functionLine < 5) {
-				return;
-			}
 			function(event, functionLine);
-			event = false;
-			functionBool = false;
-			mainTextArea.setText(createMainTextString(mainDisplay));
 		}
 		else {
 			functionBool = true;
@@ -507,6 +505,12 @@ public class ChronoGUI {
 			setFunctionDisplay();
 			mainTextArea.setText(createMainTextString(functionDisplay));
 		}
+	}
+	
+	private void functionReturn() {
+		event = false;
+		functionBool = false;
+		mainTextArea.setText(createMainTextString(mainDisplay));
 	}
 	
 	private void eventDisplay() {
@@ -525,37 +529,99 @@ public class ChronoGUI {
 	private void function(boolean event, int funID) {
 		if(event) {
 			switch(funID) {
-			case(1):
+			case(1):{
+				_chrono.runCommand("-", "EVENT", "PARIND");
+				functionReturn();
 				break;
-			case(2):
+			}
+			case(2):{
+				_chrono.runCommand("-", "EVENT", "GRP");
+				functionReturn();
 				break;
-			case(3):
+			}
+			case(3):{
+				_chrono.runCommand("-", "EVENT", "PARGRP");
+				functionReturn();
 				break;
-			default:
+			}
+			default:{
+				_chrono.runCommand("-", "EVENT", "IND");
+				functionReturn();
 				break;
+			}
 			}
 		}
 		else {
 			switch(funID) {
-			case(1):
+			case(0): {
+				_chrono.runCommand("-","DNF");
+				functionReturn();
 				break;
-			case(2):
+			}
+			case(1): {
+				for(int i = 0; i < 10; ++i) {
+					functionDisplay[i] = "";
+				}
+				functionDisplay[0] = "Enter a racer number";
+				functionDisplay[1] = "# to Enter, * to Clear";
+				functionDisplay[2] = "bib: ";
+				numLength = 0;
+				num = true;
+				mainTextArea.setText(createMainTextString(functionDisplay));
 				break;
-			case(3):
+			}
+			case(2):{
+				_chrono.runCommand("-", "CANCEL");
+				functionReturn();
 				break;
-			case(4):
+			}
+			case(3): {
+				_chrono.runCommand("-", "NEWRUN");
+				functionReturn();
 				break;
-			case(5):
+			}
+			case(4): {
+				_chrono.runCommand("-", "ENDRUN");
+				functionReturn();
 				break;
+			}
 			case(6):
 				break;
-			case(7):
+			case(7): {
+				_chrono.runCommand("-", "EXPORT");
+				functionReturn();
 				break;
-			case(8):
+			}
+			case(8): {
+				_chrono.runCommand("-", "RESET");
+				functionReturn();
 				break;
+		}
+			case(9): {
+				_chrono.runCommand("-", "NUM", functionDisplay[2].substring(5));
+				num = false;
+				functionReturn();
+				break;
+			}
 			default:
 				break;
 			}
+		}
+	}
+	
+	private void numButtons(int i) {
+		if(num && numLength < 10) {
+			++numLength;
+			if(i == 10) {
+				functionDisplay[2] = "bib: ";
+				numLength = 0;
+			}
+			else if(!time && i == 11) {
+				function(false, 9);
+				numLength = 0;
+			}
+			else if(i < 10) functionDisplay[2] =  functionDisplay[2] + i;
+			mainTextArea.setText(createMainTextString(functionDisplay));
 		}
 	}
 	
@@ -563,7 +629,7 @@ public class ChronoGUI {
 		functionLength = 9;
 		functionDisplay[0] = "* DNF";
 		functionDisplay[1] = "  NUM";
-		functionDisplay[2] = "  CLR";
+		functionDisplay[2] = "  CANCEL";
 		functionDisplay[3] = "  NEWRUN";
 		functionDisplay[4] = "  ENDRUN";
 		functionDisplay[5] = "  EVENT";
@@ -573,7 +639,7 @@ public class ChronoGUI {
 	}
 	
 	private void upBtn() {
-		if(functionBool && functionLine > 0) {
+		if(!num && !time && functionBool && functionLine > 0) {
 			functionDisplay[functionLine] = " " + functionDisplay[functionLine].substring(1, functionDisplay[functionLine].length());
 			functionDisplay[functionLine-1] = "*" + functionDisplay[functionLine-1].substring(1, functionDisplay[functionLine-1].length());
 			mainTextArea.setText(createMainTextString(functionDisplay));
@@ -582,7 +648,7 @@ public class ChronoGUI {
 	}
 	
 	private void downBtn() {
-		if(functionBool && functionLine < functionLength -1) {
+		if(!num && !time && functionBool && functionLine < functionLength -1) {
 		functionDisplay[functionLine] = " " + functionDisplay[functionLine].substring(1, functionDisplay[functionLine].length());
 		functionDisplay[functionLine+1] = "*" + functionDisplay[functionLine+1].substring(1, functionDisplay[functionLine+1].length());
 		mainTextArea.setText(createMainTextString(functionDisplay));
