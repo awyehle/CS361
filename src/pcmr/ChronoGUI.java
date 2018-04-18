@@ -109,6 +109,7 @@ public class ChronoGUI {
 		printerTextArea.setBounds(488, 43, 130, 133);
 		frame.getContentPane().add(printerTextArea);
 		printerTextArea.setRows(7);
+		printerTextArea.setFont(new Font("Times New Roman", Font.PLAIN, 10));
 		printerTextArea.setText("\n\n\n\n\n\n\n");
 		printerTextArea.setEditable(false);
 		
@@ -960,6 +961,7 @@ public class ChronoGUI {
 			}
 			case(7): {
 				_chrono.runCommand("-", "EXPORT");
+				// TODO: Need to enter in a run number here
 				functionReturn();
 				break;
 			}
@@ -1073,8 +1075,13 @@ public class ChronoGUI {
 		// TODO: Chronotimer needs a getDisplay() method
 		// or this method needs to get individual data from chronotimer and update the mainDisplay array, then add this line
 		// mainTextArea.setText(createMainTextString(mainDisplay)); and remove the next line if this line was used
-		// mainDisplay = _chrono.getDisplay();
-		if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
+		// mainDisplay = _chrono.getDisplay();mainTextArea.setText(createMainTextString(mainDisplay));
+		//else
+		if(!functionBool) 
+		{
+			mainTextArea.setText(_chrono.getQueueDisplay() + "\n\n" + _chrono.getRunningDisplay() + "\n\n" + 
+						_chrono.getRanDisplay() + "\n\nRun: " + _chrono.getRun());
+		}
 	}
 	
 	/** This method gets the latest printer data from {@link pcmr.Chronotimer} (which should be stored in ArrayList format)
@@ -1082,6 +1089,14 @@ public class ChronoGUI {
 	 *  with {@link #addPrinterLine(String)}
 	 */
 	private void updatePrinter() {
+		String[] disp = _chrono.getPrinterStrings();
+		String displayer = "";
+		for(int i = 0; i<10; ++i)
+		{
+			if(9-i < disp.length) displayer += disp[9-i];
+			displayer += "\n";
+		}
+		printerTextArea.setText(displayer);
 		//TODO: Chronotimer needs a getPrinterFeed() method
 		// or this method needs to get printer things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
 	}

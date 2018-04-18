@@ -46,6 +46,8 @@ public class Chronotimer {
 	private EVENTS event = EVENTS.IND;
 	private boolean _eventRunning;
 	
+	private Time _lastToFinish;
+	
 	private int _bibNumber = 0;
 	
 	//private Racer _lastFinished;
@@ -77,29 +79,15 @@ public class Chronotimer {
 		}
 	}
 	public void powerPrinter() {_printer._powered=!_printer._powered;}
+	public String[] getPrinterStrings() { return _printer.toArray(new String[0]);}
 	
 	private class Display
 	{
-		Thread _getDisplay = new Thread() {public void run() {while(true)display();}};
 		private String _queue;
 		private String _running;
 		private String _finished;
 		
-		@Override
-		protected void finalize() throws Throwable
-		{
-			super.finalize();
-			deactivate();
-		}
-		public void activate()
-		{
-			_getDisplay.start();
-		}
-		public void deactivate()
-		{
-				_getDisplay.interrupt();
-		}
-		private void display()
+		void display()
 		{
 			switch(event)
 			{
@@ -152,7 +140,7 @@ public class Chronotimer {
 				catch(Exception e) {}
 				try
 				{
-					_running+=_queues[1].peek().toString() + ": " 
+					_running+="\n"+_queues[1].peek().toString() + ": " 
 					+ Time.difference(_startTimes[1].getFirst(), new Time()).convertRawTime();
 				}
 				catch(Exception e) {}
@@ -164,7 +152,7 @@ public class Chronotimer {
 				catch(NullPointerException e) {}
 				try
 				{
-					_finished+=_queues[1].peekRan().toString();
+					_finished+="\n" + _queues[1].peekRan().toString();
 				}
 				catch(NullPointerException e) {}
 				break;
@@ -177,15 +165,13 @@ public class Chronotimer {
 					_running="";
 					_running+=_queues[0].peek().toString() + ": " + Time.difference( _startTimes[0].getFirst(),new Time());
 				}
-				catch(IndexOutOfBoundsException e) {}
+				catch(Exception e) {}
 				try
 				{
 					_finished="";
-					// TODO 
-					//This must be the last of all lanes.
-					_finished+=_queues[0].peekRan().toString();
+					_finished+=_lastToFinish.convertRawTime();
 				}
-				catch(NullPointerException e) {}
+				catch(Exception e) {}
 				break;
 			}
 			default:break;
@@ -483,8 +469,17 @@ public class Chronotimer {
 			if(channel%2==1) 
 			{
 				try{
-					_queues[channel/2].popWait();
-					_startTimes[channel/2].add(new Time(command[0]));
+					if(event!=EVENTS.GRP)
+					{
+						_queues[channel/2].popWait();
+						_startTimes[channel/2].add(new Time(command[0]));
+					}
+					else
+					{
+						if(channel/2 !=0) return;
+						while(_queues[0].queueSize() >0) _queues[0].popWait();
+						_startTimes[0].add(new Time(command[0]));
+					}
 				}catch(NullPointerException e){return;}
 			}
 			else 
@@ -601,24 +596,22 @@ public class Chronotimer {
 			event=EVENTS.IND;
 		}
 	}
-
-	public void startDisplay()
-	{
-		_display.activate();
-	}
 	
-	public String getQueueS()
+	public String getQueueDisplay()
 	{
+		_display.display();
 		return _display._queue;
 	}
 	
-	public String getRunningS()
+	public String getRunningDisplay()
 	{
+		_display.display();
 		return _display._running;
 	}
 	
-	public String getRanS()
+	public String getRanDisplay()
 	{
+		_display.display();
 		return _display._finished;
 	}
 	
@@ -641,8 +634,9 @@ public class Chronotimer {
 	public String getRacerTime(int startChannel)
 	{
 		try{
-			String time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[startChannel].remove()).convertRawTime();
-			return time;
+			Time time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[startChannel].remove());
+			_lastToFinish=time;
+			return time.convertRawTime();
 		}catch(NoSuchElementException e){
 			System.out.println("You must start a race before printing times.");
 			return "";
@@ -747,13 +741,5 @@ public class Chronotimer {
 		copy.add(_queues[channels/2]);
 		return copy;
 		
-	}
-	
-	
-	@Override
-	protected void finalize() throws Throwable
-	{
-		super.finalize();
-		_display.deactivate();
 	}
 }

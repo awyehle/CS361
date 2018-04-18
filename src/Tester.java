@@ -19,18 +19,23 @@ public class Tester {
 		Thread.sleep(1567);
 		c.runCommand(new Time().convertRawTime(), "TOG", "2");
 		Thread.sleep(1567);
+		c.runCommand(new Time().convertRawTime(), "TOG", "3");
+		Thread.sleep(1567);
 		c.runCommand(new Time().convertRawTime(), "EVENT", "PARIND");
 		Thread.sleep(1567);
 		c.runCommand(new Time().convertRawTime(), "NUM", "133");
 		Thread.sleep(1567);
+		c.runCommand(new Time().convertRawTime(), "NUM", "163");
+		Thread.sleep(1567);
 		c.runCommand(new Time().convertRawTime(), "NEWRUN");
 		Thread.sleep(1567);
 		c.runCommand(new Time().convertRawTime(), "START");
-		c.startDisplay();
+		Thread.sleep(12);
+		c.runCommand(new Time().convertRawTime(), "TRIG", "3");
 		for(int i = 0; i < 10; ++i)
 		{
 			Thread.sleep(new Random().nextInt(1000) + 1000);
-			System.out.println(c.getRunningS());
+			System.out.println(c.getRunningDisplay());
 		}
 	}
 		
