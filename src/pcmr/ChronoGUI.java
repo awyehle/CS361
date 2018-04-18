@@ -867,7 +867,7 @@ public class ChronoGUI {
 		sensorChan1.addMouseListener(sensorChannel1_Listener);
 		
 		JButton sensorChan2 = new JButton("2");
-		sensorChan2.setBounds(81, 449, 41, 23);
+		sensorChan2.setBounds(30, 475, 41, 23);
 		frame.getContentPane().add(sensorChan2);
 		
 		class sensorChan2 implements MouseListener{
@@ -918,7 +918,7 @@ public class ChronoGUI {
 		sensorChan2.addMouseListener(sensorChannel2_Listener);
 		
 		JButton sensorChan3 = new JButton("3");
-		sensorChan3.setBounds(132, 449, 41, 23);
+		sensorChan3.setBounds(81, 449, 41, 23);
 		frame.getContentPane().add(sensorChan3);
 		
 		class sensorChan3 implements MouseListener{
@@ -973,7 +973,7 @@ public class ChronoGUI {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		sensorChan4.setBounds(183, 449, 41, 23);
+		sensorChan4.setBounds(81, 475, 41, 23);
 		frame.getContentPane().add(sensorChan4);
 		
 		class sensorChan4 implements MouseListener{
@@ -1024,7 +1024,7 @@ public class ChronoGUI {
 		sensorChan4.addMouseListener(sensorChannel4_Listener);
 		
 		JButton sensorChan5 = new JButton("5");
-		sensorChan5.setBounds(30, 475, 41, 23);
+		sensorChan5.setBounds(132, 449, 41, 23);
 		frame.getContentPane().add(sensorChan5);
 		
 		class sensorChan5 implements MouseListener{
@@ -1075,7 +1075,7 @@ public class ChronoGUI {
 		sensorChan5.addMouseListener(sensorChannel5_Listener);
 		
 		JButton sensorChan6 = new JButton("6");
-		sensorChan6.setBounds(81, 475, 41, 23);
+		sensorChan6.setBounds(132, 475, 41, 23);
 		frame.getContentPane().add(sensorChan6);
 		
 		class sensorChan6 implements MouseListener{
@@ -1126,7 +1126,7 @@ public class ChronoGUI {
 		sensorChan6.addMouseListener(sensorChannel6_Listener);
 		
 		JButton sensorChan7 = new JButton("7");
-		sensorChan7.setBounds(132, 475, 41, 23);
+		sensorChan7.setBounds(181, 449, 41, 23);
 		frame.getContentPane().add(sensorChan7);
 		
 		class sensorChan7 implements MouseListener{
@@ -1177,7 +1177,7 @@ public class ChronoGUI {
 		sensorChan7.addMouseListener(sensorChannel7_Listener);
 		
 		JButton sensorChan8 = new JButton("8");
-		sensorChan8.setBounds(183, 475, 41, 23);
+		sensorChan8.setBounds(181, 475, 41, 23);
 		frame.getContentPane().add(sensorChan8);
 		
 		class sensorChan8 implements MouseListener{
