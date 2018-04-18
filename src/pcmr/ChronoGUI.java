@@ -789,7 +789,7 @@ public class ChronoGUI {
 		}
 	}
 	
-	// End FUNCTION functionality ---------------------------------------------------------------------
+	// End FUNCTION functionality --------------------------------------------------------------------
 	
 	/** This method gets the latest display data from {@link pcmr.Chronotimer} including a queue of racers, current racer(s)
 	 *  in the race, and the last finish(es) depending on the event (more information in Sprint 3 document at bottom of page).
