@@ -455,6 +455,11 @@ public class ChronoGUI {
 		// mainDisplay = _chrono.getDisplay();
 		if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
 	}
+	
+	private void updatePrinter() {
+		//TODO: Chronotimer needs a getPrinterFeed() method
+		// or this method needs to get printer things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
+	}
 
 	public void addPrinterLine(String s) {
 	    int lineCount = printerTextArea.getLineCount();
@@ -543,9 +548,7 @@ public class ChronoGUI {
 	
 	private void update() {
 		updateDisplay();
-		//TODO: Add updatePrinter method (Chronotimer needs a getPrinterFeed() method)
-		// or updatePrinter method needs to get things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
-		//updatePrinter();
+		updatePrinter();
 	}
 	
 	private void threader() {
