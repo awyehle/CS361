@@ -706,12 +706,16 @@ public class ChronoGUI {
 				break;
 			}
 			case(9): {
+				functionReturn();
+				break;
+			}
+			case(10): {
 				_chrono.runCommand("-", "NUM", functionDisplay[2].substring(5));
 				num = false;
 				functionReturn();
 				break;
 			}
-			case(10): {
+			case(11): {
 				_chrono.runCommand("-", "TIME", functionDisplay[2].substring(6));
 				num = false;
 				time = false;
@@ -741,11 +745,11 @@ public class ChronoGUI {
 				++numLength;
 			}
 			else if(!time && i == 11) {
-				function(false, 9);
+				function(false, 10);
 				numLength = 0;
 			}
 			else if(time && i == 11) {
-				function(false, 10);
+				function(false, 11);
 				numLength = 0;
 			}
 			else if(i < 10) functionDisplay[2] =  functionDisplay[2] + i;
@@ -754,7 +758,7 @@ public class ChronoGUI {
 	}
 	
 	private void setFunctionDisplay() {
-		functionLength = 9;
+		functionLength = 10;
 		functionDisplay[0] = "* DNF";
 		functionDisplay[1] = "  NUM";
 		functionDisplay[2] = "  CANCEL";
@@ -764,6 +768,7 @@ public class ChronoGUI {
 		functionDisplay[6] = "  TIME";
 		functionDisplay[7] = "  EXPORT";
 		functionDisplay[8] = "  RESET";
+		functionDisplay[9] = "  EXIT Function Screen";
 	}
 	
 	private void upBtn() {
