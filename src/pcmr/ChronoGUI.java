@@ -34,7 +34,6 @@ public class ChronoGUI {
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
-	private JRadioButton radioButton;
 	private JRadioButton radioButton_1;
 	private JRadioButton radioButton_2;
 	private JRadioButton radioButton_3;
@@ -42,6 +41,7 @@ public class ChronoGUI {
 	private JRadioButton radioButton_5;
 	private JRadioButton radioButton_6;
 	private JRadioButton radioButton_7;
+	private JRadioButton radioButton_8;
 	private boolean functionBool = false;
 	private String[] mainDisplay = new String[11];
 	private String[] functionDisplay = new String[11];
@@ -227,25 +227,26 @@ public class ChronoGUI {
 			}
 		});
 		
-		JButton button_12 = new JButton("");
-		button_12.setBounds(238, 48, 27, 23);
-		frame.getContentPane().add(button_12);
+		JButton Channel1 = new JButton("");
+		Channel1.setBounds(238, 48, 27, 23);
+		frame.getContentPane().add(Channel1);
 		
 		class Channel1 implements ActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] commandArray = new String[2];
+				String[] commandArray = new String[3];
 				commandArray[0] = "-";
 				commandArray[1] = "TRIG";
 				commandArray[2] = "1";
 				_chrono.runCommand(commandArray);
-			System.out.println("Channel1");
+			
 			}
+			
 			
 		}
 		Channel1 channel1Listener = new Channel1();
-		button_12.addActionListener(channel1Listener);
+		Channel1.addActionListener(channel1Listener);
 		
 		
 		JButton Channel3 = new JButton("");
@@ -256,12 +257,11 @@ public class ChronoGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] commandArray = new String[2];
+				String[] commandArray = new String[3];
 				commandArray[0] = "-";
 				commandArray[1] = "TRIG";
 				commandArray[2] = "3";
 				_chrono.runCommand(commandArray);
-			System.out.println("Channel3");
 			}
 			
 		}
@@ -269,61 +269,296 @@ public class ChronoGUI {
 		Channel3.addActionListener(channel3Listener);
 		
 		
-		JButton button_14 = new JButton("");
-		button_14.setBounds(312, 48, 27, 23);
-		frame.getContentPane().add(button_14);
+		JButton Channel5 = new JButton("");
+		Channel5.setBounds(312, 48, 27, 23);
+		frame.getContentPane().add(Channel5);
 		
-		JButton button_15 = new JButton("");
-		button_15.setBounds(349, 48, 27, 23);
-		frame.getContentPane().add(button_15);
+		class Channel5 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TRIG";
+				commandArray[2] = "5";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		Channel5 channel5Listener = new Channel5();
+		Channel5.addActionListener(channel5Listener);
 		
-		JButton button_16 = new JButton("");
-		button_16.setBounds(238, 123, 27, 23);
-		frame.getContentPane().add(button_16);
 		
-		JButton button_17 = new JButton("");
-		button_17.setBounds(275, 123, 27, 23);
-		frame.getContentPane().add(button_17);
+		JButton Channel7 = new JButton("");
+		Channel7.setBounds(349, 48, 27, 23);
+		frame.getContentPane().add(Channel7);
 		
-		JButton button_18 = new JButton("");
-		button_18.setBounds(312, 123, 27, 23);
-		frame.getContentPane().add(button_18);
+		class Channel7 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TRIG";
+				commandArray[2] = "7";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		Channel7 channel7Listener = new Channel7();
+		Channel7.addActionListener(channel7Listener);
 		
-		JButton button_19 = new JButton("");
-		button_19.setBounds(349, 123, 27, 23);
-		frame.getContentPane().add(button_19);
 		
-		radioButton = new JRadioButton("");
-		radioButton.setBounds(239, 78, 27, 23);
-		frame.getContentPane().add(radioButton);
+		
+		JButton Channel2 = new JButton("");
+		Channel2.setBounds(238, 123, 27, 23);
+		frame.getContentPane().add(Channel2);
+		
+		class Channel2 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TRIG";
+				commandArray[2] = "2";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		Channel2 channel2Listener = new Channel2();
+		Channel2.addActionListener(channel2Listener);
+		
+		JButton Channel4 = new JButton("");
+		Channel4.setBounds(275, 123, 27, 23);
+		frame.getContentPane().add(Channel4);
+		
+		class Channel4 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TRIG";
+				commandArray[2] = "4";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		Channel4 channel4Listener = new Channel4();
+		Channel4.addActionListener(channel4Listener);
+		
+		
+		JButton Channel6 = new JButton("");
+		Channel6.setBounds(312, 123, 27, 23);
+		frame.getContentPane().add(Channel6);
+		
+		class Channel6 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TRIG";
+				commandArray[2] = "6";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		Channel6 channel6Listener = new Channel6();
+		Channel6.addActionListener(channel6Listener);
+		
+		JButton Channel8 = new JButton("");
+		Channel8.setBounds(349, 123, 27, 23);
+		frame.getContentPane().add(Channel8);
+		
+		class Channel8 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TRIG";
+				commandArray[2] = "8";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		Channel8 channel8Listener = new Channel8();
+		Channel8.addActionListener(channel8Listener);
+		
+
 		
 		radioButton_1 = new JRadioButton("");
-		radioButton_1.setBounds(275, 78, 27, 23);
+		radioButton_1.setBounds(239, 78, 27, 23);
 		frame.getContentPane().add(radioButton_1);
 		
-		radioButton_2 = new JRadioButton("");
-		radioButton_2.setBounds(312, 78, 27, 23);
-		frame.getContentPane().add(radioButton_2);
+		class radioButton_1 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!_chrono.isOn()) radioButton_1.setSelected(false);
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TOG";
+				commandArray[2] = "1";
+				_chrono.runCommand(commandArray);
+				}
+				
+		}
+		
+		radioButton_1 radioButton_1Listener = new radioButton_1();
+		radioButton_1.addActionListener(radioButton_1Listener);
 		
 		radioButton_3 = new JRadioButton("");
-		radioButton_3.setBounds(349, 78, 27, 23);
+		radioButton_3.setBounds(275, 78, 27, 23);
 		frame.getContentPane().add(radioButton_3);
 		
-		radioButton_4 = new JRadioButton("");
-		radioButton_4.setBounds(238, 153, 27, 23);
-		frame.getContentPane().add(radioButton_4);
+		class radioButton_3 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!_chrono.isOn()) radioButton_3.setSelected(false);
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TOG";
+				commandArray[2] = "3";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		radioButton_3 radioButton_3Listener = new radioButton_3();
+		radioButton_3.addActionListener(radioButton_3Listener);
 		
 		radioButton_5 = new JRadioButton("");
-		radioButton_5.setBounds(275, 153, 27, 23);
+		radioButton_5.setBounds(312, 78, 27, 23);
 		frame.getContentPane().add(radioButton_5);
+		
+		class radioButton_5 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!_chrono.isOn()) radioButton_5.setSelected(false);
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TOG";
+				commandArray[2] = "5";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		radioButton_5 radioButton_5Listener = new radioButton_5();
+		radioButton_5.addActionListener(radioButton_5Listener);
+		
+		radioButton_7 = new JRadioButton("");
+		radioButton_7.setBounds(349, 78, 27, 23);
+		frame.getContentPane().add(radioButton_7);
+		
+		class radioButton_7 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!_chrono.isOn()) radioButton_7.setSelected(false);
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TOG";
+				commandArray[2] = "7";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		radioButton_7 radioButton_7Listener = new radioButton_7();
+		radioButton_7.addActionListener(radioButton_7Listener);
+		
+		radioButton_2 = new JRadioButton("");
+		radioButton_2.setBounds(238, 153, 27, 23);
+		frame.getContentPane().add(radioButton_2);
+		
+		class radioButton_2 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!_chrono.isOn()) radioButton_2.setSelected(false);
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TOG";
+				commandArray[2] = "2";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		radioButton_2 radioButton_2Listener = new radioButton_2();
+		radioButton_2.addActionListener(radioButton_2Listener);
+		
+		radioButton_4 = new JRadioButton("");
+		radioButton_4.setBounds(275, 153, 27, 23);
+		frame.getContentPane().add(radioButton_4);
+		
+		class radioButton_4 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!_chrono.isOn()) radioButton_4.setSelected(false);
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TOG";
+				commandArray[2] = "4";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		radioButton_4 radioButton_4Listener = new radioButton_4();
+		radioButton_4.addActionListener(radioButton_4Listener);
 		
 		radioButton_6 = new JRadioButton("");
 		radioButton_6.setBounds(312, 153, 27, 23);
 		frame.getContentPane().add(radioButton_6);
 		
-		radioButton_7 = new JRadioButton("");
-		radioButton_7.setBounds(349, 153, 27, 23);
-		frame.getContentPane().add(radioButton_7);
+		class radioButton_6 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!_chrono.isOn()) radioButton_6.setSelected(false);
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TOG";
+				commandArray[2] = "6";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		radioButton_6 radioButton_6Listener = new radioButton_6();
+		radioButton_6.addActionListener(radioButton_6Listener);
+		
+		radioButton_8 = new JRadioButton("");
+		radioButton_8.setBounds(349, 153, 27, 23);
+		frame.getContentPane().add(radioButton_8);
+		
+		class radioButton_8 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!_chrono.isOn()) radioButton_8.setSelected(false);
+				String[] commandArray = new String[3];
+				commandArray[0] = "-";
+				commandArray[1] = "TOG";
+				commandArray[2] = "8";
+				_chrono.runCommand(commandArray);
+			}
+			
+		}
+		
+		radioButton_8 radioButton_8Listener = new radioButton_8();
+		radioButton_8.addActionListener(radioButton_8Listener);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.GRAY);
@@ -729,7 +964,6 @@ public class ChronoGUI {
 			case(8): {
 				_chrono.runCommand("-", "RESET");
 				functionReturn();
-				radioButton.setSelected(false);
 				radioButton_1.setSelected(false);
 				radioButton_2.setSelected(false);
 				radioButton_3.setSelected(false);
@@ -737,6 +971,7 @@ public class ChronoGUI {
 				radioButton_5.setSelected(false);
 				radioButton_6.setSelected(false);
 				radioButton_7.setSelected(false);
+				radioButton_8.setSelected(false);
 				break;
 			}
 			case(9): {
