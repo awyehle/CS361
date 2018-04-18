@@ -113,6 +113,7 @@ public class ChronoGUI {
 				commandArray[1] = "POWER";
 				_chrono.runCommand(commandArray);
 				power = !power;
+				if(!power) clearMainDisplay();
 				threader();
 				updaterThread.start();
 			}
@@ -135,6 +136,11 @@ public class ChronoGUI {
 		//end printer
 		
 		txtChronotimer = new JTextField(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override public void setBorder(Border border) {
 		        // No!
 		    }
@@ -338,6 +344,11 @@ public class ChronoGUI {
 		frame.getContentPane().add(label_1);
 		
 		textField_2 = new JTextField() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -350,6 +361,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_2);
 		
 		textField_3 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -362,6 +375,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_3);
 		
 		textField_4 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -374,6 +389,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_4);
 		
 		textField_5 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -386,6 +403,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_5);
 		
 		textField_6 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -398,6 +417,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_6);
 		
 		textField_7 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -410,6 +431,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_7);
 		
 		textField_8 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -422,6 +445,7 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_8);
 		
 		textField_9 = new JTextField() {
+			private static final long serialVersionUID = 1L;
 			public void setBorder(Border border) {
 			}
 		};
@@ -446,19 +470,6 @@ public class ChronoGUI {
 	
 	private void clearMainDisplay() {
 		mainTextArea.setText("\n\n\n\n\n\n\n\n\n\n");
-	}
-	
-	private void updateDisplay() {
-		// TODO: Chronotimer needs a getDisplay() method
-		// or this method needs to get individual data from chronotimer and update the mainDisplay array, then add this line
-		// mainTextArea.setText(createMainTextString(mainDisplay)); and remove the next line if this line was used
-		// mainDisplay = _chrono.getDisplay();
-		if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
-	}
-	
-	private void updatePrinter() {
-		//TODO: Chronotimer needs a getPrinterFeed() method
-		// or this method needs to get printer things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
 	}
 
 	public void addPrinterLine(String s) {
@@ -512,7 +523,40 @@ public class ChronoGUI {
 	}
 	
 	private void function(boolean event, int funID) {
-		
+		if(event) {
+			switch(funID) {
+			case(1):
+				break;
+			case(2):
+				break;
+			case(3):
+				break;
+			default:
+				break;
+			}
+		}
+		else {
+			switch(funID) {
+			case(1):
+				break;
+			case(2):
+				break;
+			case(3):
+				break;
+			case(4):
+				break;
+			case(5):
+				break;
+			case(6):
+				break;
+			case(7):
+				break;
+			case(8):
+				break;
+			default:
+				break;
+			}
+		}
 	}
 	
 	private void setFunctionDisplay() {
@@ -546,11 +590,39 @@ public class ChronoGUI {
 		}
 	}
 	
+	/** This method gets the latest display data from {@link pcmr.Chronotimer} including a queue of racers, current racer(s)
+	 *  in the race, and the last finish(es) depending on the event (more information in Sprint 3 document at bottom of page).
+	 *  At most, 3 lines are dedicated to the race queue, 2 lines to the current racers, and 2 lines to the last finisher(s)
+	 *  with spaces between the categories. The data is loaded into the {@link #mainDisplay} variable and processed with
+	 *  {@link #createMainTextString(String[])}
+	 * 
+	 */
+	private void updateDisplay() {
+		// TODO: Chronotimer needs a getDisplay() method
+		// or this method needs to get individual data from chronotimer and update the mainDisplay array, then add this line
+		// mainTextArea.setText(createMainTextString(mainDisplay)); and remove the next line if this line was used
+		// mainDisplay = _chrono.getDisplay();
+		if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
+	}
+	
+	/** This method gets the latest printer data from {@link pcmr.Chronotimer} (which should be stored in ArrayList format)
+	 *  any new entries to the ArrayList should be added on a line by line basis in order from oldest to newest
+	 *  with {@link #addPrinterLine(String)}
+	 */
+	private void updatePrinter() {
+		//TODO: Chronotimer needs a getPrinterFeed() method
+		// or this method needs to get printer things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
+	}
+	
+	/** This method is called from the separate {@link #threader()} thread
+	 */
 	private void update() {
 		updateDisplay();
 		updatePrinter();
 	}
-	
+	/** This method creates a new thread that starts with the power button
+	 * It calls {@link #update()} every 1 millisecond
+	 */
 	private void threader() {
 		updaterThread = new Thread() {
 			public void run() {
