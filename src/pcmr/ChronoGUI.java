@@ -36,9 +36,12 @@ public class ChronoGUI {
 	private JTextField textField_9;
 	private boolean functionBool = false;
 	private String[] mainDisplay = new String[11];
+	private String[] functionDisplay = new String[11];
 	private boolean power = false;
 	private Thread updaterThread;
 	private int functionLine;
+	private int functionLength;
+	private boolean event = false;
 
 	/**
 	 * Launch the application.
@@ -155,6 +158,7 @@ public class ChronoGUI {
 				functionBtn();
 			}
 		});
+		setFunctionDisplay();
 		
 		// End Function Button
 		
@@ -268,6 +272,7 @@ public class ChronoGUI {
 		frame.getContentPane().add(button_22);
 		button_22.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				upBtn();
 			}
 		});
 		
@@ -276,6 +281,7 @@ public class ChronoGUI {
 		frame.getContentPane().add(button_23);
 		button_23.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				downBtn();
 			}
 		});
 		
@@ -431,6 +437,7 @@ public class ChronoGUI {
 	private String createMainTextString(String[] stringArray) {
 		String output = "";
 		for(String s: stringArray) {
+			if(s == null) s = "";
 			output = output + s + "\n";
 		}
 		output = output.substring(0, output.length() - 2);
@@ -443,7 +450,9 @@ public class ChronoGUI {
 	
 	private void updateDisplay() {
 		// TODO: Chronotimer needs a getDisplay() method
-		//mainDisplay = _chrono.getDisplay();
+		// or this method needs to get individual data from chronotimer and update the mainDisplay array, then add this line
+		// mainTextArea.setText(createMainTextString(mainDisplay)); and remove the next line if this line was used
+		// mainDisplay = _chrono.getDisplay();
 		if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
 	}
 
@@ -463,24 +472,79 @@ public class ChronoGUI {
 	
 	private void functionBtn() {
 		if(functionBool) {
+			if(functionLine == 5) {
+				event = true;
+				eventDisplay();
+				return;
+			}
+			if(functionLine < 5) {
+				return;
+			}
+			function(event, functionLine);
+			event = false;
 			functionBool = false;
-			// TODO:
-			createMainTextString(mainDisplay);
+			mainTextArea.setText(createMainTextString(mainDisplay));
 		}
 		else {
 			functionBool = true;
 			functionLine = 0;
-			mainTextArea.setText("");
+			setFunctionDisplay();
+			mainTextArea.setText(createMainTextString(functionDisplay));
 		}
 	}
 	
-	private void function(String command) {
+	private void eventDisplay() {
+		functionLine = 0;
+		functionLength = 4;
+		functionDisplay[0] = "* IND";
+		functionDisplay[1] = "  PARIND";
+		functionDisplay[2] = "  GRP";
+		functionDisplay[3] = "  PARGRP (Not Implemented)";
+		for(int i = 4; i < 10; ++i) {
+			functionDisplay[i] = "";
+		}
+		mainTextArea.setText(createMainTextString(functionDisplay));
+	}
+	
+	private void function(boolean event, int funID) {
 		
+	}
+	
+	private void setFunctionDisplay() {
+		functionLength = 9;
+		functionDisplay[0] = "* DNF";
+		functionDisplay[1] = "  NUM";
+		functionDisplay[2] = "  CLR";
+		functionDisplay[3] = "  NEWRUN";
+		functionDisplay[4] = "  ENDRUN";
+		functionDisplay[5] = "  EVENT";
+		functionDisplay[6] = "  TIME";
+		functionDisplay[7] = "  EXPORT";
+		functionDisplay[8] = "  RESET";
+	}
+	
+	private void upBtn() {
+		if(functionBool && functionLine > 0) {
+			functionDisplay[functionLine] = " " + functionDisplay[functionLine].substring(1, functionDisplay[functionLine].length());
+			functionDisplay[functionLine-1] = "*" + functionDisplay[functionLine-1].substring(1, functionDisplay[functionLine-1].length());
+			mainTextArea.setText(createMainTextString(functionDisplay));
+			-- functionLine;
+		}
+	}
+	
+	private void downBtn() {
+		if(functionBool && functionLine < functionLength -1) {
+		functionDisplay[functionLine] = " " + functionDisplay[functionLine].substring(1, functionDisplay[functionLine].length());
+		functionDisplay[functionLine+1] = "*" + functionDisplay[functionLine+1].substring(1, functionDisplay[functionLine+1].length());
+		mainTextArea.setText(createMainTextString(functionDisplay));
+		++ functionLine;
+		}
 	}
 	
 	private void update() {
 		updateDisplay();
-		//TODO: Add updatePrinter class (Chronotimer needs a getPrinterFeed() method)
+		//TODO: Add updatePrinter method (Chronotimer needs a getPrinterFeed() method)
+		// or updatePrinter method needs to get things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
 		//updatePrinter();
 	}
 	
