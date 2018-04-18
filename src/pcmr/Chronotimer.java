@@ -354,6 +354,10 @@ public class Chronotimer {
 			}
 	}
 	
+	/**
+	 * Swaps the next two racers in queue 1 
+	 * @param command Command in the format <timestamp> <SWAP>
+	 */
 	private void swap(String... command) {
 		Racer r1 = _queues[0].pop();
 		Racer r2 = _queues[0].pop();
