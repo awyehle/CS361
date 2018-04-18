@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -19,12 +20,12 @@ import javax.swing.JLabel;
 
 public class ChronoGUI {
 	
-	private static Chronotimer _chrono;
+	private  Chronotimer _chrono;
 
 	private JFrame frame;
 	private JTextField txtChronotimer;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextArea mainTextArea;
+	private JTextArea printerTextArea;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
@@ -33,12 +34,19 @@ public class ChronoGUI {
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
+	private boolean functionBool = false;
+	private String[] mainDisplay = new String[11];
+	private String[] functionDisplay = new String[11];
+	private boolean power = false;
+	private Thread updaterThread;
+	private int functionLine;
+	private int functionLength;
+	private boolean event = false;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		_chrono =  new Chronotimer();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -55,6 +63,12 @@ public class ChronoGUI {
 	 * Create the application.
 	 */
 	public ChronoGUI() {
+		_chrono =  new Chronotimer();
+		initialize();
+	}
+	
+	public ChronoGUI(Chronotimer chrono) {
+		_chrono = chrono;
 		initialize();
 	}
 
@@ -71,10 +85,19 @@ public class ChronoGUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(488, 43, 130, 133);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		mainTextArea = new JTextArea();
+		mainTextArea.setBounds(190, 221, 239, 177);
+		frame.getContentPane().add(mainTextArea);
+		mainTextArea.setRows(10);
+		mainTextArea.setText("\n\n\n\n\n\n\n\n\n\n");
+		mainTextArea.setEditable(false);
+		
+		printerTextArea = new JTextArea();
+		printerTextArea.setBounds(488, 43, 130, 133);
+		frame.getContentPane().add(printerTextArea);
+		printerTextArea.setRows(7);
+		printerTextArea.setText("\n\n\n\n\n\n\n");
+		printerTextArea.setEditable(false);
 		
 		/* This is an example of how all buttons and action listeners
 		 * should be implemented
@@ -83,19 +106,18 @@ public class ChronoGUI {
 		JButton btnPower = new JButton("Power");
 		btnPower.setBounds(10, 11, 101, 23);
 		frame.getContentPane().add(btnPower);
-		class Power implements ActionListener{
-
-			@Override
+		btnPower.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String[] commandArray = new String[2];
 				commandArray[0] = "-";
 				commandArray[1] = "POWER";
 				_chrono.runCommand(commandArray);
+				power = !power;
+				threader();
+				updaterThread.start();
 			}
-			
-		}
-		Power powerListener = new Power();
-		btnPower.addActionListener(powerListener);
+		});
+				
 		
 		// End Power button example
 		
@@ -104,21 +126,12 @@ public class ChronoGUI {
 		JButton btnPrinterPwr = new JButton("Printer Pwr");
 		btnPrinterPwr.setBounds(502, 11, 101, 23);
 		frame.getContentPane().add(btnPrinterPwr);
-		
-		class Printer implements ActionListener{
-
-			@Override
+		btnPrinterPwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[] commandArray = new String[2];
-				commandArray[0] = "-";
-				commandArray[1] = "PRINT";
-				_chrono.runCommand(commandArray);
+				_chrono.powerPrinter();
 			}
-			
-		}
-		Printer printerListener = new Printer();
-		btnPrinterPwr.addActionListener(printerListener);
-		
+		});
+				
 		//end printer
 		
 		txtChronotimer = new JTextField(){
@@ -133,10 +146,21 @@ public class ChronoGUI {
 		txtChronotimer.setBounds(228, 12, 148, 20);
 		frame.getContentPane().add(txtChronotimer);
 		txtChronotimer.setColumns(10);
+		txtChronotimer.setEditable(false);
+		
+		// Begin Function Button
 		
 		JButton btnFunction = new JButton("Function");
 		btnFunction.setBounds(10, 250, 101, 23);
 		frame.getContentPane().add(btnFunction);
+		btnFunction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				functionBtn();
+			}
+		});
+		setFunctionDisplay();
+		
+		// End Function Button
 		
 		JButton btnSwap = new JButton("Swap");
 		btnSwap.setBounds(10, 375, 101, 23);
@@ -157,11 +181,6 @@ public class ChronoGUI {
 		JButton button_11 = new JButton("#");
 		button_11.setBounds(562, 353, 41, 45);
 		frame.getContentPane().add(button_11);
-		
-		textField = new JTextField();
-		textField.setBounds(190, 221, 239, 177);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
 		
 		JButton button_12 = new JButton("");
 		button_12.setBounds(238, 48, 27, 23);
@@ -269,22 +288,36 @@ public class ChronoGUI {
 		JButton button_20 = new JButton("<");
 		button_20.setBounds(10, 284, 50, 23);
 		frame.getContentPane().add(button_20);
+		button_20.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		
 		JButton button_21 = new JButton(">");
 		button_21.setBounds(72, 284, 50, 23);
 		frame.getContentPane().add(button_21);
+		button_21.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		
 		JButton button_22 = new JButton("^");
 		button_22.setBounds(10, 320, 50, 23);
 		frame.getContentPane().add(button_22);
-		
-		JButton button_23 = new JButton("\u02C5");
-		button_23.addActionListener(new ActionListener() {
+		button_22.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				upBtn();
 			}
 		});
+		
+		JButton button_23 = new JButton("\u02C5");
 		button_23.setBounds(72, 320, 50, 23);
 		frame.getContentPane().add(button_23);
+		button_23.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				downBtn();
+			}
+		});
 		
 		JButton button_1 = new JButton("2");
 		button_1.setBounds(527, 221, 41, 45);
@@ -433,5 +466,134 @@ public class ChronoGUI {
 		textField_9.setBackground(SystemColor.menu);
 		textField_9.setBounds(238, 108, 27, 14);
 		frame.getContentPane().add(textField_9);
+	}
+	
+	private String createMainTextString(String[] stringArray) {
+		String output = "";
+		for(String s: stringArray) {
+			if(s == null) s = "";
+			output = output + s + "\n";
+		}
+		output = output.substring(0, output.length() - 2);
+		return output;
+	}
+	
+	private void clearMainDisplay() {
+		mainTextArea.setText("\n\n\n\n\n\n\n\n\n\n");
+	}
+	
+	private void updateDisplay() {
+		// TODO: Chronotimer needs a getDisplay() method
+		// or this method needs to get individual data from chronotimer and update the mainDisplay array, then add this line
+		// mainTextArea.setText(createMainTextString(mainDisplay)); and remove the next line if this line was used
+		// mainDisplay = _chrono.getDisplay();
+		if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
+	}
+
+	public void addPrinterLine(String s) {
+	    int lineCount = printerTextArea.getLineCount();
+
+	    if (lineCount <= printerTextArea.getRows()) {                
+	        printerTextArea.append(s + "\n");    
+	    } else if (lineCount > printerTextArea.getRows()) {
+
+	        String output = printerTextArea.getText() + "\n" + s;    
+	        int begin = output.indexOf("\n");    
+	        output = output.substring(begin + 1);    
+	        printerTextArea.setText(output);    
+	    }
+	}
+	
+	private void functionBtn() {
+		if(functionBool) {
+			if(functionLine == 5) {
+				event = true;
+				eventDisplay();
+				return;
+			}
+			if(functionLine < 5) {
+				return;
+			}
+			function(event, functionLine);
+			event = false;
+			functionBool = false;
+			mainTextArea.setText(createMainTextString(mainDisplay));
+		}
+		else {
+			functionBool = true;
+			functionLine = 0;
+			setFunctionDisplay();
+			mainTextArea.setText(createMainTextString(functionDisplay));
+		}
+	}
+	
+	private void eventDisplay() {
+		functionLine = 0;
+		functionLength = 4;
+		functionDisplay[0] = "* IND";
+		functionDisplay[1] = "  PARIND";
+		functionDisplay[2] = "  GRP";
+		functionDisplay[3] = "  PARGRP (Not Implemented)";
+		for(int i = 4; i < 10; ++i) {
+			functionDisplay[i] = "";
+		}
+		mainTextArea.setText(createMainTextString(functionDisplay));
+	}
+	
+	private void function(boolean event, int funID) {
+		
+	}
+	
+	private void setFunctionDisplay() {
+		functionLength = 9;
+		functionDisplay[0] = "* DNF";
+		functionDisplay[1] = "  NUM";
+		functionDisplay[2] = "  CLR";
+		functionDisplay[3] = "  NEWRUN";
+		functionDisplay[4] = "  ENDRUN";
+		functionDisplay[5] = "  EVENT";
+		functionDisplay[6] = "  TIME";
+		functionDisplay[7] = "  EXPORT";
+		functionDisplay[8] = "  RESET";
+	}
+	
+	private void upBtn() {
+		if(functionBool && functionLine > 0) {
+			functionDisplay[functionLine] = " " + functionDisplay[functionLine].substring(1, functionDisplay[functionLine].length());
+			functionDisplay[functionLine-1] = "*" + functionDisplay[functionLine-1].substring(1, functionDisplay[functionLine-1].length());
+			mainTextArea.setText(createMainTextString(functionDisplay));
+			-- functionLine;
+		}
+	}
+	
+	private void downBtn() {
+		if(functionBool && functionLine < functionLength -1) {
+		functionDisplay[functionLine] = " " + functionDisplay[functionLine].substring(1, functionDisplay[functionLine].length());
+		functionDisplay[functionLine+1] = "*" + functionDisplay[functionLine+1].substring(1, functionDisplay[functionLine+1].length());
+		mainTextArea.setText(createMainTextString(functionDisplay));
+		++ functionLine;
+		}
+	}
+	
+	private void update() {
+		updateDisplay();
+		//TODO: Add updatePrinter method (Chronotimer needs a getPrinterFeed() method)
+		// or updatePrinter method needs to get things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
+		//updatePrinter();
+	}
+	
+	private void threader() {
+		updaterThread = new Thread() {
+			public void run() {
+				while(power) {
+					update();
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+					}
+				}
+				
+			}
+		};
 	}
 }
