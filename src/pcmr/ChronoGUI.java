@@ -61,6 +61,7 @@ public class ChronoGUI {
 	private int numLength;
 	private boolean num = false;
 	private boolean time = false;
+	private boolean export = false;
 	private JTextField txtUsbPort;
 
 	/**
@@ -1289,6 +1290,7 @@ public class ChronoGUI {
 		numLength = 0;
 		num = false;
 		time = false;
+		export = false;
 	}
 	private void functionBtn() {
 		if(!power) return;
@@ -1401,9 +1403,16 @@ public class ChronoGUI {
 				break;
 			}
 			case(7): {
-				_chrono.runCommand("-", "EXPORT");
-				// TODO: Need to enter in a run number here
-				functionReturn();
+				for(int i = 0; i < 10; ++i) {
+					functionDisplay[i] = "";
+				}
+				functionDisplay[0] = "Enter run number to Export";
+				functionDisplay[1] = "# to Enter, * to Clear";
+				functionDisplay[2] = "Run: ";
+				numLength = 0;
+				num = true;
+				export = true;
+				mainTextArea.setText(createMainTextString(functionDisplay));
 				break;
 			}
 			case(8): {
@@ -1436,6 +1445,13 @@ public class ChronoGUI {
 				functionReturn();
 				break;
 			}
+			case(12): {
+				_chrono.runCommand("-", "EXPORT", functionDisplay[2].substring(5));
+				num = false;
+				export = false;
+				functionReturn();
+				break;
+			}
 			default:
 				break;
 			}
@@ -1458,12 +1474,10 @@ public class ChronoGUI {
 				if(i < 10) functionDisplay[2] =  functionDisplay[2] + "." + i;
 				++numLength;
 			}
-			else if(!time && i == 11) {
-				function(false, 10);
-				numLength = 0;
-			}
-			else if(time && i == 11) {
-				function(false, 11);
+			else if(i == 11) {
+				if(export) function(false, 12);
+				else if(time) function(false, 11);
+				else function(false, 10);
 				numLength = 0;
 			}
 			else if(i < 10) functionDisplay[2] =  functionDisplay[2] + i;
