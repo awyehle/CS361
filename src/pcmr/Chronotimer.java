@@ -310,6 +310,11 @@ public class Chronotimer {
 			addRacer(command);
 			break;
 		}
+		case "SWAP":
+		{
+			swap(command);
+			break;
+		}
 		default: {System.out.println("Invalid command entered. Contact a Software Engineer to solve this problem"); break;}
 		}
 		
@@ -347,6 +352,21 @@ public class Chronotimer {
 				}catch(IndexOutOfBoundsException e){
 					_printer.println("bad boy");
 			}
+	}
+	
+	/**
+	 * Swaps the next two racers in queue 1 
+	 * @param command Command in the format <timestamp> <SWAP>
+	 */
+	private void swap(String... command) {
+		if(event == EVENTS.IND) {
+			Racer r1 = _queues[0].pop();
+			Racer r2 = _queues[0].pop();
+			_queues[0].push(r1);
+			_queues[0].push(r2);
+			_printer.println("Racers in queue 1 have been swapped");
+		}
+		else _printer.println("SWAP can only be used on IND races");
 	}
 
 	/**

@@ -34,6 +34,14 @@ public class ChronoGUI {
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
+	private JRadioButton radioButton;
+	private JRadioButton radioButton_1;
+	private JRadioButton radioButton_2;
+	private JRadioButton radioButton_3;
+	private JRadioButton radioButton_4;
+	private JRadioButton radioButton_5;
+	private JRadioButton radioButton_6;
+	private JRadioButton radioButton_7;
 	private boolean functionBool = false;
 	private String[] mainDisplay = new String[11];
 	private String[] functionDisplay = new String[11];
@@ -42,6 +50,9 @@ public class ChronoGUI {
 	private int functionLine;
 	private int functionLength;
 	private boolean event = false;
+	private int numLength;
+	private boolean num = false;
+	private boolean time = false;
 
 	/**
 	 * Launch the application.
@@ -113,6 +124,10 @@ public class ChronoGUI {
 				commandArray[1] = "POWER";
 				_chrono.runCommand(commandArray);
 				power = !power;
+				if(!power) {
+					clearMainDisplay();
+					functionReset();
+				}
 				threader();
 				updaterThread.start();
 			}
@@ -135,6 +150,11 @@ public class ChronoGUI {
 		//end printer
 		
 		txtChronotimer = new JTextField(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override public void setBorder(Border border) {
 		        // No!
 		    }
@@ -165,22 +185,47 @@ public class ChronoGUI {
 		JButton btnSwap = new JButton("Swap");
 		btnSwap.setBounds(10, 375, 101, 23);
 		frame.getContentPane().add(btnSwap);
+		btnSwap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_chrono.runCommand("-", "SWAP");
+			}
+		});
 		
 		JButton button = new JButton("1");
 		button.setBounds(488, 221, 41, 45);
 		frame.getContentPane().add(button);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(1);
+			}
+		});
 		
 		JButton button_9 = new JButton("*");
 		button_9.setBounds(488, 353, 41, 45);
 		frame.getContentPane().add(button_9);
+		button_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(10);
+			}
+		});
 		
 		JButton button_10 = new JButton("0");
 		button_10.setBounds(527, 353, 41, 45);
 		frame.getContentPane().add(button_10);
+		button_10.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(0);
+			}
+		});
 		
 		JButton button_11 = new JButton("#");
 		button_11.setBounds(562, 353, 41, 45);
 		frame.getContentPane().add(button_11);
+		button_11.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(11);
+			}
+		});
 		
 		JButton button_12 = new JButton("");
 		button_12.setBounds(238, 48, 27, 23);
@@ -248,35 +293,35 @@ public class ChronoGUI {
 		button_19.setBounds(349, 123, 27, 23);
 		frame.getContentPane().add(button_19);
 		
-		JRadioButton radioButton = new JRadioButton("");
+		radioButton = new JRadioButton("");
 		radioButton.setBounds(239, 78, 27, 23);
 		frame.getContentPane().add(radioButton);
 		
-		JRadioButton radioButton_1 = new JRadioButton("");
+		radioButton_1 = new JRadioButton("");
 		radioButton_1.setBounds(275, 78, 27, 23);
 		frame.getContentPane().add(radioButton_1);
 		
-		JRadioButton radioButton_2 = new JRadioButton("");
+		radioButton_2 = new JRadioButton("");
 		radioButton_2.setBounds(312, 78, 27, 23);
 		frame.getContentPane().add(radioButton_2);
 		
-		JRadioButton radioButton_3 = new JRadioButton("");
+		radioButton_3 = new JRadioButton("");
 		radioButton_3.setBounds(349, 78, 27, 23);
 		frame.getContentPane().add(radioButton_3);
 		
-		JRadioButton radioButton_4 = new JRadioButton("");
+		radioButton_4 = new JRadioButton("");
 		radioButton_4.setBounds(238, 153, 27, 23);
 		frame.getContentPane().add(radioButton_4);
 		
-		JRadioButton radioButton_5 = new JRadioButton("");
+		radioButton_5 = new JRadioButton("");
 		radioButton_5.setBounds(275, 153, 27, 23);
 		frame.getContentPane().add(radioButton_5);
 		
-		JRadioButton radioButton_6 = new JRadioButton("");
+		radioButton_6 = new JRadioButton("");
 		radioButton_6.setBounds(312, 153, 27, 23);
 		frame.getContentPane().add(radioButton_6);
 		
-		JRadioButton radioButton_7 = new JRadioButton("");
+		radioButton_7 = new JRadioButton("");
 		radioButton_7.setBounds(349, 153, 27, 23);
 		frame.getContentPane().add(radioButton_7);
 		
@@ -322,34 +367,74 @@ public class ChronoGUI {
 		JButton button_1 = new JButton("2");
 		button_1.setBounds(527, 221, 41, 45);
 		frame.getContentPane().add(button_1);
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(2);
+			}
+		});
 		
 		JButton button_2 = new JButton("3");
 		button_2.setBounds(562, 221, 41, 45);
 		frame.getContentPane().add(button_2);
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(3);
+			}
+		});
 		
 		JButton button_3 = new JButton("4");
 		button_3.setBounds(488, 265, 41, 45);
 		frame.getContentPane().add(button_3);
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(4);
+			}
+		});
 		
 		JButton button_4 = new JButton("5");
 		button_4.setBounds(527, 265, 41, 45);
 		frame.getContentPane().add(button_4);
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(5);
+			}
+		});
 		
 		JButton button_5 = new JButton("6");
 		button_5.setBounds(562, 265, 41, 45);
 		frame.getContentPane().add(button_5);
+		button_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(6);
+			}
+		});
 		
 		JButton button_6 = new JButton("7");
 		button_6.setBounds(488, 309, 41, 45);
 		frame.getContentPane().add(button_6);
+		button_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(7);
+			}
+		});
 		
 		JButton button_7 = new JButton("8");
 		button_7.setBounds(527, 309, 41, 45);
 		frame.getContentPane().add(button_7);
+		button_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(8);
+			}
+		});
 		
 		JButton button_8 = new JButton("9");
 		button_8.setBounds(562, 309, 41, 45);
 		frame.getContentPane().add(button_8);
+		button_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numButtons(9);
+			}
+		});
 		
 		JLabel lblStart = new JLabel("Start");
 		lblStart.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -372,6 +457,11 @@ public class ChronoGUI {
 		frame.getContentPane().add(label_1);
 		
 		textField_2 = new JTextField() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -384,6 +474,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_2);
 		
 		textField_3 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -396,6 +488,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_3);
 		
 		textField_4 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -408,6 +502,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_4);
 		
 		textField_5 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -420,6 +516,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_5);
 		
 		textField_6 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -432,6 +530,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_6);
 		
 		textField_7 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -444,6 +544,8 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_7);
 		
 		textField_8 = new JTextField() {
+			private static final long serialVersionUID = 1L;
+
 			public void setBorder(Border border) {
 			}
 		};
@@ -456,6 +558,7 @@ public class ChronoGUI {
 		frame.getContentPane().add(textField_8);
 		
 		textField_9 = new JTextField() {
+			private static final long serialVersionUID = 1L;
 			public void setBorder(Border border) {
 			}
 		};
@@ -481,14 +584,6 @@ public class ChronoGUI {
 	private void clearMainDisplay() {
 		mainTextArea.setText("\n\n\n\n\n\n\n\n\n\n");
 	}
-	
-	private void updateDisplay() {
-		// TODO: Chronotimer needs a getDisplay() method
-		// or this method needs to get individual data from chronotimer and update the mainDisplay array, then add this line
-		// mainTextArea.setText(createMainTextString(mainDisplay)); and remove the next line if this line was used
-		// mainDisplay = _chrono.getDisplay();
-		if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
-	}
 
 	public void addPrinterLine(String s) {
 	    int lineCount = printerTextArea.getLineCount();
@@ -504,20 +599,28 @@ public class ChronoGUI {
 	    }
 	}
 	
+	// Start FUNCTION functionality ------------------------------------------------------------
+	
+	private void functionReset() {
+		functionBool = false;
+		setFunctionDisplay();
+		functionLine = 0;
+		functionLength = 0;
+		event = false;
+		numLength = 0;
+		num = false;
+		time = false;
+	}
 	private void functionBtn() {
+		if(!power) return;
 		if(functionBool) {
+			if(num) return;
 			if(functionLine == 5) {
 				event = true;
 				eventDisplay();
 				return;
 			}
-			if(functionLine < 5) {
-				return;
-			}
 			function(event, functionLine);
-			event = false;
-			functionBool = false;
-			mainTextArea.setText(createMainTextString(mainDisplay));
 		}
 		else {
 			functionBool = true;
@@ -525,6 +628,12 @@ public class ChronoGUI {
 			setFunctionDisplay();
 			mainTextArea.setText(createMainTextString(functionDisplay));
 		}
+	}
+	
+	private void functionReturn() {
+		event = false;
+		functionBool = false;
+		mainTextArea.setText(createMainTextString(mainDisplay));
 	}
 	
 	private void eventDisplay() {
@@ -541,24 +650,163 @@ public class ChronoGUI {
 	}
 	
 	private void function(boolean event, int funID) {
-		
+		if(event) {
+			switch(funID) {
+			case(1):{
+				_chrono.runCommand("-", "EVENT", "PARIND");
+				functionReturn();
+				break;
+			}
+			case(2):{
+				_chrono.runCommand("-", "EVENT", "GRP");
+				functionReturn();
+				break;
+			}
+			case(3):{
+				_chrono.runCommand("-", "EVENT", "PARGRP");
+				functionReturn();
+				break;
+			}
+			default:{
+				_chrono.runCommand("-", "EVENT", "IND");
+				functionReturn();
+				break;
+			}
+			}
+		}
+		else {
+			switch(funID) {
+			case(0): {
+				_chrono.runCommand("-","DNF");
+				functionReturn();
+				break;
+			}
+			case(1): {
+				for(int i = 0; i < 10; ++i) {
+					functionDisplay[i] = "";
+				}
+				functionDisplay[0] = "Enter a racer number";
+				functionDisplay[1] = "# to Enter, * to Clear";
+				functionDisplay[2] = "bib: ";
+				numLength = 0;
+				num = true;
+				mainTextArea.setText(createMainTextString(functionDisplay));
+				break;
+			}
+			case(2):{
+				_chrono.runCommand("-", "CANCEL");
+				functionReturn();
+				break;
+			}
+			case(3): {
+				_chrono.runCommand("-", "NEWRUN");
+				functionReturn();
+				break;
+			}
+			case(4): {
+				_chrono.runCommand("-", "ENDRUN");
+				functionReturn();
+				break;
+			}
+			case(6): {
+				for(int i = 0; i < 10; ++i) {
+					functionDisplay[i] = "";
+				}
+				functionDisplay[0] = "Enter a mm:ss.ms Timestamp";
+				functionDisplay[1] = "# to Enter, * to Clear";
+				functionDisplay[2] = "Time: ";
+				numLength = 0;
+				num = true;
+				time = true;
+				mainTextArea.setText(createMainTextString(functionDisplay));
+				break;
+			}
+			case(7): {
+				_chrono.runCommand("-", "EXPORT");
+				functionReturn();
+				break;
+			}
+			case(8): {
+				_chrono.runCommand("-", "RESET");
+				functionReturn();
+				radioButton.setSelected(false);
+				radioButton_1.setSelected(false);
+				radioButton_2.setSelected(false);
+				radioButton_3.setSelected(false);
+				radioButton_4.setSelected(false);
+				radioButton_5.setSelected(false);
+				radioButton_6.setSelected(false);
+				radioButton_7.setSelected(false);
+				break;
+			}
+			case(9): {
+				functionReturn();
+				break;
+			}
+			case(10): {
+				_chrono.runCommand("-", "NUM", functionDisplay[2].substring(5));
+				num = false;
+				functionReturn();
+				break;
+			}
+			case(11): {
+				_chrono.runCommand("-", "TIME", functionDisplay[2].substring(6));
+				num = false;
+				time = false;
+				functionReturn();
+				break;
+			}
+			default:
+				break;
+			}
+		}
+	}
+	
+	private void numButtons(int i) {
+		if((num && time && (numLength < 8 || i == 10 || i == 11)) || (num && !time && (numLength < 4 || i == 10 || i == 11))) {
+			++numLength;
+			if(i == 10) {
+				if(!time)functionDisplay[2] = "Bib: ";
+				else functionDisplay[2] = "Time: ";
+				numLength = 0;
+			}
+			else if(time && numLength == 3) {
+				if(i < 10) functionDisplay[2] =  functionDisplay[2] + ":" + i;
+				++numLength;
+			}
+			else if(time && numLength == 6) {
+				if(i < 10) functionDisplay[2] =  functionDisplay[2] + "." + i;
+				++numLength;
+			}
+			else if(!time && i == 11) {
+				function(false, 10);
+				numLength = 0;
+			}
+			else if(time && i == 11) {
+				function(false, 11);
+				numLength = 0;
+			}
+			else if(i < 10) functionDisplay[2] =  functionDisplay[2] + i;
+			mainTextArea.setText(createMainTextString(functionDisplay));
+		}
 	}
 	
 	private void setFunctionDisplay() {
-		functionLength = 9;
+		functionLength = 10;
 		functionDisplay[0] = "* DNF";
 		functionDisplay[1] = "  NUM";
-		functionDisplay[2] = "  CLR";
+		functionDisplay[2] = "  CANCEL";
 		functionDisplay[3] = "  NEWRUN";
 		functionDisplay[4] = "  ENDRUN";
 		functionDisplay[5] = "  EVENT";
 		functionDisplay[6] = "  TIME";
 		functionDisplay[7] = "  EXPORT";
 		functionDisplay[8] = "  RESET";
+		functionDisplay[9] = "  EXIT Function Screen";
 	}
 	
 	private void upBtn() {
-		if(functionBool && functionLine > 0) {
+		if(!num && !time && functionBool && functionLine > 0) {
 			functionDisplay[functionLine] = " " + functionDisplay[functionLine].substring(1, functionDisplay[functionLine].length());
 			functionDisplay[functionLine-1] = "*" + functionDisplay[functionLine-1].substring(1, functionDisplay[functionLine-1].length());
 			mainTextArea.setText(createMainTextString(functionDisplay));
@@ -567,7 +815,7 @@ public class ChronoGUI {
 	}
 	
 	private void downBtn() {
-		if(functionBool && functionLine < functionLength -1) {
+		if(!num && !time && functionBool && functionLine < functionLength -1) {
 		functionDisplay[functionLine] = " " + functionDisplay[functionLine].substring(1, functionDisplay[functionLine].length());
 		functionDisplay[functionLine+1] = "*" + functionDisplay[functionLine+1].substring(1, functionDisplay[functionLine+1].length());
 		mainTextArea.setText(createMainTextString(functionDisplay));
@@ -575,13 +823,41 @@ public class ChronoGUI {
 		}
 	}
 	
-	private void update() {
-		updateDisplay();
-		//TODO: Add updatePrinter method (Chronotimer needs a getPrinterFeed() method)
-		// or updatePrinter method needs to get things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
-		//updatePrinter();
+	// End FUNCTION functionality --------------------------------------------------------------------
+	
+	/** This method gets the latest display data from {@link pcmr.Chronotimer} including a queue of racers, current racer(s)
+	 *  in the race, and the last finish(es) depending on the event (more information in Sprint 3 document at bottom of page).
+	 *  At most, 3 lines are dedicated to the race queue, 2 lines to the current racers, and 2 lines to the last finisher(s)
+	 *  with spaces between the categories. The data is loaded into the {@link #mainDisplay} variable and processed with
+	 *  {@link #createMainTextString(String[])}
+	 * 
+	 */
+	private void updateDisplay() {
+		// TODO: Chronotimer needs a getDisplay() method
+		// or this method needs to get individual data from chronotimer and update the mainDisplay array, then add this line
+		// mainTextArea.setText(createMainTextString(mainDisplay)); and remove the next line if this line was used
+		// mainDisplay = _chrono.getDisplay();
+		if(!functionBool) mainTextArea.setText(createMainTextString(mainDisplay));
 	}
 	
+	/** This method gets the latest printer data from {@link pcmr.Chronotimer} (which should be stored in ArrayList format)
+	 *  any new entries to the ArrayList should be added on a line by line basis in order from oldest to newest
+	 *  with {@link #addPrinterLine(String)}
+	 */
+	private void updatePrinter() {
+		//TODO: Chronotimer needs a getPrinterFeed() method
+		// or this method needs to get printer things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
+	}
+	
+	/** This method is called from the separate {@link #threader()} thread
+	 */
+	private void update() {
+		updateDisplay();
+		updatePrinter();
+	}
+	/** This method creates a new thread that starts with the power button
+	 * It calls {@link #update()} every 1 millisecond
+	 */
 	private void threader() {
 		updaterThread = new Thread() {
 			public void run() {
