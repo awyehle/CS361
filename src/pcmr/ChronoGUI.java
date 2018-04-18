@@ -3,13 +3,18 @@ package pcmr;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -19,6 +24,7 @@ import data.Time;
 import java.awt.Font;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 
 public class ChronoGUI {
 	
@@ -55,6 +61,7 @@ public class ChronoGUI {
 	private int numLength;
 	private boolean num = false;
 	private boolean time = false;
+	private JTextField txtUsbPort;
 
 	/**
 	 * Launch the application.
@@ -90,7 +97,7 @@ public class ChronoGUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setSize(700, 500);
+		frame.setSize(700, 550);
 		frame.setResizable(false);
 		frame.setTitle("ChronoTimer");
 		//frame.setBounds(100, 100, 450, 300);
@@ -807,6 +814,423 @@ public class ChronoGUI {
 		textField_9.setBackground(SystemColor.menu);
 		textField_9.setBounds(238, 108, 27, 14);
 		frame.getContentPane().add(textField_9);
+		
+		JButton sensorChan1 = new JButton("1");
+		sensorChan1.setBounds(10, 436, 41, 23);
+		frame.getContentPane().add(sensorChan1);
+		
+		class sensorChan1 implements MouseListener{
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				String[] commandArray = new String[4];
+				final JPopupMenu popup = new JPopupMenu();
+		        popup.add(new JMenuItem(new AbstractAction("Connect") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "GATE";
+						commandArray[3] = "1";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.add(new JMenuItem(new AbstractAction("Remove") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "NONE";
+						commandArray[3] = "1";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		}
+		sensorChan1 sensorChannel1_Listener = new sensorChan1();
+		sensorChan1.addMouseListener(sensorChannel1_Listener);
+		
+		JButton sensorChan2 = new JButton("2");
+		sensorChan2.setBounds(53, 436, 41, 23);
+		frame.getContentPane().add(sensorChan2);
+		
+		class sensorChan2 implements MouseListener{
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				String[] commandArray = new String[4];
+				final JPopupMenu popup = new JPopupMenu();
+		        popup.add(new JMenuItem(new AbstractAction("Connect") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "EYE";
+						commandArray[3] = "2";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.add(new JMenuItem(new AbstractAction("Remove") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "NONE";
+						commandArray[3] = "2";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		}
+		sensorChan2 sensorChannel2_Listener = new sensorChan2();
+		sensorChan2.addMouseListener(sensorChannel2_Listener);
+		
+		JButton sensorChan3 = new JButton("3");
+		sensorChan3.setBounds(96, 436, 41, 23);
+		frame.getContentPane().add(sensorChan3);
+		
+		class sensorChan3 implements MouseListener{
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				String[] commandArray = new String[4];
+				final JPopupMenu popup = new JPopupMenu();
+		        popup.add(new JMenuItem(new AbstractAction("Connect") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "GATE";
+						commandArray[3] = "3";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.add(new JMenuItem(new AbstractAction("Remove") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "NONE";
+						commandArray[3] = "3";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		}
+		sensorChan3 sensorChannel3_Listener = new sensorChan3();
+		sensorChan3.addMouseListener(sensorChannel3_Listener);
+		
+		JButton sensorChan4 = new JButton("4");
+		sensorChan4.setBounds(139, 436, 41, 23);
+		frame.getContentPane().add(sensorChan4);
+		
+		class sensorChan4 implements MouseListener{
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				String[] commandArray = new String[4];
+				final JPopupMenu popup = new JPopupMenu();
+		        popup.add(new JMenuItem(new AbstractAction("Connect") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "EYE";
+						commandArray[3] = "4";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.add(new JMenuItem(new AbstractAction("Remove") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "NONE";
+						commandArray[3] = "4";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		}
+		sensorChan4 sensorChannel4_Listener = new sensorChan4();
+		sensorChan4.addMouseListener(sensorChannel4_Listener);
+		
+		JButton sensorChan5 = new JButton("5");
+		sensorChan5.setBounds(10, 462, 41, 23);
+		frame.getContentPane().add(sensorChan5);
+		
+		class sensorChan5 implements MouseListener{
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				String[] commandArray = new String[4];
+				final JPopupMenu popup = new JPopupMenu();
+		        popup.add(new JMenuItem(new AbstractAction("Connect") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "GATE";
+						commandArray[3] = "5";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.add(new JMenuItem(new AbstractAction("Remove") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "NONE";
+						commandArray[3] = "5";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		}
+		sensorChan5 sensorChannel5_Listener = new sensorChan5();
+		sensorChan5.addMouseListener(sensorChannel5_Listener);
+		
+		JButton sensorChan6 = new JButton("6");
+		sensorChan6.setBounds(53, 462, 41, 23);
+		frame.getContentPane().add(sensorChan6);
+		
+		class sensorChan6 implements MouseListener{
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				String[] commandArray = new String[4];
+				final JPopupMenu popup = new JPopupMenu();
+		        popup.add(new JMenuItem(new AbstractAction("Connect") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "EYE";
+						commandArray[3] = "6";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.add(new JMenuItem(new AbstractAction("Remove") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "NONE";
+						commandArray[3] = "6";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		}
+		sensorChan6 sensorChannel6_Listener = new sensorChan6();
+		sensorChan6.addMouseListener(sensorChannel6_Listener);
+		
+		JButton sensorChan7 = new JButton("7");
+		sensorChan7.setBounds(96, 462, 41, 23);
+		frame.getContentPane().add(sensorChan7);
+		
+		class sensorChan7 implements MouseListener{
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				String[] commandArray = new String[4];
+				final JPopupMenu popup = new JPopupMenu();
+		        popup.add(new JMenuItem(new AbstractAction("Connect") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "GATE";
+						commandArray[3] = "7";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.add(new JMenuItem(new AbstractAction("Remove") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "NONE";
+						commandArray[3] = "7";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		}
+		sensorChan7 sensorChannel7_Listener = new sensorChan7();
+		sensorChan7.addMouseListener(sensorChannel7_Listener);
+		
+		JButton sensorChan8 = new JButton("8");
+		sensorChan8.setBounds(139, 462, 41, 23);
+		frame.getContentPane().add(sensorChan8);
+		
+		class sensorChan8 implements MouseListener{
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				String[] commandArray = new String[4];
+				final JPopupMenu popup = new JPopupMenu();
+		        popup.add(new JMenuItem(new AbstractAction("Connect") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "EYE";
+						commandArray[3] = "8";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.add(new JMenuItem(new AbstractAction("Remove") {
+		        	
+		            public void actionPerformed(ActionEvent d) {
+		            	if(!_chrono.isOn()) return;
+						commandArray[0] = "-";
+						commandArray[1] = "CONN";
+						commandArray[2] = "NONE";
+						commandArray[3] = "8";
+						_chrono.runCommand(commandArray);
+		            }
+		        }));
+		        popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		}
+		sensorChan8 sensorChannel8_Listener = new sensorChan8();
+		sensorChan8.addMouseListener(sensorChannel8_Listener);
+		
+		txtUsbPort = new JTextField();
+		txtUsbPort.setBackground(Color.LIGHT_GRAY);
+		txtUsbPort.setHorizontalAlignment(SwingConstants.CENTER);
+		txtUsbPort.setText("USB Port");
+		txtUsbPort.setBounds(343, 462, 86, 20);
+		txtUsbPort.setEditable(false);
+		frame.getContentPane().add(txtUsbPort);
+		txtUsbPort.setColumns(10);
 	}
 	
 	private String createMainTextString(String[] stringArray) {

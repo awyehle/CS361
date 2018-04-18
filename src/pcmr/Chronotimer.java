@@ -566,8 +566,16 @@ public class Chronotimer {
 		try
 		{
 			int channel = Integer.parseInt(command[3])-1;
+			if(command[2].toUpperCase().equals("NONE")){
+				if((_sensorsConnected[channel]==null)){
+					return;
+				}
+				_sensorsConnected[channel] = null;
+				_printer.println(command[0] + " Channel " + (channel+1) + " has had a sensor removed");
+				return;
+			}
 			_sensorsConnected[channel] = new Sensor();
-			_printer.println(command[0] + " Channel " + (channel+1) + " has a sensor connected");
+			_printer.println(command[0] + " Channel " + (channel+1) + " has a sensor " + command[2] + " connected");
 		}
 		catch(NumberFormatException e) {_printer.println(command[0] + " Error connecting the sensor");}
 		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
