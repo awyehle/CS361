@@ -167,9 +167,43 @@ public class ChronoGUI {
 		button_12.setBounds(238, 48, 27, 23);
 		frame.getContentPane().add(button_12);
 		
-		JButton button_13 = new JButton("");
-		button_13.setBounds(275, 48, 27, 23);
-		frame.getContentPane().add(button_13);
+		class Channel1 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[2];
+				commandArray[0] = "-";
+				commandArray[1] = "TRIG";
+				commandArray[2] = "1";
+				_chrono.runCommand(commandArray);
+			System.out.println("Channel1");
+			}
+			
+		}
+		Channel1 channel1Listener = new Channel1();
+		button_12.addActionListener(channel1Listener);
+		
+		
+		JButton Channel3 = new JButton("");
+		Channel3.setBounds(275, 48, 27, 23);
+		frame.getContentPane().add(Channel3);
+		
+		class Channel3 implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] commandArray = new String[2];
+				commandArray[0] = "-";
+				commandArray[1] = "TRIG";
+				commandArray[2] = "3";
+				_chrono.runCommand(commandArray);
+			System.out.println("Channel3");
+			}
+			
+		}
+		Channel3 channel3Listener = new Channel3();
+		Channel3.addActionListener(channel3Listener);
+		
 		
 		JButton button_14 = new JButton("");
 		button_14.setBounds(312, 48, 27, 23);
