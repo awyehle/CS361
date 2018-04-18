@@ -160,6 +160,18 @@ public class RaceQueuer {
 		
 	}
 	
+	public void swap()
+	{
+		try
+		{
+			_inProgress.add(0,_inProgress.remove(1));
+		}
+		catch (Exception e)
+		{///lazy}
+			
+		}
+	}
+	
 	public boolean isEmpty(){
 		
 		if(_waitQueue.size() == 0 && _inProgress.size() == 0 && _alreadyRan.size() == 0) return true;

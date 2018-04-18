@@ -347,10 +347,7 @@ public class Chronotimer {
 	 */
 	private void swap(String... command) {
 		if(event == EVENTS.IND) {
-			Racer r1 = _queues[0].pop();
-			Racer r2 = _queues[0].pop();
-			_queues[0].push(r1);
-			_queues[0].push(r2);
+			_queues[0].swap();
 			_printer.println("Racers in queue 1 have been swapped");
 		}
 		else _printer.println("SWAP can only be used on IND races");
