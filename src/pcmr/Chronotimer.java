@@ -237,7 +237,6 @@ public class Chronotimer {
 		}
 		case "NEWRUN":
 		{
-			System.out.println("nigger");
 			newrun(command);
 			break;
 		}
