@@ -46,7 +46,7 @@ public class Chronotimer {
 	private EVENTS event = EVENTS.IND;
 	private boolean _eventRunning;
 	
-	private Time _lastToFinish;
+	private Time[] _lastToFinish = new Time[2];
 	
 	private int _bibNumber = 0;
 	
@@ -128,6 +128,7 @@ public class Chronotimer {
 				catch(NullPointerException e) {}
 				try
 				{
+					_queue+=", ";
 					_queue+=_queues[1].peekWaiting(0).toString();
 				}
 				catch(NullPointerException e) {}
@@ -147,12 +148,12 @@ public class Chronotimer {
 				try
 				{
 					_finished="";
-					_finished+=_queues[0].peekRan().toString();
+					_finished+=_lastToFinish[0].convertRawTime();
 				}
 				catch(NullPointerException e) {}
 				try
 				{
-					_finished+="\n" + _queues[1].peekRan().toString();
+					_finished+="\n" + _lastToFinish[1].convertRawTime();
 				}
 				catch(NullPointerException e) {}
 				break;
@@ -169,7 +170,7 @@ public class Chronotimer {
 				try
 				{
 					_finished="";
-					_finished+=_lastToFinish.convertRawTime();
+					_finished+=_lastToFinish[0].convertRawTime();
 				}
 				catch(Exception e) {}
 				break;
@@ -647,7 +648,8 @@ public class Chronotimer {
 	{
 		try{
 			Time time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[startChannel].remove());
-			_lastToFinish=time;
+			_lastToFinish[1]=_lastToFinish[0];
+			_lastToFinish[0]=time;
 			return time.convertRawTime();
 		}catch(NoSuchElementException e){
 			System.out.println("You must start a race before printing times.");
