@@ -163,7 +163,7 @@ public class Chronotimer {
 				try
 				{
 					_running="";
-					_running+=_queues[0].peek().toString() + ": " + Time.difference( _startTimes[0].getFirst(),new Time());
+					_running+= Time.difference( _startTimes[0].getFirst(),new Time()).convertRawTime();
 				}
 				catch(Exception e) {}
 				try
@@ -477,17 +477,29 @@ public class Chronotimer {
 					else
 					{
 						if(channel/2 !=0) return;
-						while(_queues[0].queueSize() >0) _queues[0].popWait();
-						_startTimes[0].add(new Time(command[0]));
+						for(int i = 0; i <_queues[0].queueSize(); ++i)
+							{
+							_queues[0].popWait();
+							_startTimes[0].add(new Time(command[0]));
+							}
 					}
 				}catch(NullPointerException e){return;}
 			}
 			else 
 			{
 				try{
-					Racer finisher = _queues[(channel-1)/2].pop();
-					_finishTimes[(channel-1)/2].add(new Time(command[0]));
-					_run.get(_runNumber-1).addResult(""+finisher.getBib(), getRacerTime((channel-1)/2));
+					if(event!=EVENTS.GRP)
+					{
+						Racer finisher = _queues[(channel-1)/2].pop();
+						_finishTimes[(channel-1)/2].add(new Time(command[0]));
+						_run.get(_runNumber-1).addResult(""+finisher.getBib(), getRacerTime((channel-1)/2));
+					}
+					else
+					{
+						if((channel-1)/2 != 0) return;
+						_finishTimes[0].add(new Time(command[0]));
+						_run.get(_runNumber-1).addResult(""+_queues[0].pop().getBib(), getRacerTime((channel-1)/2));
+					}
 				}catch(NullPointerException e){_printer.println("no racer here");return;}
 			}
 			_printer.println(command[0] + " Channel " + (channel) + " has been tripped!");
