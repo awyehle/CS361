@@ -26,6 +26,10 @@ import java.awt.SystemColor;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 
+/**
+ * @author Andrew Yehle & Michael Davis
+ *
+ */
 public class ChronoGUI {
 	
 	private  Chronotimer _chrono;
@@ -121,10 +125,7 @@ public class ChronoGUI {
 		printerTextArea.setText("\n\n\n\n\n\n\n\n\n");
 		printerTextArea.setEditable(false);
 		
-		/* This is an example of how all buttons and action listeners
-		 * should be implemented
-		 * ~Steven
-		 */
+		
 		JButton btnPower = new JButton("Power");
 		btnPower.setBounds(10, 11, 101, 23);
 		frame.getContentPane().add(btnPower);
@@ -145,10 +146,6 @@ public class ChronoGUI {
 		});
 				
 		
-		// End Power button example
-		
-		//Begin Printer Power
-		
 		JButton btnPrinterPwr = new JButton("Printer Pwr");
 		btnPrinterPwr.setBounds(502, 11, 101, 23);
 		frame.getContentPane().add(btnPrinterPwr);
@@ -158,7 +155,6 @@ public class ChronoGUI {
 			}
 		});
 				
-		//end printer
 		
 		txtChronotimer = new JTextField(){
 			/**
@@ -167,7 +163,7 @@ public class ChronoGUI {
 			private static final long serialVersionUID = 1L;
 
 			@Override public void setBorder(Border border) {
-		        // No!
+		        
 		    }
 		};
 		txtChronotimer.setBackground(SystemColor.control);

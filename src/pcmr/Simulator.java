@@ -6,6 +6,10 @@ import java.util.Scanner;
 
 import data.Time;
 
+/**
+ * @author Steven Messer
+ *
+ */
 public class Simulator {
 	
 	private static Chronotimer _environment;
