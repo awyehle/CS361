@@ -1266,36 +1266,10 @@ public class ChronoGUI {
 	}
 
 	public void addPrinterLine(String s) {
-	    /*
-		if(s.length() > 32) {
-	    	smartPrinterStringWrapper(s);
-	    	return;
-	    }
-	    */
 		String output = printerTextArea.getText() + "\n" + s;    
 	    int begin = output.indexOf("\n");    
 	    output = output.substring(begin + 1);    
 	    printerTextArea.setText(output);    
-	}
-	
-	private void smartPrinterStringWrapper(String s) {
-		if(!s.contains(" ")) {
-			while(s.length() < 0) {
-				addPrinterLine(s.substring(0, 31));
-				s = s.substring(32);
-			}
-			return;
-		}
-		String buildString = "";
-		String[] printArray = s.split(" ");
-		for(String as: printArray) {
-			if(buildString.length() + as.length() < 32) buildString = buildString + as + " ";
-			else {
-				addPrinterLine(buildString);
-				buildString = "   " + as + " ";
-			}
-		}
-		addPrinterLine(buildString);
 	}
 	
 	// Start FUNCTION functionality ------------------------------------------------------------
