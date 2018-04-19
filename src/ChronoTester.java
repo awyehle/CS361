@@ -424,6 +424,13 @@ public class ChronoTester {
 			
 		}
 		
+		@Test
+		public void TestSwap(){
+			
+			
+			
+		}
+		
 		private void rc(Chronotimer c, String cmd)
 		{
 			runCommandWithoutTime(c,cmd);

@@ -149,6 +149,57 @@ public class EventTester {
 			//assertEquals(0,ct.getRun());
 		}
 		
+		@Test
+		public void testGRP(){
+		
+		Chronotimer ct = new Chronotimer();
+		powerUpAndToggleAllChannels(ct);
+		assertEquals("IND", ct.getEvent());
+		
+		rc(ct, "EVENT GRP");
+		assertEquals("GRP", ct.getEvent());
+		rc(ct, "NUM 1234");
+		rc(ct, "NUM 5678");
+		rc(ct, "NUM 4321");
+		rc(ct, "NUM 8765");
+
+		assertEquals(4, ct.queueState().size());
+		assertEquals(4, ct.queueState(1).size());
+
+		assertEquals(0,ct.getRun());
+		rc(ct, "newrun");
+		
+		rc(ct, "trig 1");
+		assertEquals(0, ct.queueState().size());
+		assertEquals(0, ct.queueState(2).size());
+		rc(ct, "trig 2");
+		assertEquals(1, ct.queueState(2).size());
+		rc(ct, "trig 2");
+		assertEquals(2, ct.queueState(2).size());
+		rc(ct, "trig 2");
+		assertEquals(3, ct.queueState(2).size());
+		rc(ct, "trig 2");
+		assertEquals(4, ct.queueState(2).size());
+		assertEquals(4, ct.queueState().size());
+		assertEquals(0, ct.queueState(1).size());
+		
+		
+		assertEquals(4,ct.getResultSize(1));
+		
+		rc(ct, "print 1");
+		assertEquals(1,ct.getRun());
+		
+		rc(ct, "endrun");
+		assertEquals(1,ct.getRun());
+
+		rc(ct, "newrun");
+		assertEquals(2,ct.getRun());
+		assertEquals(0,ct.getResultSize(2));
+		
+		rc(ct, "POWER");
+			
+		}
+		
 		private void rc(Chronotimer c, String cmd)
 		{
 			runCommandWithoutTime(c,cmd);
