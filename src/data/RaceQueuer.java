@@ -162,16 +162,6 @@ public class RaceQueuer {
 	
 	public void swap()
 	{
-		/*
-		try
-		{
-			_inProgress.add(0,_inProgress.remove(1));
-		}
-		catch (Exception e)
-		{///lazy}
-			
-		}
-		*/
 		if(_waitQueue.size() < 2) return;
 		Racer r = _waitQueue.get(0);
 		_waitQueue.set(0, _waitQueue.get(1));
