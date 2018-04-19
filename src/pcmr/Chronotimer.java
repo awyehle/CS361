@@ -513,10 +513,9 @@ public class Chronotimer {
 					}
 					else
 					{
-						if(channel/2 !=0) return;
-						for(int i = 0; i <_queues[0].queueSize(); ++i)
+						if(channel/2 !=0 || _queues[0].queueSize()==0) return;
+						while(_queues[0].popWait()!=null)
 							{
-							_queues[0].popWait();
 							_startTimes[0].add(new Time(command[0]));
 							}
 					}
