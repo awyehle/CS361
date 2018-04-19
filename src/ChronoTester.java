@@ -426,7 +426,47 @@ public class ChronoTester {
 		
 		@Test
 		public void TestSwap(){
+			powerUpAndToggleAllChannels(newChronotimer);
 			
+			assertTrue(newChronotimer.queueState().get(0).isEmpty());
+			assertTrue(newChronotimer.queueState().get(1).isEmpty());
+			
+			rc(newChronotimer, "event ind");
+			
+			rc(newChronotimer, "num 1");
+			
+			rc(newChronotimer, "num 2");
+			
+
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(0).contains(2));
+			
+			rc(newChronotimer, "tog 1");
+			rc(newChronotimer, "tog 2");
+			
+			assertFalse(newChronotimer.eventIsStarted());
+			
+			assertFalse(newChronotimer.eventIsStarted());
+
+			rc(newChronotimer, "trig 1");
+			
+			rc(newChronotimer, "trig 1");
+			
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(0).contains(2));
+			
+			rc(newChronotimer, "trig 2");
+			
+			rc(newChronotimer, "trig 2");
+			
+			System.out.println("Swap");
+			rc(newChronotimer, "Swap");
+			
+			
+			rc(newChronotimer, "endrun");
+			
+			assertTrue(newChronotimer.queueState().get(0).isEmpty());
+			assertTrue(newChronotimer.queueState().get(1).isEmpty());
 			
 			
 		}
