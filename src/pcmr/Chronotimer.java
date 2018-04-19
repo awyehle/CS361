@@ -77,9 +77,17 @@ public class Chronotimer {
 				add(0,echo);
 			System.out.println(echo);
 		}
+		
+		public String[] getPrinterStrings() {
+			
+			String[] ret = this.toArray(new String[0]);
+			clear();
+			return ret;
+			
+		}
 	}
 	public void powerPrinter() {_printer._powered=!_printer._powered;}
-	public String[] getPrinterStrings() { return _printer.toArray(new String[0]);}
+	public String[] getPrinterStrings() { return _printer.getPrinterStrings();}
 	
 	private class Display
 	{
@@ -347,6 +355,10 @@ public class Chronotimer {
 	 */
 	private void swap(String... command) {
 		if(event == EVENTS.IND) {
+			if(_queues[0].queueSize() < 2) {
+				_printer.println("Race Queue has fewer than 2 racers!");
+				return;
+			}
 			_queues[0].swap();
 			_printer.println("Racers in queue 1 have been swapped");
 		}

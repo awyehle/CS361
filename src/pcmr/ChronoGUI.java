@@ -114,11 +114,11 @@ public class ChronoGUI {
 		mainTextArea.setEditable(false);
 		
 		printerTextArea = new JTextArea();
-		printerTextArea.setBounds(488, 43, 130, 133);
+		printerTextArea.setBounds(488, 43, 150, 133); // was 488, 43, 130, 133
 		frame.getContentPane().add(printerTextArea);
 		printerTextArea.setRows(7);
 		printerTextArea.setFont(new Font("Times New Roman", Font.PLAIN, 10));
-		printerTextArea.setText("\n\n\n\n\n\n\n");
+		printerTextArea.setText("\n\n\n\n\n\n\n\n\n");
 		printerTextArea.setEditable(false);
 		
 		/* This is an example of how all buttons and action listeners
@@ -573,7 +573,7 @@ public class ChronoGUI {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.GRAY);
-		panel.setBounds(474, 78, 157, 120);
+		panel.setBounds(474, 78, 177, 120); // was 474, 78, 157, 120
 		frame.getContentPane().add(panel);
 		
 		JButton button_20 = new JButton("<");
@@ -1266,17 +1266,34 @@ public class ChronoGUI {
 	}
 
 	public void addPrinterLine(String s) {
-	    int lineCount = printerTextArea.getLineCount();
-
-	    if (lineCount <= printerTextArea.getRows()) {                
-	        printerTextArea.append(s + "\n");    
-	    } else if (lineCount > printerTextArea.getRows()) {
-
-	        String output = printerTextArea.getText() + "\n" + s;    
-	        int begin = output.indexOf("\n");    
-	        output = output.substring(begin + 1);    
-	        printerTextArea.setText(output);    
+	    if(s.length() > 32) {
+	    	smartPrinterStringWrapper(s);
+	    	return;
 	    }
+		String output = printerTextArea.getText() + "\n" + s;    
+	    int begin = output.indexOf("\n");    
+	    output = output.substring(begin + 1);    
+	    printerTextArea.setText(output);    
+	}
+	
+	private void smartPrinterStringWrapper(String s) {
+		if(!s.contains(" ")) {
+			while(s.length() < 0) {
+				addPrinterLine(s.substring(0, 31));
+				s = s.substring(32);
+			}
+			return;
+		}
+		String buildString = "";
+		String[] printArray = s.split(" ");
+		for(String as: printArray) {
+			if(buildString.length() + as.length() < 32) buildString = buildString + as + " ";
+			else {
+				addPrinterLine(buildString);
+				buildString = "   " + as + " ";
+			}
+		}
+		addPrinterLine(buildString);
 	}
 	
 	// Start FUNCTION functionality ------------------------------------------------------------
@@ -1545,6 +1562,10 @@ public class ChronoGUI {
 	 */
 	private void updatePrinter() {
 		String[] disp = _chrono.getPrinterStrings();
+		for(String s: disp) {
+			addPrinterLine(s);
+		}
+		/*
 		String displayer = "";
 		for(int i = 0; i<10; ++i)
 		{
@@ -1552,6 +1573,7 @@ public class ChronoGUI {
 			displayer += "\n";
 		}
 		printerTextArea.setText(displayer);
+		*/
 		//TODO: Chronotimer needs a getPrinterFeed() method
 		// or this method needs to get printer things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
 	}
