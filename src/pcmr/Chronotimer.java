@@ -60,7 +60,7 @@ public class Chronotimer {
 	 * stupid ugly printer class it echos crap
 	 * Printer also now extends Arraylist so that
 	 * all echos can be retrieved as a display on the paper tape
-	 * @author Andrew Huelsman
+	 * @author Andrew Huelsman / Steven Messer
 	 *
 	 */
 	private class Printer extends ArrayList<String>
@@ -69,12 +69,13 @@ public class Chronotimer {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private static final int printerWidth = 32;
+		private static final int printerWidth = 34;
 		boolean _powered = true;
 
 		public void println(String echo)
 		{
 			if(_powered) {
+				if(!echo.startsWith("- ")) echo = "- " + echo;
 				System.out.println(echo);
 				if(echo.length() > printerWidth) {
 					smartPrinterWrapper(echo);
