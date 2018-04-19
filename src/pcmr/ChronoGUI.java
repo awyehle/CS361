@@ -1266,10 +1266,12 @@ public class ChronoGUI {
 	}
 
 	public void addPrinterLine(String s) {
-	    if(s.length() > 32) {
+	    /*
+		if(s.length() > 32) {
 	    	smartPrinterStringWrapper(s);
 	    	return;
 	    }
+	    */
 		String output = printerTextArea.getText() + "\n" + s;    
 	    int begin = output.indexOf("\n");    
 	    output = output.substring(begin + 1);    
@@ -1565,17 +1567,6 @@ public class ChronoGUI {
 		for(String s: disp) {
 			addPrinterLine(s);
 		}
-		/*
-		String displayer = "";
-		for(int i = 0; i<10; ++i)
-		{
-			if(9-i < disp.length) displayer += disp[9-i];
-			displayer += "\n";
-		}
-		printerTextArea.setText(displayer);
-		*/
-		//TODO: Chronotimer needs a getPrinterFeed() method
-		// or this method needs to get printer things from chronotimer in some other way and add them to printer with addPrinterLine(String s);
 	}
 	
 	/** This method is called from the separate {@link #threader()} thread

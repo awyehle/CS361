@@ -69,13 +69,39 @@ public class Chronotimer {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
+		private static final int printerWidth = 32;
 		boolean _powered = true;
 
 		public void println(String echo)
 		{
-			if(_powered)
+			if(_powered) {
+				System.out.println(echo);
+				if(echo.length() > printerWidth) {
+					smartPrinterWrapper(echo);
+					return;
+				}
 				add(0,echo);
-			System.out.println(echo);
+			}
+		}
+		
+		private void smartPrinterWrapper(String s) {
+			if(!s.contains(" ")) {
+				while(s.length() < 0) {
+					add(s.substring(0, printerWidth-1));
+					s = s.substring(printerWidth);
+				}
+				return;
+			}
+			String buildString = "";
+			String[] printArray = s.split(" ");
+			for(String as: printArray) {
+				if(buildString.length() + as.length() < printerWidth) buildString = buildString + as + " ";
+				else {
+					add(buildString);
+					buildString = "   " + as + " ";
+				}
+			}
+			add(buildString);
 		}
 		
 		public String[] getPrinterStrings() {
