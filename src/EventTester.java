@@ -152,51 +152,47 @@ public class EventTester {
 		@Test
 		public void testGRP(){
 		
-		Chronotimer ct = new Chronotimer();
-		powerUpAndToggleAllChannels(ct);
-		assertEquals("IND", ct.getEvent());
-		
-		rc(ct, "EVENT GRP");
-		assertEquals("GRP", ct.getEvent());
-		rc(ct, "NUM 1234");
-		rc(ct, "NUM 5678");
-		rc(ct, "NUM 4321");
-		rc(ct, "NUM 8765");
+powerUpAndToggleAllChannels(newChronotimer);
+			
+			assertTrue(newChronotimer.queueState().get(0).isEmpty());
+			assertTrue(newChronotimer.queueState().get(1).isEmpty());
+			
+			rc(newChronotimer, "EVENT GRP");
+			
+			rc(newChronotimer, "num 1");
+			
+			rc(newChronotimer, "num 2");
+			
+			rc(newChronotimer, "num 3");
+			
+			rc(newChronotimer, "num 4");
+			
 
-		assertEquals(4, ct.queueState().size());
-		assertEquals(4, ct.queueState(1).size());
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(0).contains(2));
+			assertTrue(newChronotimer.queueState().get(0).contains(3));
+			assertTrue(newChronotimer.queueState().get(0).contains(4));
+			
+			assertFalse(newChronotimer.eventIsStarted());
+			
+			rc(newChronotimer, "newrun");
 
-		assertEquals(0,ct.getRun());
-		rc(ct, "newrun");
-		
-		rc(ct, "trig 1");
-		assertEquals(0, ct.queueState().size());
-		assertEquals(0, ct.queueState(2).size());
-		rc(ct, "trig 2");
-		assertEquals(1, ct.queueState(2).size());
-		rc(ct, "trig 2");
-		assertEquals(2, ct.queueState(2).size());
-		rc(ct, "trig 2");
-		assertEquals(3, ct.queueState(2).size());
-		rc(ct, "trig 2");
-		assertEquals(4, ct.queueState(2).size());
-		assertEquals(4, ct.queueState().size());
-		assertEquals(0, ct.queueState(1).size());
-		
-		
-		assertEquals(4,ct.getResultSize(1));
-		
-		rc(ct, "print 1");
-		assertEquals(1,ct.getRun());
-		
-		rc(ct, "endrun");
-		assertEquals(1,ct.getRun());
-
-		rc(ct, "newrun");
-		assertEquals(2,ct.getRun());
-		assertEquals(0,ct.getResultSize(2));
-		
-		rc(ct, "POWER");
+			rc(newChronotimer, "trig 1");
+			
+			assertTrue(newChronotimer.eventIsStarted());
+			
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(0).contains(2));
+			assertTrue(newChronotimer.queueState().get(0).contains(3));
+			assertTrue(newChronotimer.queueState().get(0).contains(4));
+			
+			rc(newChronotimer, "trig 2");
+			
+			
+			rc(newChronotimer, "endrun");
+			
+			assertTrue(newChronotimer.queueState().get(0).isEmpty());
+			assertTrue(newChronotimer.queueState().get(1).isEmpty());
 			
 		}
 		
