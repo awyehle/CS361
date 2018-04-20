@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import data.Racer;
 import pcmr.Chronotimer;
 
 public class ChronoTester {
@@ -437,36 +438,47 @@ public class ChronoTester {
 			
 			rc(newChronotimer, "num 2");
 			
+			rc(newChronotimer, "num 3");
+			
+			rc(newChronotimer, "num 4");
 
 			assertTrue(newChronotimer.queueState().get(0).contains(1));
 			assertTrue(newChronotimer.queueState().get(0).contains(2));
-			
-			rc(newChronotimer, "tog 1");
-			rc(newChronotimer, "tog 2");
-			
-			assertFalse(newChronotimer.eventIsStarted());
+			assertTrue(newChronotimer.queueState().get(0).contains(3));
+			assertTrue(newChronotimer.queueState().get(0).contains(4));
 			
 			assertFalse(newChronotimer.eventIsStarted());
-
+			
 			rc(newChronotimer, "trig 1");
 			
 			rc(newChronotimer, "trig 1");
 			
-			assertTrue(newChronotimer.queueState().get(0).contains(1));
-			assertTrue(newChronotimer.queueState().get(0).contains(2));
-			
-			rc(newChronotimer, "trig 2");
-			
-			rc(newChronotimer, "trig 2");
-			
-			System.out.println("Swap");
 			rc(newChronotimer, "Swap");
 			
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(1)));
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(2)));
+			rc(newChronotimer, "trig 1");
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(4)));
+			rc(newChronotimer, "trig 2");
+			rc(newChronotimer, "trig 2");
+			rc(newChronotimer, "trig 2");
+			rc(newChronotimer, "trig 1");
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(3)));
+			rc(newChronotimer, "trig 2");
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(1)));
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(2)));
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(3)));
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(4)));
 			
 			rc(newChronotimer, "endrun");
 			
 			assertTrue(newChronotimer.queueState().get(0).isEmpty());
 			assertTrue(newChronotimer.queueState().get(1).isEmpty());
+			
+			rc(newChronotimer, "num 5");
+			rc(newChronotimer, "num 6");
+			rc(newChronotimer, "num 7");
+			rc(newChronotimer, "num 8");
 			
 			
 		}

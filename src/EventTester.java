@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import data.Racer;
 import pcmr.Chronotimer;
 
 public class EventTester {
@@ -181,13 +182,20 @@ powerUpAndToggleAllChannels(newChronotimer);
 			
 			assertTrue(newChronotimer.eventIsStarted());
 			
-			assertTrue(newChronotimer.queueState().get(0).contains(1));
-			assertTrue(newChronotimer.queueState().get(0).contains(2));
-			assertTrue(newChronotimer.queueState().get(0).contains(3));
-			assertTrue(newChronotimer.queueState().get(0).contains(4));
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(1)));
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(2)));
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(3)));
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(4)));
 			
 			rc(newChronotimer, "trig 2");
 			
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(1)));
+			rc(newChronotimer, "trig 2");
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(2)));
+			rc(newChronotimer, "trig 2");
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(3)));
+			rc(newChronotimer, "trig 2");
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(4)));
 			
 			rc(newChronotimer, "endrun");
 			
