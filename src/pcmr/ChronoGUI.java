@@ -136,6 +136,14 @@ public class ChronoGUI {
 				commandArray[1] = "POWER";
 				_chrono.runCommand(commandArray);
 				power = !power;
+				radioButton_1.setSelected(false);
+				radioButton_2.setSelected(false);
+				radioButton_3.setSelected(false);
+				radioButton_4.setSelected(false);
+				radioButton_5.setSelected(false);
+				radioButton_6.setSelected(false);
+				radioButton_7.setSelected(false);
+				radioButton_8.setSelected(false);
 				if(!power) {
 					clearMainDisplay();
 					functionReset();
