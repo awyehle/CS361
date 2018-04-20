@@ -449,6 +449,8 @@ public class ChronoTester {
 			
 			assertFalse(newChronotimer.eventIsStarted());
 			
+			rc(newChronotimer, "newrun");
+			
 			rc(newChronotimer, "trig 1");
 			
 			rc(newChronotimer, "trig 1");
