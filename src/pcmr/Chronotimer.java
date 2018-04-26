@@ -32,12 +32,15 @@ public class Chronotimer {
 	
 	@SuppressWarnings("unchecked")
 	private LinkedList<Time>[] _startTimes = new LinkedList[_CHANNELS/2]; 
-	@SuppressWarnings("unchecked")
-	private LinkedList<Time>[] _finishTimes = new LinkedList[_CHANNELS/2];
+	@SuppressWarnings("unchecked") //has an extra slot to account for pargrp event
+	private LinkedList<Time>[] _finishTimes = new LinkedList[(_CHANNELS/2)+1];
 	
 	private int _runNumber = 0;
 	private ArrayList<Result> _run = new ArrayList<Result>();
-	private RaceQueuer[] _queues = new RaceQueuer[_CHANNELS/2];
+	//holds 8 queues to account for pargrp
+	private RaceQueuer[] _queues = new RaceQueuer[_CHANNELS];
+	
+	private int _manyRacers = 0;
 	
 	// Deprecated due to using an array of queues. I think it will help more for the future sprints to do so
 	//private RaceQueuer _racerList12 = new RaceQueuer();
@@ -382,17 +385,22 @@ public class Chronotimer {
 				{
 					if(r.contains(newRacer.getBib())) {canAdd=false; error="Racer in queue already"; break;}
 				}
-				if(event==EVENTS.PARGRP && _queues[0].totalSize()>=_CHANNELS) 
+				if(event==EVENTS.PARGRP && _manyRacers>=_CHANNELS) 
 					{
 					canAdd=false;
 					error = "Too many racers for PARGRP event";
 					}
 				
-				if(!canAdd || !(laneOne || event != EVENTS.PARIND ? _queues[0].push(newRacer):_queues[1].push(newRacer)))
+				if(!canAdd || !(laneOne || event != EVENTS.PARIND ? 
+						event !=EVENTS.PARGRP ? _queues[0].push(newRacer) : _queues[_manyRacers].push(newRacer) 
+								:_queues[1].push(newRacer)))
 					_printer.println("Unable to add racer. Error: " + error);
 				else 
 					{
+					++_manyRacers;
 					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
+					// TODO kill
+					_printer.println(_manyRacers + " racers.");
 					laneOne = (!laneOne || event != EVENTS.PARIND);
 					}
 				}catch(NumberFormatException e){
@@ -531,8 +539,8 @@ public class Chronotimer {
 			int channel = Integer.parseInt(command[2]);
 			if(/*_sensorsConnected[i] == null || */!_channelOn[channel-1])
 				return;
-			if(event==EVENTS.PARGRP && _queues[0].queueSize()==0) channel = 2;
-			if(channel%2==1) 
+			if(event==EVENTS.PARGRP && _queues[0].queueSize()==0 && channel == 1) channel = 10;
+			if((event!=EVENTS.PARGRP && channel%2==1) || (event==EVENTS.PARGRP && channel==1)) 
 			{
 				try{
 					if(event!=EVENTS.GRP && event!=EVENTS.PARGRP)
@@ -542,33 +550,42 @@ public class Chronotimer {
 					}
 					else
 					{
-						if(channel/2 !=0 || _queues[0].queueSize()==0) return;
-						while(_queues[0].popWait()!=null)
+						if(channel/2 !=0 /*|| _queues[0].queueSize()==0*/) return;
+						for(int i = 0; i < _queues.length; ++i)
+						{
+							while(_queues[i].popWait()!=null)
 							{
 							_startTimes[0].add(new Time(command[0]));
 							}
+						}
 					}
 				}catch(NullPointerException e){return;}
 			}
 			else 
 			{
 				try{
-					if(event!=EVENTS.GRP)
+					if(event==EVENTS.PARGRP)
+					{
+						Racer finisher = _queues[channel==10? 0: channel-1].pop();
+						_finishTimes[0].add(new Time(command[0]));
+						_run.get(_runNumber-1).addResult(""+finisher.getBib(), getRacerTime(0,0));
+					}
+					else if(event!=EVENTS.GRP)
 					{
 						Racer finisher = _queues[(channel-1)/2].pop();
 						_finishTimes[(channel-1)/2].add(new Time(command[0]));
-						_run.get(_runNumber-1).addResult(""+finisher.getBib(), getRacerTime((channel-1)/2));
+						_run.get(_runNumber-1).addResult(""+finisher.getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 					else
 					{
 						if((channel-1)/2 != 0) return;
 						_finishTimes[0].add(new Time(command[0]));
-						_run.get(_runNumber-1).addResult(""+_queues[0].pop().getBib(), getRacerTime((channel-1)/2));
+						_run.get(_runNumber-1).addResult(""+_queues[0].pop().getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 				}catch(NullPointerException e){_printer.println("no racer here");return;}
 			}
 			_printer.println(command[0] + " Channel " + (channel) + " has been tripped!");
-			_channelTripped[channel-1]=true;
+			_channelTripped[channel==10? 0: channel-1]=true;
 		}
 		catch(NumberFormatException e) {_printer.println("Error triggering");}
 		catch(ArrayIndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid channel");}
@@ -656,6 +673,7 @@ public class Chronotimer {
 	private void endrun() {
 		_eventRunning=false;
 		resetQueues();
+		_manyRacers=0;
 		_bibNumber = 0;
 		laneOne = true;
 	}
@@ -722,10 +740,10 @@ public class Chronotimer {
 	 * @param startChannel
 	 * @return
 	 */
-	public String getRacerTime(int startChannel)
+	public String getRacerTime(int startChannel, int finishChannel)
 	{
 		try{
-			Time time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[startChannel].remove());
+			Time time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[finishChannel].remove());
 			_lastToFinish[1]=_lastToFinish[0];
 			_lastToFinish[0]=time;
 			return time.convertRawTime();
