@@ -15,8 +15,10 @@ import data.Sensor;
 import data.Time;
 
 /**
- * System for timer...
- * @author Andrew Huelsman, whomever else
+ * System for timer. Supports full functionality of powering on, adding racers
+ * to a race, setting a race type, starting the race, ending the race,
+ * and printing the results of a race. Includes other functionalities
+ * @author Andrew Huelsman
  *
  */
 public class Chronotimer {
@@ -116,6 +118,12 @@ public class Chronotimer {
 	public void powerPrinter() {_printer._powered=!_printer._powered;}
 	public String[] getPrinterStrings() { return _printer.getPrinterStrings();}
 	
+	/**
+	 * The chronotimer's ability to display the current data of the run
+	 * is stored here.
+	 * @author Andrew Huelsman
+	 *
+	 */
 	private class Display
 	{
 		private String _queue;
@@ -215,6 +223,9 @@ public class Chronotimer {
 		}
 	}
 	
+	/**
+	 * Creates a new instance of the chronotimer
+	 */
 	public Chronotimer()
 	{
 		_time = new Time();
@@ -224,17 +235,27 @@ public class Chronotimer {
 		//_sensorsConnected[0] = new Sensor();
 	}
 	
+	/**
+	 * Get the chronotimer's system clock
+	 * @return
+	 */
 	public Time getTime()
 	{
 		return _time;
 	}
 
+	/**
+	 * Resets the queues so that each queue is empty
+	 */
 	private void resetQueues()
 	{
 		for(int i = 0; i < _queues.length; ++i)
 			_queues[i]=new RaceQueuer();
 	}
 	
+	/**
+	 * Resets the times saved for racers
+	 */
 	private void resetTimes()
 	{
 		for(int i = 0; i < _startTimes.length; ++i)
@@ -462,7 +483,7 @@ public class Chronotimer {
 	}
 
 	/**
-	 * Resets this system's clock. I don't think this has any use at all until qe implement a GUI
+	 * Resets this system's clock.
 	 * @param command
 	 */
 	private void time(String... command) {
@@ -648,6 +669,7 @@ public class Chronotimer {
 			_channelTripped = new boolean[_CHANNELS];
 			_sensorsConnected = new Sensor[_CHANNELS];
 			resetTimes();
+			resetQueues();//asfasfasf
 			_eventRunning=false;
 			event=EVENTS.IND;
 		}
