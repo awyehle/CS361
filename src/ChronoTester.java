@@ -47,7 +47,7 @@ public class ChronoTester {
 			assertTrue(newChronotimer.isOn());
 			assertFalse(newChronotimer.isNewRunTriggered());
 			assertFalse(newChronotimer.isConnected());
-			assertFalse(newChronotimer.isToggled());
+			assertFalse(newChronotimer.isToggled(1));
 			
 			rc(newChronotimer, "power");
 			
@@ -251,13 +251,14 @@ public class ChronoTester {
 			
 			rc(newChronotimer, "power");
 		      
-		      assertFalse(newChronotimer.isToggled());
+		      assertFalse(newChronotimer.isToggled(1));
 		      
 		      rc(newChronotimer, "tog 1");
 		      
 		      rc(newChronotimer, "tog 2");
-		      
-		      assertTrue(newChronotimer.isToggled());
+
+		      assertTrue(newChronotimer.isToggled(1));
+		      assertTrue(newChronotimer.isToggled(2));
 		      
 		      rc(newChronotimer, "start");
 		      

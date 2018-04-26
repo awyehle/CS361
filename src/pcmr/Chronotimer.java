@@ -676,7 +676,10 @@ public class Chronotimer {
 		{
 			Racer notFinished=r.pop();
 			while(notFinished!=null)
+				{
 				_run.get(_runNumber-1).addResult(""+notFinished.getBib(), new Time(null).convertRawTime());
+				notFinished=r.pop();
+				}
 		}
 		resetQueues();
 		_manyRacers=0;
@@ -820,13 +823,9 @@ public class Chronotimer {
 		return _runNumber;
 	}
 	
-	public boolean isToggled(){
+	public boolean isToggled(int channel){
         
-	    int channel1 = 0;
-	    int channel2 = 1;
-	    if(!_channelOn[channel1] && !_channelOn[channel2])  return false ;
-	    
-	    return true;
+	    return _channelOn[channel-1];
 	  
 	}
 	

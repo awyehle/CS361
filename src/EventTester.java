@@ -31,10 +31,18 @@ public class EventTester {
 			rc(newChronotimer, "event parind");
 			
 			assertEquals(newChronotimer.getEvent(), "PARIND");
-			
+
 			rc(newChronotimer, "event ind");
 			
 			assertEquals(newChronotimer.getEvent(), "IND");
+			
+			rc(newChronotimer, "event grp");
+			
+			assertEquals(newChronotimer.getEvent(), "GRP");
+			
+			rc(newChronotimer, "event pargrp");
+			
+			assertEquals(newChronotimer.getEvent(), "PARGRP");
 			
 			rc(newChronotimer, "power");
 			
@@ -59,6 +67,10 @@ public class EventTester {
 			
 			rc(newChronotimer, "tog 1");
 			rc(newChronotimer, "tog 2");
+
+			assertTrue(newChronotimer.isToggled(1));
+			assertTrue(newChronotimer.isToggled(2));
+			
 			rc(newChronotimer, "num 1");
 			rc(newChronotimer, "num 2");
 			rc(newChronotimer, "num 3");
