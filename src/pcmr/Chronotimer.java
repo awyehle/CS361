@@ -672,6 +672,12 @@ public class Chronotimer {
 
 	private void endrun() {
 		_eventRunning=false;
+		for(RaceQueuer r: _queues)
+		{
+			Racer notFinished=r.pop();
+			while(notFinished!=null)
+				_run.get(_runNumber-1).addResult(""+notFinished.getBib(), new Time(null).convertRawTime());
+		}
 		resetQueues();
 		_manyRacers=0;
 		_bibNumber = 0;

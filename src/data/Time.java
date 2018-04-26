@@ -3,7 +3,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * A class which will support time measurements
+ * A class which supports time measurements
  * @author Andrew Huelsman
  *
  */
@@ -12,23 +12,39 @@ public class Time {
 
 	private long _time;
 	
+	/**
+	 * Create a time based off a timestamp 
+	 * If 'null' is entered for the timestamp, this counts as a DNF time.
+	 * @param timestamp the time in the format HH:MM:SS.nss
+	 */
 	public Time(String timestamp)
 	{
 		if(timestamp == null) _time=-1;
 		else _time = convertTimestamp(timestamp);
 	}
 	
+	/**
+	 * Create a time based off a amount of time (in nanoseconds)
+	 * @param time the time in nanoseconds
+	 */
 	public Time(long time)
 	{
 		if(time<0) throw new IllegalArgumentException("Time cannot be negative.");
 		_time = time;
 	}
 	
+	/**
+	 * Creates a time based off the system's clock
+	 */
 	public Time()
 	{
 		this(new Timestamp(new Date().getTime()).toString().split(" ")[1]);
 	}
 	
+	/**
+	 * Gets the time of this object
+	 * @return the time in nanoseconds
+	 */
 	public long getTime()
 	{
 		return _time;
@@ -69,8 +85,8 @@ public class Time {
 	}
 	
 	/**
-	 * Converts the time (in nanoseconds) into a readable timestamp of the format mm:ss.nns where
-	 * mm is minutes, ss is seconds, and nns is nanoseconds
+	 * Converts the time into a readable timestamp of the format HH:MM:SS.nss where
+	 * HH is hours, MM is minutes, SS is seconds, and nss is nanoseconds
 	 * @return this time in a readable timestamp format
 	 */
 	public String convertRawTime()
@@ -91,7 +107,7 @@ public class Time {
 	 * Takes two times and finds the absolute difference between the two.
 	 * @param time1 first time
 	 * @param time2 second time
-	 * @return absolute difference between time1 and time2
+	 * @return difference between time1 and time2
 	 */
 	public static Time difference(Time time1, Time time2)
 	{
