@@ -202,6 +202,7 @@ public class Chronotimer {
 				break;
 			}
 			case GRP:
+			case PARGRP:
 			{
 				_queue="";
 				try
@@ -370,6 +371,7 @@ public class Chronotimer {
 	private void addRacer(String... command) {
 			try{
 				Racer newRacer;
+				String error = "";
 				if(event!= EVENTS.GRP)
 					newRacer = new Racer(Integer.parseInt(command[2]));
 				else
@@ -378,11 +380,16 @@ public class Chronotimer {
 				boolean canAdd = true;
 				for(RaceQueuer r : _queues)
 				{
-					if(r.contains(newRacer.getBib())) {canAdd=false; break;}
+					if(r.contains(newRacer.getBib())) {canAdd=false; error="Racer in queue already"; break;}
 				}
+				if(event==EVENTS.PARGRP && _queues[0].totalSize()>=_CHANNELS) 
+					{
+					canAdd=false;
+					error = "Too many racers for PARGRP event";
+					}
 				
 				if(!canAdd || !(laneOne || event != EVENTS.PARIND ? _queues[0].push(newRacer):_queues[1].push(newRacer)))
-					_printer.println("Racer already in queue or ran!");
+					_printer.println("Unable to add racer. Error: " + error);
 				else 
 					{
 					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
@@ -524,10 +531,11 @@ public class Chronotimer {
 			int channel = Integer.parseInt(command[2]);
 			if(/*_sensorsConnected[i] == null || */!_channelOn[channel-1])
 				return;
+			if(event==EVENTS.PARGRP && _queues[0].queueSize()==0) channel = 2;
 			if(channel%2==1) 
 			{
 				try{
-					if(event!=EVENTS.GRP)
+					if(event!=EVENTS.GRP && event!=EVENTS.PARGRP)
 					{
 						_queues[channel/2].popWait();
 						_startTimes[channel/2].add(new Time(command[0]));
@@ -605,6 +613,10 @@ public class Chronotimer {
 				break;
 			}
 			case "PARGRP":
+			{
+				setEvent(EVENTS.PARGRP,command);
+				break;
+			}
 			default: System.out.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");
 			}
 		}
@@ -617,6 +629,7 @@ public class Chronotimer {
 			return;
 		}
 		event = type;
+		laneOne=true;
 		_printer.println(command[0] +" Event type set to " + event.toString());
 		endrun();
 	}

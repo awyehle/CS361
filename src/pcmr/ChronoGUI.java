@@ -1320,7 +1320,7 @@ public class ChronoGUI {
 		functionDisplay[0] = "* IND";
 		functionDisplay[1] = "  PARIND";
 		functionDisplay[2] = "  GRP";
-		functionDisplay[3] = "  PARGRP (Not Implemented)";
+		functionDisplay[3] = "  PARGRP";
 		for(int i = 4; i < 10; ++i) {
 			functionDisplay[i] = "";
 		}

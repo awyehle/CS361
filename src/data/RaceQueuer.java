@@ -122,6 +122,11 @@ public class RaceQueuer {
 		return _waitQueue.size();
 	}
 	
+	public int totalSize()
+	{
+		return _waitQueue.size()+_inProgress.size()+_alreadyRan.size();
+	}
+	
 	public Racer peekRan()
 	{
 
