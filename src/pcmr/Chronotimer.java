@@ -873,4 +873,9 @@ public class Chronotimer {
 		return list;
 		
 	}
+	
+	public ArrayList<Result> getResults()
+	{
+		return _run;
+	}
 }

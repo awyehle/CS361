@@ -22,11 +22,13 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import data.Racer;
+import data.Result;
+import data.Time;
 
 
 public class RaceServer {
 
-	static ArrayList<Racer> dir = new ArrayList<Racer>();
+	static ArrayList<Result> dir = new ArrayList<Result>();
 	static String[] _names = new String[9999];
 	static final String _CSSfile = "style.css";
 	private static Chronotimer _chrono;
@@ -36,6 +38,17 @@ public class RaceServer {
     // a shared area where we get the POST data and then use it in the other handler
     static String sharedResponse = "";
     static boolean gotMessageFlag = false;
+    
+    private static class Data
+    {
+    	Racer _whom; 
+    	Time _time;
+    	public Data(Racer whom, Time time)
+    	{
+    		_whom=whom;
+    		_time=time;
+    	}
+    }
     
     public RaceServer(Chronotimer who) throws Exception
     {
@@ -48,7 +61,7 @@ public class RaceServer {
     		public void run()
     		{
 				while(true) {
-					dir=_chrono.getRacers();
+					dir=_chrono.getResults();
 					try {
 						Thread.sleep(1);
 					} catch (InterruptedException e) {
@@ -132,8 +145,14 @@ public class RaceServer {
 			String echo = "";
             System.out.println(response);
 			
-           // dir.sort(new LexCompare());
-			echo = toTable();
+            ArrayList<Data> results = new ArrayList<Data>();
+            if(dir.size()>0)
+            {
+            	for(int i = 0; i < dir.get(0).results(); ++i)
+            		results.add(new Data(dir.get(0).getRacers()[i], dir.get(0).getTimeForRacer(dir.get(0).getRacers()[i])));
+            }
+            results.sort(new TimeCompare());
+			echo = toTable(results);
             response += "End of response\n";
             System.out.println(response);
             // write out the response
@@ -145,38 +164,38 @@ public class RaceServer {
             os.close();
         }
         
-        private String toTable()
+        private String toTable(ArrayList<Data> results)
         {
         	String html = "<html>"
         			+ "<head>"
-        			+ "<link rel=\"stylesheet\" href=\"displayresults/style.css\">"
+        			+ "<link rel=\"stylesheet\" href=\"race-status/style.css\">"
         			+ "</head>"
         			+ "<body>"
-        			+ "<h2> Race: " + _chrono.getRun() + "1: " + _chrono.getEvent() + "</h2>"
+        			+ "<h2> Race: " + _chrono.getRun() + ": " + _chrono.getEvent() + "</h2>"
         			+ "<table>"
         			+ "<tr><th>Place</th>"
         			+"<th>Number</th>"
         			+ "<th>Name</th>"
         			+ "<th>Time</th></tr>";
-        	for(Racer e : dir)
+        	for(int i = 0; i < results.size(); ++i)
         	{
         		html+= "<tr>"
-        				+ "<td>" + "Place" + "</td>" //TODO get place
-                		+ "<td>" + e.getBib() + "</td>"
-                        + "<td>" + RaceServer.getName(e.getBib()) + "</td>"
-                        + "<td>" + "Time" + "</td>" //TODO get time
+        				+ "<td>" + "i" + "</td>" //TODO get place
+                		+ "<td>" + results.get(i)._whom + "</td>"
+                        + "<td>" + RaceServer.getName(results.get(i)._whom.getBib()) + "</td>"
+                        + "<td>" + results.get(i)._time + "</td>" //TODO get time
         				+ "</tr>";
         	}
         	html+="</table></body></html>";
         	return html;
         }
         
-        public class LexCompare implements Comparator<Racer>
+        public class TimeCompare implements Comparator<Data>
     	{
 
     		@Override
-    		public int compare(Racer arg0, Racer arg1) {
-    			int ret = arg0.getBib()-arg1.getBib();
+    		public int compare(Data arg0, Data arg1) {
+    			int ret = arg0._time.compareTo(arg1._time);
     			return ret;
     		}
 
@@ -221,12 +240,12 @@ public class RaceServer {
 					switch(sharedResponse.split(" ")[0])
 					{
 					case "ADD":
-						{ArrayList<Racer> fromJson = g.fromJson(sharedResponse.split(" ")[1],
+						{ArrayList<Result> fromJson = g.fromJson(sharedResponse.split(" ")[1],
 								new TypeToken<Collection<Racer>>() {
 								}.getType());
 						dir.addAll(fromJson);
 						echo = "Employees added:\n";
-						for(Racer e : fromJson)
+						for(Result e : fromJson)
 							echo+= e.toString() + "\n";
 						System.out.println(echo);
 						break;}
@@ -236,9 +255,9 @@ public class RaceServer {
 						System.out.println(echo);
 						break;}
 					case "PRINT":
-						{dir.sort(new LexCompare());
+						{//dir.sort(new LexCompare()); TODO uhhhh fix this.
 						echo = "Directory: \n";
-						for(Racer e: dir) echo += e.toString() + "\n";
+						for(Result e: dir) echo += e.toString() + "\n";
 						System.out.println(echo);
 						break;}
 					default:
@@ -277,7 +296,7 @@ public class RaceServer {
 	public void add(String json){
 		
 		Object[] list = new Gson().fromJson(json, new TypeToken<Collection<Object>>(){}.getType());
-		dir.addAll((ArrayList<Racer>) list[1]);
+		dir.addAll((ArrayList<Result>) list[1]);
 		
 	}
 	
@@ -288,7 +307,7 @@ public class RaceServer {
 			System.out.println("<empty directory>");
 			return;
 			}
-		dir.sort(new LexCompare());
+		//dir.sort(new LexCompare()); TODO fix????
 		for(int i = 0; i<dir.size(); i++){
 			
 			System.out.println(dir.get(i).toString());

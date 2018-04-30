@@ -34,9 +34,14 @@ public class Result {
 	 */
 	public boolean addResult(Racer racer, Time time)
 	{
-		if(time == null || racer == null)
-			throw new IllegalArgumentException("Cannot store null results");
-		if(_results.containsKey(racer)) return false;
+		if(racer == null)
+			throw new IllegalArgumentException("Cannot store null racer");
+		if(_results.containsKey(racer) && _results.get(racer)!=null) return false;
+		else if (_results.containsKey(racer)) 
+		{
+			_results.put(racer, time);
+			return true;
+		}
 		
 		++_manyResults;
 		_results.put(racer, time);
@@ -63,5 +68,15 @@ public class Result {
 					+ " " + _results.get(_results.keySet().toArray()[i]).convertRawTime() + "\n";
 		}
 		return str;
+	}
+	
+	public Racer[] getRacers()
+	{
+		return (Racer[]) _results.keySet().toArray();
+	}
+	
+	public Time getTimeForRacer(Racer whom)
+	{
+		return _results.get(whom);
 	}
 }
