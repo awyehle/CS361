@@ -152,7 +152,7 @@ public class RaceServer {
         			+ "<link rel=\"stylesheet\" href=\"displayresults/style.css\">"
         			+ "</head>"
         			+ "<body>"
-        			+ "<h2> Race: " + _chrono.getRun() + "1:" + _chrono.getEvent() + "</h2>"
+        			+ "<h2> Race: " + _chrono.getRun() + "1: " + _chrono.getEvent() + "</h2>"
         			+ "<table>"
         			+ "<tr><th>Place</th>"
         			+"<th>Number</th>"
