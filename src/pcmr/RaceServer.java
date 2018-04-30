@@ -4,6 +4,7 @@ package pcmr;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,13 +41,7 @@ public class RaceServer {
     {
     	if(who == null) throw new IllegalArgumentException("Chronotimer was not established");
     	_chrono = who;
-    	
-    	try(Scanner nameGetter = new Scanner(new File("../racers.txt")))
-    	{
-    		for(int i = 0; i < _names.length; ++i)
-    			_names[i] = nameGetter.nextLine();
-    	}
-    	catch(Exception e) {e.printStackTrace();}
+    	getNames();
     	
     	_updater = new Thread() {
     		@Override
@@ -61,8 +56,18 @@ public class RaceServer {
 				}
     		}
     	};
-    	
+    	_updater.start();
     	startup();
+    }
+    
+    static void getNames()
+    {
+    	try(Scanner nameGetter = new Scanner(new File("racers.txt")))
+    	{
+    		for(int i = 0; i < _names.length; ++i)
+    			_names[i] = nameGetter.nextLine();
+    	}
+    	catch(FileNotFoundException e) {e.printStackTrace();}
     }
 
     private static void startup() throws Exception {
