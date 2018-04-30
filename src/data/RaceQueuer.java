@@ -117,6 +117,15 @@ public class RaceQueuer {
 		return _inProgress.toArray(new Racer[0]);
 	}
 	
+	public ArrayList<Racer> peekTotal()
+	{
+		ArrayList<Racer> all = new ArrayList<Racer>();
+		all.addAll(_waitQueue);
+		all.addAll(_inProgress);
+		all.addAll(_alreadyRan);
+		return all;
+	}
+	
 	public int queueSize()
 	{
 		return _waitQueue.size();

@@ -228,15 +228,20 @@ public class Chronotimer {
 	}
 	
 	/**
-	 * Creates a new instance of the chronotimer
+	 * Creates a new instance of the Chronotimer
+	 * Chronotimer creates a server which displays race status
 	 */
 	public Chronotimer()
 	{
 		_time = new Time();
 		resetTimes();
 		resetQueues();
-		//_channelOn[0] = true;
-		//_sensorsConnected[0] = new Sensor();
+		try {
+			new RaceServer(this);
+		} catch (Exception e) {
+			_printer.println("Server initialization failed");
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -855,6 +860,17 @@ public class Chronotimer {
 		ArrayList<RaceQueuer> copy = new ArrayList<RaceQueuer>();
 		copy.add(_queues[channels/2]);
 		return copy;
+		
+	}
+	
+	public ArrayList<Racer> getRacers()
+	{
+		ArrayList<Racer> list = new ArrayList<Racer>();
+		for(RaceQueuer r: _queues)
+		{
+			list.addAll(r.peekTotal());
+		}
+		return list;
 		
 	}
 }
