@@ -573,19 +573,19 @@ public class Chronotimer {
 					{
 						Racer finisher = _queues[channel==10? 0: channel-1].pop();
 						_finishTimes[0].add(new Time(command[0]));
-						_run.get(_runNumber-1).addResult(""+finisher.getBib(), getRacerTime(0,0));
+						_run.get(_runNumber-1).addResult(finisher, getRacerTime(0,0));
 					}
 					else if(event!=EVENTS.GRP)
 					{
 						Racer finisher = _queues[(channel-1)/2].pop();
 						_finishTimes[(channel-1)/2].add(new Time(command[0]));
-						_run.get(_runNumber-1).addResult(""+finisher.getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
+						_run.get(_runNumber-1).addResult(finisher, getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 					else
 					{
 						if((channel-1)/2 != 0) return;
 						_finishTimes[0].add(new Time(command[0]));
-						_run.get(_runNumber-1).addResult(""+_queues[0].pop().getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
+						_run.get(_runNumber-1).addResult(_queues[0].pop(), getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 				}catch(NullPointerException e){_printer.println("no racer here");return;}
 			}
@@ -682,7 +682,7 @@ public class Chronotimer {
 			Racer notFinished=r.pop();
 			while(notFinished!=null)
 				{
-				_run.get(_runNumber-1).addResult(""+notFinished.getBib(), new Time(null).convertRawTime());
+				_run.get(_runNumber-1).addResult(notFinished, new Time(null));
 				notFinished=r.pop();
 				}
 		}
@@ -754,16 +754,16 @@ public class Chronotimer {
 	 * @param startChannel
 	 * @return
 	 */
-	public String getRacerTime(int startChannel, int finishChannel)
+	public Time getRacerTime(int startChannel, int finishChannel)
 	{
 		try{
 			Time time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[finishChannel].remove());
 			_lastToFinish[1]=_lastToFinish[0];
 			_lastToFinish[0]=time;
-			return time.convertRawTime();
+			return time;
 		}catch(NoSuchElementException e){
 			System.out.println("You must start a race before printing times.");
-			return "";
+			return null;
 		}
 	}
 	

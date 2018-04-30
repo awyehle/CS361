@@ -8,7 +8,8 @@ import java.util.Date;
  *
  */
 
-public class Time {
+@SuppressWarnings("rawtypes")
+public class Time implements Comparable {
 
 	private long _time;
 	
@@ -116,5 +117,13 @@ public class Time {
 		long diff = time2.getTime()-time1.getTime();
 		if(diff<0) return new Time(null);
 		return new Time(diff);
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		if(arg0 == null) return 1;
+		if(!(arg0 instanceof Time)) return 1;
+		else
+			return (int) (this._time-((Time) arg0)._time);
 	}
 }

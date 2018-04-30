@@ -10,7 +10,7 @@ public class Result {
 	private String _runType, _time;
 	private int _manyResults;
 	
-	private HashMap<String,String> _results= new HashMap<>();
+	private HashMap<Racer,Time> _results= new HashMap<>();
 	
 	/**
 	 * Create a new result for a run
@@ -32,7 +32,7 @@ public class Result {
 	 * @param time Racer's time for this run
 	 * @return True if the racer was successfully added, false if not
 	 */
-	public boolean addResult(String racer, String time)
+	public boolean addResult(Racer racer, Time time)
 	{
 		if(time == null || racer == null)
 			throw new IllegalArgumentException("Cannot store null results");
@@ -59,7 +59,8 @@ public class Result {
 		String str = _time + " " + _runType + "\n";
 		for(int i = 0; i < _results.keySet().size(); ++i)
 		{
-			str += _results.keySet().toArray()[i] + " " + _runType + " " + _results.get(_results.keySet().toArray()[i]) + "\n";
+			str += _results.keySet().toArray()[i].toString() + " " + _runType 
+					+ " " + _results.get(_results.keySet().toArray()[i]).convertRawTime() + "\n";
 		}
 		return str;
 	}
