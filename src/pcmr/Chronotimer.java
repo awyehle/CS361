@@ -25,6 +25,15 @@ import data.Time;
  * @author Andrew Huelsman
  *
  */
+
+/*
+ * TODO: printer on gui should print race results, unless a LOG command
+ * is issued. then it will echo the console.
+ * TODO: GRP race should have bibs re-assigned to racers upon finishing
+ * TODO: wtf is wrong with pargrp
+ * TODO: should probably not allow racers to be added after a grp/pargrp
+ * race has started.
+ */
 public class Chronotimer {
 
 	private boolean _isOn;
