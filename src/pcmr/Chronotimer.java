@@ -240,12 +240,12 @@ public class Chronotimer {
 		_time = new Time();
 		resetTimes();
 		resetQueues();
-		try {
+		/*try {		removed
 			new RaceServer(this);
 		} catch (Exception e) {
 			_printer.println("Server initialization failed");
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	/**
