@@ -501,8 +501,13 @@ public class Chronotimer {
 	 * @param command
 	 */
 	private void dnf(String... command) {
+		Racer bad = _queues[0].pop();
+		if(bad==null)
+		{
+			_printer.println("No racer to DNF");
+			return;
+		}
 		_finishTimes[0].add(new Time(null));
-		_queues[0].pop();
 		_printer.println(command[0] + " Racer for channels [1] and [2] did not finish (DNF)");
 	}
 
@@ -698,6 +703,10 @@ public class Chronotimer {
 		_manyRacers=0;
 		_bibNumber = 0;
 		laneOne = true;
+		ArrayList<Result> send = new ArrayList<Result>();
+		
+		send.add(_run.get(_runNumber-1));
+		sendResult("ADD " + new Gson().toJson(send));
 	}
 
 	private void newrun(String... command) {

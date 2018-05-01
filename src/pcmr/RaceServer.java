@@ -33,7 +33,6 @@ public class RaceServer {
 	static final String _CSSfile = "style.css";
 	private static Chronotimer _chrono;
 	
-	private static Thread _updater;
 	
     // a shared area where we get the POST data and then use it in the other handler
     static String sharedResponse = "";
@@ -56,20 +55,6 @@ public class RaceServer {
     	_chrono = who;
     	getNames();
     	
-    	_updater = new Thread() {
-    		@Override
-    		public void run()
-    		{
-				while(true) {
-					dir=_chrono.getResults();
-					try {
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-					}
-				}
-    		}
-    	};
-    	_updater.start();
     	startup();
     }
     
