@@ -248,21 +248,11 @@ public class RaceServer {
 						{ArrayList<Result> fromJson = g.fromJson(sharedResponse.split(" ")[1],
 								new TypeToken<Collection<Racer>>() {
 								}.getType());
+						dir.clear(); //TODO Is it necessary to remove previous results?
 						dir.addAll(fromJson);
-						echo = "Employees added:\n";
+						echo = "Result added:\n";
 						for(Result e : fromJson)
 							echo+= e.toString() + "\n";
-						System.out.println(echo);
-						break;}
-					case "CLEAR":
-						{dir.clear();
-						echo += "Directory cleared.";
-						System.out.println(echo);
-						break;}
-					case "PRINT":
-						{//dir.sort(new LexCompare()); TODO uhhhh fix this.
-						echo = "Directory: \n";
-						for(Result e: dir) echo += e.toString() + "\n";
 						System.out.println(echo);
 						break;}
 					default:
@@ -284,17 +274,6 @@ public class RaceServer {
 
             outputStream.close();
         }
-        public class LexCompare implements Comparator<Racer>
-    	{
-
-    		@Override
-    		public int compare(Racer arg0, Racer arg1) {
-    			int ret = arg0.getBib()-arg1.getBib();
-    			return ret;
-    		}
-
-    		
-    	}
     }
     
 	@SuppressWarnings("unchecked")
@@ -304,51 +283,15 @@ public class RaceServer {
 		dir.addAll((ArrayList<Result>) list[1]);
 		
 	}
-	
-	public void print(){
-		
-		if(dir.size()==0)
-			{
-			System.out.println("<empty directory>");
-			return;
-			}
-		//dir.sort(new LexCompare()); TODO fix????
-		for(int i = 0; i<dir.size(); i++){
-			
-			System.out.println(dir.get(i).toString());
-			
-		}
-		
-	}
-	
-	public void clear(){
-		
-		dir.clear();
-		
-	}
+
 	
 	private void runCommand(String cmd)
 	{
 		String[] command = cmd.split(" ");
 		if(cmd.equals("ADD"))
 			add(command[1]);
-		if(cmd.equals("PRINT"))
-			print();
-		if(cmd.equals("CLEAR"))
-			clear();
 	}
 	
-	public class LexCompare implements Comparator<Racer>
-	{
-
-		@Override
-		public int compare(Racer arg0, Racer arg1) {
-			int ret = arg0.getBib()-arg1.getBib();
-			return ret;
-		}
-
-		
-	}
 	
 	public static String getName(int bib)
 	{

@@ -8,7 +8,7 @@ import java.util.*;
 public class Result {
 
 	private String _runType, _time;
-	private int _manyResults;
+	private int _manyResults, _run;
 	
 	private HashMap<Racer,Time> _results= new HashMap<>();
 	
@@ -17,12 +17,13 @@ public class Result {
 	 * @param time The time at which this result should be created
 	 * @param runType The type of run which this result will store data for
 	 */
-	public Result(String time, String runType)
+	public Result(int run, String time, String runType)
 	{
 		if(time == null || runType == null)
 			throw new IllegalArgumentException("Cannot store null results");
 		this._runType = runType;
 		this._time = time;
+		this._run = run;
 	}
 	
 	/**
@@ -61,7 +62,7 @@ public class Result {
 	@Override
 	public String toString()
 	{
-		String str = _time + " " + _runType + "\n";
+		String str = _time + " " + _runType + ": Run " + _run + "\n";
 		for(int i = 0; i < _results.keySet().size(); ++i)
 		{
 			str += _results.keySet().toArray()[i].toString() + " " + _runType 
