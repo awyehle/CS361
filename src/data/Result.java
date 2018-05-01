@@ -72,7 +72,7 @@ public class Result {
 	
 	public Racer[] getRacers()
 	{
-		return (Racer[]) _results.keySet().toArray();
+		return _results.keySet().toArray(new Racer[0]);
 	}
 	
 	public Time getTimeForRacer(Racer whom)

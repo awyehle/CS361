@@ -148,8 +148,13 @@ public class RaceServer {
             ArrayList<Data> results = new ArrayList<Data>();
             if(dir.size()>0)
             {
-            	for(int i = 0; i < dir.get(0).results(); ++i)
-            		results.add(new Data(dir.get(0).getRacers()[i], dir.get(0).getTimeForRacer(dir.get(0).getRacers()[i])));
+            	for(int i = 0; i < dir.get(_chrono.getRun()-1).results(); ++i)
+            		{
+                    results.add(
+            				new Data(
+            						dir.get(_chrono.getRun()-1).getRacers()[i], 
+            						dir.get(_chrono.getRun()-1).getTimeForRacer(dir.get(_chrono.getRun()-1).getRacers()[i])));
+            		}
             }
             results.sort(new TimeCompare());
 			echo = toTable(results);
@@ -180,10 +185,10 @@ public class RaceServer {
         	for(int i = 0; i < results.size(); ++i)
         	{
         		html+= "<tr>"
-        				+ "<td>" + "i" + "</td>" //TODO get place
+        				+ "<td>" + (i+1) + "</td>"
                 		+ "<td>" + results.get(i)._whom + "</td>"
                         + "<td>" + RaceServer.getName(results.get(i)._whom.getBib()) + "</td>"
-                        + "<td>" + results.get(i)._time + "</td>" //TODO get time
+                        + "<td>" + results.get(i)._time.convertRawTime() + "</td>"
         				+ "</tr>";
         	}
         	html+="</table></body></html>";

@@ -404,8 +404,8 @@ public class Chronotimer {
 					{
 					++_manyRacers;
 					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
-					// TODO kill
 					_printer.println(_manyRacers + " racers.");
+					//TODO add the racer to the result with "null" time, to signify they haven't started yet.
 					laneOne = (!laneOne || event != EVENTS.PARIND);
 					}
 				}catch(NumberFormatException e){
@@ -572,20 +572,24 @@ public class Chronotimer {
 					if(event==EVENTS.PARGRP)
 					{
 						Racer finisher = _queues[channel==10? 0: channel-1].pop();
+						if(finisher==null) throw new NullPointerException();
 						_finishTimes[0].add(new Time(command[0]));
 						_run.get(_runNumber-1).addResult(finisher, getRacerTime(0,0));
 					}
 					else if(event!=EVENTS.GRP)
 					{
 						Racer finisher = _queues[(channel-1)/2].pop();
+						if(finisher==null) throw new NullPointerException();
 						_finishTimes[(channel-1)/2].add(new Time(command[0]));
 						_run.get(_runNumber-1).addResult(finisher, getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 					else
 					{
 						if((channel-1)/2 != 0) return;
+						Racer finisher = _queues[0].pop();
+						if(finisher==null) throw new NullPointerException();
 						_finishTimes[0].add(new Time(command[0]));
-						_run.get(_runNumber-1).addResult(_queues[0].pop(), getRacerTime((channel-1)/2,(channel-1)/2));
+						_run.get(_runNumber-1).addResult(finisher, getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 				}catch(NullPointerException e){_printer.println("no racer here");return;}
 			}
