@@ -148,12 +148,12 @@ public class RaceServer {
             ArrayList<Data> results = new ArrayList<Data>();
             if(dir.size()>0)
             {
-            	for(int i = 0; i < dir.get(_chrono.getRun()-1).results(); ++i)
+            	for(int i = 0; i < dir.get(0).results(); ++i)
             		{
                     results.add(
             				new Data(
-            						dir.get(_chrono.getRun()-1).getRacers()[i], 
-            						dir.get(_chrono.getRun()-1).getTimeForRacer(dir.get(_chrono.getRun()-1).getRacers()[i])));
+            						dir.get(0).getRacers()[i], 
+            						dir.get(0).getTimeForRacer(dir.get(0).getRacers()[i])));
             		}
             }
             results.sort(new TimeCompare());
