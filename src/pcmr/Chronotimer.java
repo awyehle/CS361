@@ -30,9 +30,15 @@ import data.Time;
  * TODO: printer on gui should print race results, unless a LOG command
  * is issued. then it will echo the console.
  * TODO: GRP race should have bibs re-assigned to racers upon finishing
+ * Personal thought: the fuck is the point of assigning placeholder
+ * bibs if the bibs are reassigned later anyways? Like... the racers
+ * will still finish in the same place....
  * TODO: wtf is wrong with pargrp
  * TODO: should probably not allow racers to be added after a grp/pargrp
  * race has started.
+ * TODO: TA stated that the start for PARGRP can be on any channel, but
+ * the project description and the sprint 4 description states that it 
+ * should be on channel 1, so I'm leaving it as that.
  */
 public class Chronotimer {
 
@@ -562,7 +568,7 @@ public class Chronotimer {
 			int channel = Integer.parseInt(command[2]);
 			if(/*_sensorsConnected[i] == null || */!_channelOn[channel-1])
 				return;
-			if(event==EVENTS.PARGRP && _queues[0].queueSize()==0 && channel == 1) channel = 10;
+			if(event==EVENTS.PARGRP && _queues[0].queueSize()==0) channel = 10;
 			if((event!=EVENTS.PARGRP && channel%2==1) || (event==EVENTS.PARGRP && channel==1)) 
 			{
 				try{
