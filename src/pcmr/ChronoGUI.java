@@ -1302,6 +1302,10 @@ public class ChronoGUI {
 		}
 		else {
 			functionBool = true;
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+			}
 			functionLine = 0;
 			setFunctionDisplay();
 			mainTextArea.setText(createMainTextString(functionDisplay));
