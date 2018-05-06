@@ -155,11 +155,20 @@ public class ChronoGUI {
 				
 		
 		JButton btnPrinterPwr = new JButton("Printer Pwr");
-		btnPrinterPwr.setBounds(502, 11, 101, 23);
+		btnPrinterPwr.setBounds(451, 11, 101, 23);
 		frame.getContentPane().add(btnPrinterPwr);
 		btnPrinterPwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				_chrono.powerPrinter();
+			}
+		});
+		
+		JButton printerLog = new JButton("LOG");
+		printerLog.setBounds(578, 11, 66, 23);
+		frame.getContentPane().add(printerLog);
+		printerLog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_chrono.runCommand("-","LOG");
 			}
 		});
 				
@@ -186,7 +195,7 @@ public class ChronoGUI {
 		// Begin Function Button
 		
 		JButton btnFunction = new JButton("Function");
-		btnFunction.setBounds(10, 250, 101, 23);
+		btnFunction.setBounds(16, 250, 100, 23);
 		frame.getContentPane().add(btnFunction);
 		btnFunction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -198,7 +207,7 @@ public class ChronoGUI {
 		// End Function Button
 		
 		JButton btnSwap = new JButton("Swap");
-		btnSwap.setBounds(10, 375, 101, 23);
+		btnSwap.setBounds(16, 375, 100, 23);
 		frame.getContentPane().add(btnSwap);
 		btnSwap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -216,7 +225,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_9 = new JButton("*");
-		button_9.setBounds(488, 353, 41, 45);
+		button_9.setBounds(488, 356, 41, 45);
 		frame.getContentPane().add(button_9);
 		button_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -225,7 +234,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_10 = new JButton("0");
-		button_10.setBounds(527, 353, 41, 45);
+		button_10.setBounds(529, 356, 41, 45);
 		frame.getContentPane().add(button_10);
 		button_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -234,7 +243,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_11 = new JButton("#");
-		button_11.setBounds(562, 353, 41, 45);
+		button_11.setBounds(570, 356, 41, 45);
 		frame.getContentPane().add(button_11);
 		button_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -615,7 +624,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_1 = new JButton("2");
-		button_1.setBounds(527, 221, 41, 45);
+		button_1.setBounds(529, 221, 41, 45);
 		frame.getContentPane().add(button_1);
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -624,7 +633,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_2 = new JButton("3");
-		button_2.setBounds(562, 221, 41, 45);
+		button_2.setBounds(570, 221, 41, 45);
 		frame.getContentPane().add(button_2);
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -633,7 +642,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_3 = new JButton("4");
-		button_3.setBounds(488, 265, 41, 45);
+		button_3.setBounds(488, 266, 41, 45);
 		frame.getContentPane().add(button_3);
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -642,7 +651,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_4 = new JButton("5");
-		button_4.setBounds(527, 265, 41, 45);
+		button_4.setBounds(529, 266, 41, 45);
 		frame.getContentPane().add(button_4);
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -651,7 +660,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_5 = new JButton("6");
-		button_5.setBounds(562, 265, 41, 45);
+		button_5.setBounds(570, 266, 41, 45);
 		frame.getContentPane().add(button_5);
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -660,7 +669,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_6 = new JButton("7");
-		button_6.setBounds(488, 309, 41, 45);
+		button_6.setBounds(488, 311, 41, 45);
 		frame.getContentPane().add(button_6);
 		button_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -669,7 +678,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_7 = new JButton("8");
-		button_7.setBounds(527, 309, 41, 45);
+		button_7.setBounds(529, 311, 41, 45);
 		frame.getContentPane().add(button_7);
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -678,7 +687,7 @@ public class ChronoGUI {
 		});
 		
 		JButton button_8 = new JButton("9");
-		button_8.setBounds(562, 309, 41, 45);
+		button_8.setBounds(570, 311, 41, 45);
 		frame.getContentPane().add(button_8);
 		button_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
