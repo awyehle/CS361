@@ -258,7 +258,7 @@ public class Chronotimer {
 		}
 	}
 	
-	/**
+	/** TODO: add times for ind
 	 * Creates a new instance of the Chronotimer
 	 * Chronotimer creates a server which displays race status
 	 */
@@ -510,6 +510,7 @@ public class Chronotimer {
 
 	/**
 	 * Cancels a racer's time in lane 1
+	 * TODO fix
 	 * @param command
 	 */
 	private void cancel(String... command) {
@@ -556,11 +557,8 @@ public class Chronotimer {
 	private void reset(String... command) {
 		_channelOn = new boolean[_CHANNELS];
 		_channelTripped = new boolean[_CHANNELS];
-		// TODO:
-		// Not really a todo. But the project description states that a reset should clear the "saves" of the runs
-		// That, however, does not function with the sample test commands
-		//_run.clear();
-		//_runNumber=0;
+		_run.clear();
+		_runNumber=0;
 		_eventRunning=false;
 		resetQueues();
 		_manyRacers=0;
@@ -764,9 +762,10 @@ public class Chronotimer {
 			_channelTripped = new boolean[_CHANNELS];
 			_sensorsConnected = new Sensor[_CHANNELS];
 			resetTimes();
-			resetQueues();//asfasfasf
+			resetQueues();//asfasfasf TODO: reset the damn thing
 			_eventRunning=false;
 			event=EVENTS.IND;
+			reset();
 		}
 	}
 	
