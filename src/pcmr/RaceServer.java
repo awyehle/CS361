@@ -31,7 +31,6 @@ public class RaceServer {
 	static ArrayList<Result> dir = new ArrayList<Result>();
 	static String[] _names = new String[9999];
 	static final String _CSSfile = "style.css";
-	private static Chronotimer _chrono;
 	
 	
     // a shared area where we get the POST data and then use it in the other handler
@@ -49,10 +48,18 @@ public class RaceServer {
     	}
     }
     
-    public RaceServer(Chronotimer who) throws Exception
+    public static void main(String[] args)
     {
-    	if(who == null) throw new IllegalArgumentException("Chronotimer was not established");
-    	_chrono = who;
+    	try {
+			new RaceServer();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public RaceServer() throws Exception
+    {
     	getNames();
     	
     	startup();
@@ -161,7 +168,7 @@ public class RaceServer {
         			+ "<link rel=\"stylesheet\" href=\"race-status/style.css\">"
         			+ "</head>"
         			+ "<body>"
-        			+ "<h2> Race: " + _chrono.getRun() + ": " + _chrono.getEvent() + "</h2>"
+        			+ "<h2> Race: " + dir.get(0).getRun() + ": " + dir.get(0).getEvent() + "</h2>"
         			+ "<table>"
         			+ "<tr><th>Place</th>"
         			+"<th>Number</th>"
@@ -227,11 +234,8 @@ public class RaceServer {
 			Gson g = new Gson();
             try {
 				if (!sharedResponse.isEmpty()) {
-					switch(sharedResponse.split(" ")[0])
-					{
-					case "ADD":
-						{ArrayList<Result> fromJson = g.fromJson(sharedResponse.split(" ")[1],
-								new TypeToken<Collection<Racer>>() {
+						ArrayList<Result> fromJson = g.fromJson(sharedResponse,
+								new TypeToken<Collection<Result>>() {
 								}.getType());
 						dir.clear(); //TODO Is it necessary to remove previous results?
 						dir.addAll(fromJson);
@@ -239,10 +243,6 @@ public class RaceServer {
 						for(Result e : fromJson)
 							echo+= e.toString() + "\n";
 						System.out.println(echo);
-						break;}
-					default:
-						System.out.println("Invalid command received...");
-					}
 				}
 			} catch (JsonSyntaxException e) {
 				e.printStackTrace();

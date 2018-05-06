@@ -203,39 +203,15 @@ public class RaceQueuer {
 		return false;
 	}
 	
+	@Override
 	public String toString(){
-		
-		return _inProgress.toString();
+		String s = "Queued: ";
+		for(Racer r : _waitQueue) s += r.getBib()+ "\n";
+		s+="Running: ";
+		for(Racer r : _inProgress) s += r.getBib()+ "\n";
+		s+="Running: ";
+		for(Racer r : _alreadyRan) s += r.getBib()+ "\n";
+		return s;
 	}
 	
-	public static void main(String[] args)
-	{
-		//Test this class down here
-		ArrayList<Racer> newQueue = new ArrayList<Racer>();
-		Racer racer1 = new Racer(0);
-		Racer racer2 = new Racer(1);
-		Racer racer3 = new Racer(1);
-		Racer racer4 = new Racer(2);
-		newQueue.add(racer1);
-		newQueue.add(racer2);
-		newQueue.add(racer3);
-		newQueue.add(racer4);
-		RaceQueuer firstQueue = new RaceQueuer(newQueue);
-		System.out.println(firstQueue.toString());
-		System.out.print(firstQueue.isEmpty());
-		firstQueue.pop();
-		firstQueue.pop();
-		System.out.println(firstQueue.toString());
-		System.out.print(firstQueue.isEmpty());
-		firstQueue.pop();
-		firstQueue.pop();
-		System.out.print(firstQueue.isEmpty());
-		System.out.println(firstQueue.toString());
-		firstQueue.push(racer1);
-		System.out.println(firstQueue.toString());
-		firstQueue.push(racer2);
-		System.out.println(firstQueue.toString());
-		
-		
-	}
 }

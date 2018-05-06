@@ -80,4 +80,14 @@ public class Result {
 	{
 		return _results.get(whom);
 	}
+	
+	public int getRun()
+	{
+		return _run;
+	}
+	
+	public String getEvent()
+	{
+		return _runType;
+	}
 }

@@ -34,8 +34,6 @@ import data.Time;
  * bibs if the bibs are reassigned later anyways? Like... the racers
  * will still finish in the same place....
  * TODO: wtf is wrong with pargrp
- * TODO: should probably not allow racers to be added after a grp/pargrp
- * race has started.
  * TODO: TA stated that the start for PARGRP can be on any channel, but
  * the project description and the sprint 4 description states that it 
  * should be on channel 1, so I'm leaving it as that.
@@ -255,12 +253,6 @@ public class Chronotimer {
 		_time = new Time();
 		resetTimes();
 		resetQueues();
-		/*try {		removed
-			new RaceServer(this);
-		} catch (Exception e) {
-			_printer.println("Server initialization failed");
-			e.printStackTrace();
-		}*/
 	}
 	
 	/**
@@ -421,6 +413,8 @@ public class Chronotimer {
 					_printer.println("Unable to add racer. Error: " + error);
 				else 
 					{
+					//TODO kill
+					System.out.println(_manyRacers);
 					++_manyRacers;
 					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
 					_printer.println(_manyRacers + " racers.");
@@ -568,7 +562,7 @@ public class Chronotimer {
 			int channel = Integer.parseInt(command[2]);
 			if(/*_sensorsConnected[i] == null || */!_channelOn[channel-1])
 				return;
-			if(event==EVENTS.PARGRP && _queues[0].queueSize()==0) channel = 10;
+			if(event==EVENTS.PARGRP && _queues[0].queueSize()==0 && channel ==1) channel = 10;
 			if((event!=EVENTS.PARGRP && channel%2==1) || (event==EVENTS.PARGRP && channel==1)) 
 			{
 				try{
@@ -647,30 +641,30 @@ public class Chronotimer {
 		try{
 			switch(command[2].toUpperCase())
 			{
-			case "IND":
-			{
-				setEvent(EVENTS.IND,command);
-				break;
-			}
-			case "PARIND":
-			{
-				setEvent(EVENTS.PARIND,command);
-				break;
-			}
-			case "GRP":
-			{
-				setEvent(EVENTS.GRP,command);
-				break;
-			}
-			case "PARGRP":
-			{
-				setEvent(EVENTS.PARGRP,command);
-				break;
-			}
-			default: System.out.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");
+				case "IND":
+				{
+					setEvent(EVENTS.IND,command);
+					break;
+				}
+				case "PARIND":
+				{
+					setEvent(EVENTS.PARIND,command);
+					break;
+				}
+				case "GRP":
+				{
+					setEvent(EVENTS.GRP,command);
+					break;
+				}
+				case "PARGRP":
+				{
+					setEvent(EVENTS.PARGRP,command);
+					break;
+				}
+				default: System.out.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e) {_printer.println("That type of event is either [A]: Not supported (yet) or [B]: Not a valid event");}
+		catch(ArrayIndexOutOfBoundsException e) {_printer.println("No event type selected");}
 	}
 
 	private void setEvent(EVENTS type,String... command) {
@@ -721,7 +715,7 @@ public class Chronotimer {
 		ArrayList<Result> send = new ArrayList<Result>();
 		
 		send.add(_run.get(_runNumber-1));
-		sendResult("ADD " + new Gson().toJson(send));
+		sendResult(new Gson().toJson(send));
 	}
 
 	private void newrun(String... command) {
