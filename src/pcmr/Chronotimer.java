@@ -69,6 +69,7 @@ public class Chronotimer {
 	private boolean _eventRunning;
 	
 	private Time[] _lastToFinish = new Time[2];
+	private Racer[] _lastRacer = new Racer[2];
 	
 	private int _bibNumber = 0;
 	
@@ -182,15 +183,18 @@ public class Chronotimer {
 				{
 					_running="";
 					Racer[] running = _queues[0].peekAll();
-					_running += running[0].toString();
+					_running += running[0].toString() +": "
+							+ Time.difference(_startTimes[0].getFirst(), new Time()).convertRawTime() + "\n";
 					for(int i = 1; i < running.length; ++i)
-						_running+=", " + running[i].toString();
+						_running+=", " + running[i].toString() +": "
+						+ Time.difference(_startTimes[0].get(i), new Time()).convertRawTime() + "\n";
 				}
 				catch(IndexOutOfBoundsException e) {}
 				try
 				{
 					_finished="";
-					_finished+=_queues[0].peekRan().toString();
+					_finished+=_queues[0].peekRan().toString() + ": ";
+					_finished+=_lastToFinish[0].convertRawTime();
 				}
 				catch(NullPointerException e) {}
 				break;
@@ -225,12 +229,15 @@ public class Chronotimer {
 				try
 				{
 					_finished="";
+					_finished+=_lastRacer[0].getBib() + ": ";
 					_finished+=_lastToFinish[0].convertRawTime();
 				}
 				catch(NullPointerException e) {}
 				try
 				{
-					_finished+="\n" + _lastToFinish[1].convertRawTime();
+					_finished+="\n";
+					_finished+=_lastRacer[0].getBib() + ": ";
+					_finished+=_lastToFinish[1].convertRawTime();
 				}
 				catch(NullPointerException e) {}
 				break;
@@ -248,6 +255,7 @@ public class Chronotimer {
 				try
 				{
 					_finished="";
+					_finished+=_lastRacer[0].getBib() + ": ";
 					_finished+=_lastToFinish[0].convertRawTime();
 				}
 				catch(Exception e) {}
@@ -258,7 +266,7 @@ public class Chronotimer {
 		}
 	}
 	
-	/** TODO: add times for ind
+	/** 
 	 * Creates a new instance of the Chronotimer
 	 * Chronotimer creates a server which displays race status
 	 */
@@ -613,6 +621,8 @@ public class Chronotimer {
 						Racer finisher = _queues[channel==10? 0: channel-1].pop();
 						if(finisher==null) throw new NullPointerException();
 						_finishTimes[0].add(new Time(command[0]));
+						_lastRacer[1]=_lastRacer[0];
+						_lastRacer[0]=finisher;
 						_run.get(_runNumber-1).addResult(finisher, getRacerTime(0,0));
 					}
 					else if(event!=EVENTS.GRP)
@@ -620,6 +630,8 @@ public class Chronotimer {
 						Racer finisher = _queues[(channel-1)/2].pop();
 						if(finisher==null) throw new NullPointerException();
 						_finishTimes[(channel-1)/2].add(new Time(command[0]));
+						_lastRacer[1]=_lastRacer[0];
+						_lastRacer[0]=finisher;
 						_run.get(_runNumber-1).addResult(finisher, getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 					else
@@ -628,6 +640,8 @@ public class Chronotimer {
 						Racer finisher = _queues[0].pop();
 						if(finisher==null) throw new NullPointerException();
 						_finishTimes[0].add(new Time(command[0]));
+						_lastRacer[1]=_lastRacer[0];
+						_lastRacer[0]=finisher;
 						_run.get(_runNumber-1).addResult(finisher, getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 				}catch(NullPointerException e){_printer.println("no racer here");return;}
