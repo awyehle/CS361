@@ -234,14 +234,13 @@ public class RaceServer {
 			Gson g = new Gson();
             try {
 				if (!sharedResponse.isEmpty()) {
-						ArrayList<Result> fromJson = g.fromJson(sharedResponse,
-								new TypeToken<Collection<Result>>() {
-								}.getType());
+						Result fromJson = g.fromJson(sharedResponse,
+								Result.class);
 						dir.clear(); //TODO Is it necessary to remove previous results?
-						dir.addAll(fromJson);
+						dir.add(fromJson);
 						echo = "Result added:\n";
-						for(Result e : fromJson)
-							echo+= e.toString() + "\n";
+						
+							echo+= fromJson.toString() + "\n";
 						System.out.println(echo);
 				}
 			} catch (JsonSyntaxException e) {

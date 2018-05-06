@@ -736,10 +736,10 @@ public class Chronotimer {
 		_manyRacers=0;
 		_bibNumber = 0;
 		laneOne = true;
-		ArrayList<Result> send = new ArrayList<Result>();
+		//ArrayList<Result> send = new ArrayList<Result>();
 		
-		send.add(_run.get(_runNumber-1));
-		sendResult(new Gson().toJson(send));
+		//send.add(_run.get(_runNumber-1));
+		sendResult(new Gson().toJson(_run.get(_runNumber-1)));
 	}
 
 	private void newrun(String... command) {
