@@ -561,6 +561,11 @@ public class Chronotimer {
 		// That, however, does not function with the sample test commands
 		//_run.clear();
 		//_runNumber=0;
+		_eventRunning=false;
+		resetQueues();
+		_manyRacers=0;
+		_bibNumber = 0;
+		laneOne = true;
 		endrun();
 		_printer.println(command[0] + " All channels have been reset and turned off. Runs have been erased");
 	}
