@@ -307,6 +307,11 @@ public class Chronotimer {
 		if(!command[1].toUpperCase().equals("POWER") && !_isOn) return;
 		switch(command[1].toUpperCase())
 		{
+		case "LOG":
+		{
+			_printer.log=!_printer.log;
+			break;
+		}
 		case "POWER":
 		{
 			power(command);
