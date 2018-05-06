@@ -92,13 +92,27 @@ public class Chronotimer {
 		 */
 		private static final long serialVersionUID = 1L;
 		private static final int printerWidth = 34;
-		boolean _powered = true;
+		boolean _powered = true, log=false;
 
 		public void println(String echo)
 		{
-			if(_powered) {
+			System.out.println(echo);
+			if(_powered && log) {
 				if(!echo.startsWith("- ")) echo = "- " + echo;
-				System.out.println(echo);
+				if(echo.length() > printerWidth) {
+					smartPrinterWrapper(echo);
+					return;
+				}
+				add(0,echo);
+			}
+		}
+		
+		public void print(String echo)
+		{
+			System.out.println(echo);
+			if(_powered)
+			{
+				if(!echo.startsWith("- ")) echo = "- " + echo;
 				if(echo.length() > printerWidth) {
 					smartPrinterWrapper(echo);
 					return;
@@ -391,10 +405,11 @@ public class Chronotimer {
 			try{
 				Racer newRacer;
 				String error = "";
-				if(event!= EVENTS.GRP)
+				//TODO should we get rid of placeholder bibs for the GRP race????????
+				//if(event!= EVENTS.GRP)
 					newRacer = new Racer(Integer.parseInt(command[2]));
-				else
-					newRacer = new Racer(++_bibNumber);
+				//else
+				//	newRacer = new Racer(++_bibNumber);
 				
 				boolean canAdd = true;
 				for(RaceQueuer r : _queues)
@@ -413,8 +428,6 @@ public class Chronotimer {
 					_printer.println("Unable to add racer. Error: " + error);
 				else 
 					{
-					//TODO kill
-					System.out.println(_manyRacers);
 					++_manyRacers;
 					_printer.println("Racer " + newRacer.getBib() + " has been added to the queue.");
 					_printer.println(_manyRacers + " racers.");
@@ -483,7 +496,7 @@ public class Chronotimer {
 			{
 				int i = Integer.parseInt(command[2]);
 				if(i > _run.size() || i < 1) throw new IndexOutOfBoundsException();
-				_printer.println(_run.get(i-1).toString());
+				_printer.print(_run.get(i-1).toString());
 			}
 			catch(NumberFormatException e) {_printer.println("Invalid Channel");}
 			catch(IndexOutOfBoundsException er) {_printer.println(command[0] + " Not a valid run");}
@@ -674,6 +687,7 @@ public class Chronotimer {
 		}
 		event = type;
 		laneOne=true;
+		refreshQueues();
 		_printer.println(command[0] +" Event type set to " + event.toString());
 		endrun();
 	}
@@ -780,7 +794,7 @@ public class Chronotimer {
 	 * @param startChannel
 	 * @return
 	 */
-	public Time getRacerTime(int startChannel, int finishChannel)
+	private Time getRacerTime(int startChannel, int finishChannel)
 	{
 		try{
 			Time time = Time.difference(_startTimes[startChannel].remove(), _finishTimes[finishChannel].remove());
@@ -790,6 +804,54 @@ public class Chronotimer {
 		}catch(NoSuchElementException e){
 			System.out.println("You must start a race before printing times.");
 			return null;
+		}
+	}
+	
+	private void refreshQueues()
+	{
+		ArrayList<Racer> allRacers = new ArrayList<Racer>();
+		for(int i = 0; i < _queues.length; ++i)
+		{
+			Racer add;
+			do{
+				add= _queues[i].remove();
+				allRacers.add(add);
+				}
+			while(add!=null);
+		}
+		resetQueues();
+		switch(event)
+		{
+		case IND:
+			{
+				while(allRacers.size()>0)
+				{_queues[0].push(allRacers.remove(0));}
+			}
+			break;
+		case GRP:
+			{
+				while(allRacers.size()>0)
+				{_queues[0].push(allRacers.remove(0));}
+			}
+			break;
+		case PARGRP:
+			{
+				for(int i = 0; i < _CHANNELS && allRacers.size()>0; ++i)
+				{
+					_queues[i].push(allRacers.remove(0));
+				}
+				_printer.println("WARNING: Switching to PARGRP event may have deleted racers from the queue!");
+			}
+			break;
+		case PARIND:
+			{
+				boolean l1 = true;
+				while(allRacers.size()>0)
+				{_queues[l1?0:1].push(allRacers.remove(0));l1=!l1;}
+			}
+			break;
+		default:
+			break;
 		}
 	}
 	

@@ -84,6 +84,19 @@ public class RaceQueuer {
 		
 	}
 	
+	public Racer remove()
+	{
+		Racer firstRacer = null;
+		try{
+		firstRacer = _waitQueue.get(0);
+		_waitQueue.remove(0);
+		}catch(IndexOutOfBoundsException e){
+			//I disabled this
+			//System.out.println("There are no racers to pop in the raceQueuer");
+		}
+		return firstRacer;
+	}
+	
 	public Racer pop(){
 		
 		Racer firstRacer = null;
