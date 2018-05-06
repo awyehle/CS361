@@ -694,7 +694,7 @@ public class Chronotimer {
 		laneOne=true;
 		refreshQueues();
 		_printer.println(command[0] +" Event type set to " + event.toString());
-		endrun();
+		//endrun();
 	}
 
 	private void connect(String... command) {
