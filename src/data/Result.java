@@ -59,6 +59,12 @@ public class Result {
 		return _manyResults;
 	}
 	
+	public boolean setTime(String timestamp)
+	{
+		_time = timestamp;
+		return true;
+	}
+	
 	@Override
 	public String toString()
 	{

@@ -52,7 +52,7 @@ public class Chronotimer {
 	@SuppressWarnings("unchecked") //has an extra slot to account for pargrp event
 	private LinkedList<Time>[] _finishTimes = new LinkedList[(_CHANNELS/2)+1];
 	
-	private int _runNumber = 0;
+	private int _runNumber = 1;
 	private ArrayList<Result> _run = new ArrayList<Result>();
 	//holds 8 queues to account for pargrp
 	private RaceQueuer[] _queues = new RaceQueuer[_CHANNELS];
@@ -275,6 +275,7 @@ public class Chronotimer {
 		_time = new Time();
 		resetTimes();
 		resetQueues();
+		_run.add(new Result(_runNumber,"Not Started",event.toString()));
 	}
 	
 	/**
@@ -732,17 +733,25 @@ public class Chronotimer {
 		_eventRunning=false;
 		for(RaceQueuer r: _queues)
 		{
-			Racer notFinished=r.pop();
+			Racer notFinished=r.popWait();
 			while(notFinished!=null)
-				{
+			{
+				_run.get(_runNumber-1).addResult(notFinished, new Time(null));
+				notFinished=r.popWait();
+			}
+			notFinished=r.pop();
+			while(notFinished!=null)
+			{
 				_run.get(_runNumber-1).addResult(notFinished, new Time(null));
 				notFinished=r.pop();
-				}
+			}
 		}
 		resetQueues();
 		_manyRacers=0;
 		_bibNumber = 0;
 		laneOne = true;
+		++_runNumber;
+		_run.add(new Result(_runNumber,"Not Started",event.toString()));
 		//ArrayList<Result> send = new ArrayList<Result>();
 		
 		//send.add(_run.get(_runNumber-1));
@@ -755,8 +764,7 @@ public class Chronotimer {
 			_printer.println(command[0] + " There is an event already going on. End the current run to begin a new one.");
 			return;
 		}
-		++_runNumber;
-		_run.add(new Result(_runNumber, command[0], event.toString()));
+		_run.get(_runNumber-1).setTime(new Time().convertRawTime());
 		_eventRunning=true;
 		resetTimes();
 		_printer.println("Event type " + event.toString() +" has been started (Run #" + _runNumber + ")");
