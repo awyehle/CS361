@@ -518,16 +518,11 @@ public class Chronotimer {
 
 	/**
 	 * Cancels a racer's time in lane 1
-	 * TODO fix
 	 * @param command
 	 */
 	private void cancel(String... command) {
-		_channelTripped[0] = false;
-		_channelTripped[1] = false;
-		if(_startTimes[0].size()>0)
-			_startTimes[0].removeLast();
-		if(_finishTimes[0].size()>0)
-			_finishTimes[0].removeLast();
+		if(_queues[0].cancel())
+			_startTimes[0].removeFirst();
 		_printer.println(command[0] + " Run for channels [1] and [2] has been canceled");
 	}
 
@@ -776,7 +771,7 @@ public class Chronotimer {
 			_channelTripped = new boolean[_CHANNELS];
 			_sensorsConnected = new Sensor[_CHANNELS];
 			resetTimes();
-			resetQueues();//asfasfasf TODO: reset the damn thing
+			resetQueues();
 			_eventRunning=false;
 			event=EVENTS.IND;
 			reset();

@@ -26,6 +26,15 @@ public class RaceQueuer {
 		return false;
 	}
 	
+	public boolean cancel()
+	{
+		try {
+			Racer r = _inProgress.remove(0);
+			return _waitQueue.add(r);
+		}
+		catch (NullPointerException e) {return false;}
+	}
+	
 	public boolean contains(int bib) {
 		boolean has = false;
 		for(Racer r : _waitQueue)
