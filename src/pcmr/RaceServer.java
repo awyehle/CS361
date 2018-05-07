@@ -149,7 +149,8 @@ public class RaceServer {
             		}
             }
             results.sort(new TimeCompare());
-			echo = toTable(results);
+            for(Result r : dir)
+            	echo = toTable(r,results);
             response += "End of response\n";
             System.out.println(response);
             // write out the response
@@ -161,14 +162,14 @@ public class RaceServer {
             os.close();
         }
         
-        private String toTable(ArrayList<Data> results)
+        private String toTable(Result r, ArrayList<Data> results)
         {
         	String html = "<html>"
         			+ "<head>"
         			+ "<link rel=\"stylesheet\" href=\"race-status/style.css\">"
         			+ "</head>"
         			+ "<body>"
-        			+ "<h2> Race: " + dir.get(0).getRun() + ": " + dir.get(0).getEvent() + "</h2>"
+        			+ "<h2> Race: " + r.getRun() + ": " + r.getEvent() + "</h2>"
         			+ "<table>"
         			+ "<tr><th>Place</th>"
         			+"<th>Number</th>"
@@ -236,7 +237,6 @@ public class RaceServer {
 				if (!sharedResponse.isEmpty()) {
 						Result fromJson = g.fromJson(sharedResponse,
 								Result.class);
-						dir.clear(); //TODO Is it necessary to remove previous results?
 						dir.add(fromJson);
 						echo = "Result added:\n";
 						
