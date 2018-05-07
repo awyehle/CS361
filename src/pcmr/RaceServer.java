@@ -39,9 +39,9 @@ public class RaceServer {
     
     private static class Data
     {
-    	Racer _whom; 
+    	int _whom; 
     	Time _time;
-    	public Data(Racer whom, Time time)
+    	public Data(int whom, Time time)
     	{
     		_whom=whom;
     		_time=time;
@@ -136,21 +136,23 @@ public class RaceServer {
 			// set up the header
 			String echo = "";
             System.out.println(response);
-			
-            ArrayList<Data> results = new ArrayList<Data>();
-            if(dir.size()>0)
-            {
-            	for(int i = 0; i < dir.get(0).results(); ++i)
-            		{
-                    results.add(
-            				new Data(
-            						dir.get(0).getRacers()[i], 
-            						dir.get(0).getTimeForRacer(dir.get(0).getRacers()[i])));
-            		}
-            }
-            results.sort(new TimeCompare());
+
             for(Result r : dir)
-            	echo = toTable(r,results);
+            {
+	            ArrayList<Data> results = new ArrayList<Data>();
+	            if(dir.size()>0)
+	            {
+	            	for(int i = 0; i < r.results(); ++i)
+	            		{
+	                    results.add(
+	            				new Data(
+	            						r.getRacers()[i], 
+	            						r.getTimeForRacer(r.getRacers()[i])));
+	            		}
+	            }
+	            results.sort(new TimeCompare());
+	            echo += toTable(r,results);
+            }
             response += "End of response\n";
             System.out.println(response);
             // write out the response
@@ -180,7 +182,7 @@ public class RaceServer {
         		html+= "<tr>"
         				+ "<td>" + (i+1) + "</td>"
                 		+ "<td>" + results.get(i)._whom + "</td>"
-                        + "<td>" + RaceServer.getName(results.get(i)._whom.getBib()) + "</td>"
+                        + "<td>" + RaceServer.getName(results.get(i)._whom) + "</td>"
                         + "<td>" + results.get(i)._time.convertRawTime() + "</td>"
         				+ "</tr>";
         	}
@@ -235,8 +237,7 @@ public class RaceServer {
 			Gson g = new Gson();
             try {
 				if (!sharedResponse.isEmpty()) {
-						Result fromJson = g.fromJson(sharedResponse,
-								Result.class);
+						Result fromJson = g.fromJson(sharedResponse, Result.class);
 						dir.add(fromJson);
 						echo = "Result added:\n";
 						

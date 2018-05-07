@@ -20,9 +20,9 @@ public class MiscTester {
 	public void testResult()
 	{
 		Result r = new Result(1,"12:34:52.162", "IND");;
-		assertTrue(r.addResult(new Racer(111), new Time()));
-		assertTrue(r.addResult(new Racer(101), new Time()));
-		assertFalse(r.addResult(new Racer(111), new Time()));
+		assertTrue(r.addResult(111, new Time()));
+		assertTrue(r.addResult(101, new Time()));
+		assertFalse(r.addResult(111, new Time()));
 		assertEquals(2,r.results());
 	}
 	

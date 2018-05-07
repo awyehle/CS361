@@ -10,7 +10,7 @@ public class Result {
 	private String _runType, _time;
 	private int _manyResults, _run;
 	
-	private HashMap<Racer,Time> _results= new HashMap<>();
+	private HashMap<Integer,Time> _results= new HashMap<>();
 	
 	/**
 	 * Create a new result for a run
@@ -33,10 +33,8 @@ public class Result {
 	 * @param time Racer's time for this run
 	 * @return True if the racer was successfully added, false if not
 	 */
-	public boolean addResult(Racer racer, Time time)
+	public boolean addResult(int racer, Time time)
 	{
-		if(racer == null)
-			throw new IllegalArgumentException("Cannot store null racer");
 		if(_results.containsKey(racer) && _results.get(racer)!=null) return false;
 		else if (_results.containsKey(racer)) 
 		{
@@ -65,6 +63,12 @@ public class Result {
 		return true;
 	}
 	
+	public void setEvent(String event)
+	{
+		if(event==null) throw new IllegalArgumentException();
+		_runType=event;
+	}
+	
 	@Override
 	public String toString()
 	{
@@ -77,12 +81,12 @@ public class Result {
 		return str;
 	}
 	
-	public Racer[] getRacers()
+	public Integer[] getRacers()
 	{
-		return _results.keySet().toArray(new Racer[0]);
+		return _results.keySet().toArray(new Integer[0]);
 	}
 	
-	public Time getTimeForRacer(Racer whom)
+	public Time getTimeForRacer(int whom)
 	{
 		return _results.get(whom);
 	}

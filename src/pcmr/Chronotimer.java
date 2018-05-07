@@ -185,7 +185,7 @@ public class Chronotimer {
 					Racer[] running = _queues[0].peekAll();
 					_running += running[0].toString() +": "
 							+ Time.difference(_startTimes[0].getFirst(), new Time()).convertRawTime() + "\n";
-					for(int i = 1; i < running.length; ++i)
+					for(int i = 1; i < 3; ++i)
 						_running+=", " + running[i].toString() +": "
 						+ Time.difference(_startTimes[0].get(i), new Time()).convertRawTime() + "\n";
 				}
@@ -236,7 +236,7 @@ public class Chronotimer {
 				try
 				{
 					_finished+="\n";
-					_finished+=_lastRacer[0].getBib() + ": ";
+					_finished+=_lastRacer[1].getBib() + ": ";
 					_finished+=_lastToFinish[1].convertRawTime();
 				}
 				catch(NullPointerException e) {}
@@ -619,7 +619,7 @@ public class Chronotimer {
 						_finishTimes[0].add(new Time(command[0]));
 						_lastRacer[1]=_lastRacer[0];
 						_lastRacer[0]=finisher;
-						_run.get(_runNumber-1).addResult(finisher, getRacerTime(0,0));
+						_run.get(_runNumber-1).addResult(finisher.getBib(), getRacerTime(0,0));
 					}
 					else if(event!=EVENTS.GRP)
 					{
@@ -628,7 +628,7 @@ public class Chronotimer {
 						_finishTimes[(channel-1)/2].add(new Time(command[0]));
 						_lastRacer[1]=_lastRacer[0];
 						_lastRacer[0]=finisher;
-						_run.get(_runNumber-1).addResult(finisher, getRacerTime((channel-1)/2,(channel-1)/2));
+						_run.get(_runNumber-1).addResult(finisher.getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 					else
 					{
@@ -638,7 +638,7 @@ public class Chronotimer {
 						_finishTimes[0].add(new Time(command[0]));
 						_lastRacer[1]=_lastRacer[0];
 						_lastRacer[0]=finisher;
-						_run.get(_runNumber-1).addResult(finisher, getRacerTime((channel-1)/2,(channel-1)/2));
+						_run.get(_runNumber-1).addResult(finisher.getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
 					}
 				}catch(NullPointerException e){_printer.println("no racer here");return;}
 			}
@@ -704,6 +704,7 @@ public class Chronotimer {
 			return;
 		}
 		event = type;
+		_run.get(_runNumber-1).setEvent(event.toString());
 		laneOne=true;
 		resetQueues();
 		_printer.println(command[0] +" Event type set to " + event.toString());
@@ -736,26 +737,26 @@ public class Chronotimer {
 			Racer notFinished=r.popWait();
 			while(notFinished!=null)
 			{
-				_run.get(_runNumber-1).addResult(notFinished, new Time(null));
+				_run.get(_runNumber-1).addResult(notFinished.getBib(), new Time(null));
 				notFinished=r.popWait();
 			}
 			notFinished=r.pop();
 			while(notFinished!=null)
 			{
-				_run.get(_runNumber-1).addResult(notFinished, new Time(null));
+				_run.get(_runNumber-1).addResult(notFinished.getBib(), new Time(null));
 				notFinished=r.pop();
 			}
 		}
+		resetTimes();
 		resetQueues();
 		_manyRacers=0;
 		_bibNumber = 0;
 		laneOne = true;
+		
+		sendResult(new Gson().toJson(_run.get(_runNumber-1)));
+		
 		++_runNumber;
 		_run.add(new Result(_runNumber,"Not Started",event.toString()));
-		//ArrayList<Result> send = new ArrayList<Result>();
-		
-		//send.add(_run.get(_runNumber-1));
-		sendResult(new Gson().toJson(_run.get(_runNumber-1)));
 	}
 
 	private void newrun(String... command) {
