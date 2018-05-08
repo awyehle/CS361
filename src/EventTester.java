@@ -165,7 +165,61 @@ public class EventTester {
 		@Test
 		public void testGRP(){
 		
-powerUpAndToggleAllChannels(newChronotimer);
+			powerUpAndToggleAllChannels(newChronotimer);
+			
+			assertTrue(newChronotimer.queueState().get(0).isEmpty());
+			assertTrue(newChronotimer.queueState().get(1).isEmpty());
+			
+			rc(newChronotimer, "EVENT GRP");
+			
+			rc(newChronotimer, "num 1");
+			
+			rc(newChronotimer, "num 2");
+			
+			rc(newChronotimer, "num 3");
+			
+			rc(newChronotimer, "num 4");
+			
+
+			assertTrue(newChronotimer.queueState().get(0).contains(1));
+			assertTrue(newChronotimer.queueState().get(0).contains(2));
+			assertTrue(newChronotimer.queueState().get(0).contains(3));
+			assertTrue(newChronotimer.queueState().get(0).contains(4));
+			
+			assertFalse(newChronotimer.eventIsStarted());
+			
+			rc(newChronotimer, "newrun");
+
+			rc(newChronotimer, "trig 1");
+			
+			assertTrue(newChronotimer.eventIsStarted());
+			
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(1)));
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(2)));
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(3)));
+			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(4)));
+			
+			rc(newChronotimer, "trig 2");
+			
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(1)));
+			rc(newChronotimer, "trig 2");
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(2)));
+			rc(newChronotimer, "trig 2");
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(3)));
+			rc(newChronotimer, "trig 2");
+			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(4)));
+			
+			rc(newChronotimer, "endrun");
+			
+			assertTrue(newChronotimer.queueState().get(0).isEmpty());
+			assertTrue(newChronotimer.queueState().get(1).isEmpty());
+			
+		}
+		
+		@Test
+		public void testPARGRP(){
+		
+			powerUpAndToggleAllChannels(newChronotimer);
 			
 			assertTrue(newChronotimer.queueState().get(0).isEmpty());
 			assertTrue(newChronotimer.queueState().get(1).isEmpty());
