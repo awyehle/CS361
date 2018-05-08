@@ -532,6 +532,7 @@ public class Chronotimer {
 		}
 		_finishTimes[0].add(new Time(null));
 		_run.get(_runNumber-1).addResult(bad.getBib(), getRacerTime(0,0));
+		_printer.print(_run.get(_runNumber-1).getTimeForRacer(bad.getBib()).convertRawTime());
 		_printer.println(command[0] + " Racer for channels [1] and [2] did not finish (DNF)");
 	}
 
@@ -612,6 +613,7 @@ public class Chronotimer {
 						_lastRacer[1]=_lastRacer[0];
 						_lastRacer[0]=finisher;
 						_run.get(_runNumber-1).addResult(finisher.getBib(), getRacerTime(0,0));
+						_printer.print(_run.get(_runNumber-1).getTimeForRacer(finisher.getBib()).convertRawTime());
 					}
 					else if(event!=EVENTS.GRP)
 					{
@@ -621,6 +623,7 @@ public class Chronotimer {
 						_lastRacer[1]=_lastRacer[0];
 						_lastRacer[0]=finisher;
 						_run.get(_runNumber-1).addResult(finisher.getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
+						_printer.print(_run.get(_runNumber-1).getTimeForRacer(finisher.getBib()).convertRawTime());
 					}
 					else
 					{
@@ -631,6 +634,7 @@ public class Chronotimer {
 						_lastRacer[1]=_lastRacer[0];
 						_lastRacer[0]=finisher;
 						_run.get(_runNumber-1).addResult(finisher.getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
+						_printer.print(_run.get(_runNumber-1).getTimeForRacer(finisher.getBib()).convertRawTime());
 					}
 				}catch(NullPointerException e){_printer.println("no racer here");return;}
 			}
@@ -730,12 +734,14 @@ public class Chronotimer {
 			while(notFinished!=null)
 			{
 				_run.get(_runNumber-1).addResult(notFinished.getBib(), new Time(null));
+				_printer.print(_run.get(_runNumber-1).getTimeForRacer(notFinished.getBib()).convertRawTime());
 				notFinished=r.popWait();
 			}
 			notFinished=r.pop();
 			while(notFinished!=null)
 			{
 				_run.get(_runNumber-1).addResult(notFinished.getBib(), new Time(null));
+				_printer.print(_run.get(_runNumber-1).getTimeForRacer(notFinished.getBib()).convertRawTime());
 				notFinished=r.pop();
 			}
 		}
@@ -825,54 +831,6 @@ public class Chronotimer {
 		}catch(NoSuchElementException e){
 			System.out.println("You must start a race before printing times.");
 			return null;
-		}
-	}
-	
-	private void refreshQueues()
-	{
-		ArrayList<Racer> allRacers = new ArrayList<Racer>();
-		for(int i = 0; i < _queues.length; ++i)
-		{
-			Racer add;
-			do{
-				add= _queues[i].remove();
-				allRacers.add(add);
-				}
-			while(add!=null);
-		}
-		resetQueues();
-		switch(event)
-		{
-		case IND:
-			{
-				while(allRacers.size()>0)
-				{_queues[0].push(allRacers.remove(0));}
-			}
-			break;
-		case GRP:
-			{
-				while(allRacers.size()>0)
-				{_queues[0].push(allRacers.remove(0));}
-			}
-			break;
-		case PARGRP:
-			{
-				for(int i = 0; i < _CHANNELS && allRacers.size()>0; ++i)
-				{
-					_queues[i].push(allRacers.remove(0));
-				}
-				_printer.println("WARNING: Switching to PARGRP event may have deleted racers from the queue!");
-			}
-			break;
-		case PARIND:
-			{
-				boolean l1 = true;
-				while(allRacers.size()>0)
-				{_queues[l1?0:1].push(allRacers.remove(0));l1=!l1;}
-			}
-			break;
-		default:
-			break;
 		}
 	}
 	
