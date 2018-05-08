@@ -428,7 +428,7 @@ public class ChronoTester {
 		
 		@Test
 		public void TestSwap(){
-			powerUpAndToggleAllChannels(newChronotimer);
+			rc(newChronotimer, "power");
 			
 			assertTrue(newChronotimer.queueState().get(0).isEmpty());
 			assertTrue(newChronotimer.queueState().get(1).isEmpty());
@@ -483,7 +483,7 @@ public class ChronoTester {
 			rc(newChronotimer, "num 7");
 			rc(newChronotimer, "num 8");
 			
-			
+			rc(newChronotimer, "power");
 		}
 		
 		private void rc(Chronotimer c, String cmd)

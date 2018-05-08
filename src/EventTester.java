@@ -214,6 +214,8 @@ public class EventTester {
 			assertTrue(newChronotimer.queueState().get(0).isEmpty());
 			assertTrue(newChronotimer.queueState().get(1).isEmpty());
 			
+			rc(newChronotimer, "power");
+			
 		}
 		
 		@Test
@@ -224,7 +226,7 @@ public class EventTester {
 			assertTrue(newChronotimer.queueState().get(0).isEmpty());
 			assertTrue(newChronotimer.queueState().get(1).isEmpty());
 			
-			rc(newChronotimer, "EVENT GRP");
+			rc(newChronotimer, "EVENT PARGRP");
 			
 			rc(newChronotimer, "num 1");
 			
@@ -268,6 +270,7 @@ public class EventTester {
 			assertTrue(newChronotimer.queueState().get(0).isEmpty());
 			assertTrue(newChronotimer.queueState().get(1).isEmpty());
 			
+			rc(newChronotimer, "power");
 		}
 		
 		private void rc(Chronotimer c, String cmd)
