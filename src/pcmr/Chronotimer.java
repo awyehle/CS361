@@ -532,7 +532,7 @@ public class Chronotimer {
 		}
 		_finishTimes[0].add(new Time(null));
 		_run.get(_runNumber-1).addResult(bad.getBib(), getRacerTime(0,0));
-		_printer.print(_run.get(_runNumber-1).getTimeForRacer(bad.getBib()).convertRawTime());//
+		_printer.print(bad.getBib() + ": " + _run.get(_runNumber-1).getTimeForRacer(bad.getBib()).convertRawTime());//
 		_printer.println(command[0] + " Racer for channels [1] and [2] did not finish (DNF)");
 	}
 
@@ -613,7 +613,8 @@ public class Chronotimer {
 						_lastRacer[1]=_lastRacer[0];
 						_lastRacer[0]=finisher;
 						_run.get(_runNumber-1).addResult(finisher.getBib(), getRacerTime(0,0));
-						_printer.print(_run.get(_runNumber-1).getTimeForRacer(finisher.getBib()).convertRawTime());
+						_printer.print(finisher.getBib() + ": " +
+								_run.get(_runNumber-1).getTimeForRacer(finisher.getBib()).convertRawTime());
 					}
 					else if(event!=EVENTS.GRP)
 					{
@@ -623,7 +624,8 @@ public class Chronotimer {
 						_lastRacer[1]=_lastRacer[0];
 						_lastRacer[0]=finisher;
 						_run.get(_runNumber-1).addResult(finisher.getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
-						_printer.print(_run.get(_runNumber-1).getTimeForRacer(finisher.getBib()).convertRawTime());
+						_printer.print(finisher.getBib() + ": " +
+								_run.get(_runNumber-1).getTimeForRacer(finisher.getBib()).convertRawTime());
 					}
 					else
 					{
@@ -634,7 +636,8 @@ public class Chronotimer {
 						_lastRacer[1]=_lastRacer[0];
 						_lastRacer[0]=finisher;
 						_run.get(_runNumber-1).addResult(finisher.getBib(), getRacerTime((channel-1)/2,(channel-1)/2));
-						_printer.print(_run.get(_runNumber-1).getTimeForRacer(finisher.getBib()).convertRawTime());
+						_printer.print(finisher.getBib() + ": " +
+								_run.get(_runNumber-1).getTimeForRacer(finisher.getBib()).convertRawTime());
 					}
 				}catch(NullPointerException e){_printer.println("no racer here");return;}
 			}
@@ -734,14 +737,14 @@ public class Chronotimer {
 			while(notFinished!=null)
 			{
 				_run.get(_runNumber-1).addResult(notFinished.getBib(), new Time(null));
-				_printer.print(_run.get(_runNumber-1).getTimeForRacer(notFinished.getBib()).convertRawTime());
+				_printer.print(notFinished.getBib() + ": " + _run.get(_runNumber-1).getTimeForRacer(notFinished.getBib()).convertRawTime());
 				notFinished=r.popWait();
 			}
 			notFinished=r.pop();
 			while(notFinished!=null)
 			{
 				_run.get(_runNumber-1).addResult(notFinished.getBib(), new Time(null));
-				_printer.print(_run.get(_runNumber-1).getTimeForRacer(notFinished.getBib()).convertRawTime());
+				_printer.print(notFinished.getBib() + ": " + _run.get(_runNumber-1).getTimeForRacer(notFinished.getBib()).convertRawTime());
 				notFinished=r.pop();
 			}
 		}
