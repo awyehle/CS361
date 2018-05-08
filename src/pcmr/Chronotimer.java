@@ -747,7 +747,7 @@ public class Chronotimer {
 		_bibNumber = 0;
 		laneOne = true;
 		
-		sendResult(new Gson().toJson(_run.get(_runNumber-1)));
+		if(_runNumber < 0) sendResult(new Gson().toJson(_run.get(_runNumber-1)));
 		
 		++_runNumber;
 		_run.add(new Result(_runNumber,"Not Started",event.toString()));
@@ -777,7 +777,7 @@ public class Chronotimer {
 			resetQueues();
 			_eventRunning=false;
 			event=EVENTS.IND;
-			reset();
+			reset("");
 		}
 	}
 	
