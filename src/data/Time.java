@@ -119,13 +119,19 @@ public class Time implements Comparable {
 		return new Time(diff);
 	}
 
+	/**
+	 * Compares this time with another time.
+	 * If this time is lower, or that time is DNF, then this time comes before that time
+	 * If that time is lower, or this time is DNF, then that time comes before this time
+	 * If that time is not an instance of Time, then this time comes before that
+	 */
 	@Override
 	public int compareTo(Object arg0) {
 		if(arg0 == null) return -1;
 		if(!(arg0 instanceof Time)) return -1;
 		else
 		{
-			if(((Time) arg0)._time<0) return -1;
+			if(((Time) arg0)._time<0 || this._time < 0) return -1;
 			return (int) (this._time-((Time) arg0)._time);
 		}
 	}

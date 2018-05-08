@@ -57,12 +57,21 @@ public class Result {
 		return _manyResults;
 	}
 	
+	/**
+	 * Set the time at which this event was started
+	 * @param timestamp the time this event started
+	 * @return true
+	 */
 	public boolean setTime(String timestamp)
 	{
 		_time = timestamp;
 		return true;
 	}
 	
+	/**
+	 * Set the type of event this result was for
+	 * @param event the race type
+	 */
 	public void setEvent(String event)
 	{
 		if(event==null) throw new IllegalArgumentException();
@@ -81,21 +90,38 @@ public class Result {
 		return str;
 	}
 	
+	/**
+	 * Get an array of all racer bib numbers that participated in this race
+	 * @return an Integer array of bib numbers
+	 */
 	public Integer[] getRacers()
 	{
 		return _results.keySet().toArray(new Integer[0]);
 	}
 	
+	/**
+	 * Get the racer's time from this race
+	 * @param whom the bib number of the racer
+	 * @return the time of the racer, or null if that racer was not in this race
+	 */
 	public Time getTimeForRacer(int whom)
 	{
 		return _results.get(whom);
 	}
 	
+	/**
+	 * Gets the run number associated with this result
+	 * @return the run number
+	 */
 	public int getRun()
 	{
 		return _run;
 	}
 	
+	/**
+	 * Gets the event associated with this result
+	 * @return the race type
+	 */
 	public String getEvent()
 	{
 		return _runType;

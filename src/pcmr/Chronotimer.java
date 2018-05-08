@@ -27,16 +27,7 @@ import data.Time;
  */
 
 /*
- * TODO: printer on gui should print race results, unless a LOG command
- * is issued. then it will echo the console.
- * TODO: GRP race should have bibs re-assigned to racers upon finishing
- * Personal thought: the fuck is the point of assigning placeholder
- * bibs if the bibs are reassigned later anyways? Like... the racers
- * will still finish in the same place....
- * TODO: wtf is wrong with pargrp
- * TODO: TA stated that the start for PARGRP can be on any channel, but
- * the project description and the sprint 4 description states that it 
- * should be on channel 1, so I'm leaving it as that.
+ * TODO: need print command on gui
  */
 public class Chronotimer {
 
@@ -186,7 +177,7 @@ public class Chronotimer {
 					_running += running[0].toString() +": "
 							+ Time.difference(_startTimes[0].getFirst(), new Time()).convertRawTime() + "\n";
 					for(int i = 1; i < 3; ++i)
-						_running+=", " + running[i].toString() +": "
+						_running+= running[i].toString() +": "
 						+ Time.difference(_startTimes[0].get(i), new Time()).convertRawTime() + "\n";
 				}
 				catch(IndexOutOfBoundsException e) {}
@@ -998,7 +989,7 @@ public class Chronotimer {
 	// string to hold the result of reading in the response
 	private String receiveMessage = "";
 	
-	private void sendResult(String Json){ //TODO result should be send at the endrun command?
+	private void sendResult(String Json){
 		try {
 			System.out.println("in the client");
 			
