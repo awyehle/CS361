@@ -54,7 +54,7 @@ public class RaceServer {
 			new RaceServer();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
     }
     
@@ -72,7 +72,7 @@ public class RaceServer {
     		for(int i = 0; i < _names.length; ++i)
     			_names[i] = nameGetter.nextLine();
     	}
-    	catch(FileNotFoundException e) {e.printStackTrace();}
+    	catch(FileNotFoundException e) {/*e.printStackTrace();*/}
     }
 
     private static void startup() throws Exception {
@@ -245,7 +245,7 @@ public class RaceServer {
 						System.out.println(echo);
 				}
 			} catch (JsonSyntaxException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
             //runCommand(sharedResponse);
             //Desktop dt = Desktop.getDesktop();

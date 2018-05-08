@@ -78,7 +78,7 @@ public class ChronoGUI {
 					ChronoGUI window = new ChronoGUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 		});
