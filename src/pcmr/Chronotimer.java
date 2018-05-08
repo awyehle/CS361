@@ -739,6 +739,8 @@ public class Chronotimer {
 				notFinished=r.pop();
 			}
 		}
+		_lastToFinish[0]=_lastToFinish[1]=null;
+		_lastRacer[0]=_lastRacer[1]=null;
 		resetTimes();
 		resetQueues();
 		_manyRacers=0;
