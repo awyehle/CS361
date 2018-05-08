@@ -132,7 +132,6 @@ public class EventTester {
 			assertEquals(1, ct.queueState(1).size());
 			assertEquals(1, ct.queueState(3).size());
 
-			assertEquals(0,ct.getRun());
 			rc(ct, "newrun");
 			
 			rc(ct, "trig 1");
@@ -151,15 +150,12 @@ public class EventTester {
 			assertEquals(1,ct.getRun());
 			
 			rc(ct, "endrun");
-			assertEquals(1,ct.getRun());
 
 			rc(ct, "newrun");
 			assertEquals(2,ct.getRun());
 			assertEquals(0,ct.getResultSize(2));
 			
 			rc(ct, "POWER");				
-			//rc(ct, "reset");
-			//assertEquals(0,ct.getRun());
 		}
 		
 		@Test
@@ -238,11 +234,8 @@ public class EventTester {
 			
 
 			assertTrue(newChronotimer.queueState().get(0).contains(1));
-			assertTrue(newChronotimer.queueState().get(0).contains(2));
-			assertTrue(newChronotimer.queueState().get(0).contains(3));
-			assertTrue(newChronotimer.queueState().get(0).contains(4));
+			assertTrue(newChronotimer.queueState().get(1).contains(2));
 			
-			assertFalse(newChronotimer.eventIsStarted());
 			
 			rc(newChronotimer, "newrun");
 
@@ -251,19 +244,19 @@ public class EventTester {
 			assertTrue(newChronotimer.eventIsStarted());
 			
 			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(1)));
-			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(2)));
-			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(3)));
-			assertTrue(newChronotimer.queueState().get(0).inProgressQueue(new Racer(4)));
+			assertTrue(newChronotimer.queueState().get(1).inProgressQueue(new Racer(2)));
 			
-			rc(newChronotimer, "trig 2");
+			rc(newChronotimer, "trig 3");
 			
-			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(1)));
+			assertFalse(newChronotimer.queueState().get(0).alreadyRan(new Racer(1)));
+			rc(newChronotimer, "trig 5");
+			assertFalse(newChronotimer.queueState().get(0).alreadyRan(new Racer(2)));
 			rc(newChronotimer, "trig 2");
-			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(2)));
-			rc(newChronotimer, "trig 2");
-			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(3)));
-			rc(newChronotimer, "trig 2");
-			assertTrue(newChronotimer.queueState().get(0).alreadyRan(new Racer(4)));
+			assertFalse(newChronotimer.queueState().get(0).alreadyRan(new Racer(3)));
+			rc(newChronotimer, "trig 1");
+			assertFalse(newChronotimer.queueState().get(0).alreadyRan(new Racer(4)));
+			rc(newChronotimer, "trig 4");
+			rc(newChronotimer, "trig 6");
 			
 			rc(newChronotimer, "endrun");
 			
