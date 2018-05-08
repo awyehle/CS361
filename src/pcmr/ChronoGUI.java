@@ -1334,6 +1334,7 @@ public class ChronoGUI {
 		functionDisplay[1] = "  PARIND";
 		functionDisplay[2] = "  GRP";
 		functionDisplay[3] = "  PARGRP";
+		functionDisplay[10] = "";
 		for(int i = 4; i < 10; ++i) {
 			functionDisplay[i] = "";
 		}
@@ -1367,7 +1368,7 @@ public class ChronoGUI {
 		}
 		else {
 			switch(funID) {
-			case(0): {
+			case(2): {
 				_chrono.runCommand("-","DNF");
 				functionReturn();
 				break;
@@ -1379,12 +1380,13 @@ public class ChronoGUI {
 				functionDisplay[0] = "Enter a racer number";
 				functionDisplay[1] = "# to Enter, * to Clear";
 				functionDisplay[2] = "bib: ";
+				functionDisplay[10] = "";
 				numLength = 0;
 				num = true;
 				mainTextArea.setText(createMainTextString(functionDisplay));
 				break;
 			}
-			case(2):{
+			case(9):{
 				_chrono.runCommand("-", "CANCEL");
 				functionReturn();
 				break;
@@ -1406,6 +1408,7 @@ public class ChronoGUI {
 				functionDisplay[0] = "Enter a mm:ss.ms Timestamp";
 				functionDisplay[1] = "# to Enter, * to Clear";
 				functionDisplay[2] = "Time: ";
+				functionDisplay[10] = "";
 				numLength = 0;
 				num = true;
 				time = true;
@@ -1419,6 +1422,7 @@ public class ChronoGUI {
 				functionDisplay[0] = "Enter run number to Export";
 				functionDisplay[1] = "# to Enter, * to Clear";
 				functionDisplay[2] = "Run: ";
+				functionDisplay[10] = "";
 				numLength = 0;
 				num = true;
 				export = true;
@@ -1438,24 +1442,29 @@ public class ChronoGUI {
 				radioButton_8.setSelected(false);
 				break;
 			}
-			case(9): {
+			case(10): {
+				_chrono.runCommand("-", "PRINT");
 				functionReturn();
 				break;
 			}
-			case(10): {
+			case(0): {
+				functionReturn();
+				break;
+			}
+			case(11): {
 				_chrono.runCommand("-", "NUM", functionDisplay[2].substring(5));
 				num = false;
 				functionReturn();
 				break;
 			}
-			case(11): {
+			case(12): {
 				_chrono.runCommand("-", "TIME", functionDisplay[2].substring(6));
 				num = false;
 				time = false;
 				functionReturn();
 				break;
 			}
-			case(12): {
+			case(13): {
 				_chrono.runCommand("-", "EXPORT", functionDisplay[2].substring(5));
 				num = false;
 				export = false;
@@ -1485,9 +1494,9 @@ public class ChronoGUI {
 				++numLength;
 			}
 			else if(i == 11) {
-				if(export) function(false, 12);
-				else if(time) function(false, 11);
-				else function(false, 10);
+				if(export) function(false, 13);
+				else if(time) function(false, 12);
+				else function(false, 11);
 				numLength = 0;
 			}
 			else if(i < 10) functionDisplay[2] =  functionDisplay[2] + i;
@@ -1496,17 +1505,18 @@ public class ChronoGUI {
 	}
 	
 	private void setFunctionDisplay() {
-		functionLength = 10;
-		functionDisplay[0] = "* DNF";
+		functionLength = 11;
+		functionDisplay[0] = "* EXIT Function";
 		functionDisplay[1] = "  NUM";
-		functionDisplay[2] = "  CANCEL";
+		functionDisplay[2] = "  DNF";
 		functionDisplay[3] = "  NEWRUN";
 		functionDisplay[4] = "  ENDRUN";
 		functionDisplay[5] = "  EVENT";
 		functionDisplay[6] = "  TIME";
 		functionDisplay[7] = "  EXPORT";
 		functionDisplay[8] = "  RESET";
-		functionDisplay[9] = "  EXIT Function Screen";
+		functionDisplay[9] = "  CANCEL";
+		functionDisplay[10] = "  PRINT ";
 	}
 	
 	private void upBtn() {
