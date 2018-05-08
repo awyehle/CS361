@@ -478,7 +478,7 @@ public class Chronotimer {
 			{
 				writer.println(new Gson().toJson(_run.get(i-1)));
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			_printer.println("Run " + i + " has been saved");
 		}
@@ -996,7 +996,7 @@ public class Chronotimer {
 			receiveMessage = sb.toString();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
