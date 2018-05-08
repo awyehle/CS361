@@ -494,7 +494,7 @@ public class Chronotimer {
 	 */
 	private void print(String... command) {
 		if(command.length < 3) {
-			print(command[0],command[1], ""+_runNumber);
+			print(command[0],command[1], ""+(_runNumber-1));
 		}
 		else {
 			try
@@ -600,8 +600,8 @@ public class Chronotimer {
 							{
 							_startTimes[0].add(new Time(command[0]));
 							}
-							_printer.print("Race started at " + new Time().convertRawTime());
 						}
+						_printer.print("Race started at " + new Time().convertRawTime());
 					}
 				}catch(NullPointerException e){return;}
 			}
