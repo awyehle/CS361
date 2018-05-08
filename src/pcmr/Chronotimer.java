@@ -586,8 +586,10 @@ public class Chronotimer {
 				try{
 					if(event!=EVENTS.GRP && event!=EVENTS.PARGRP)
 					{
-						_queues[channel/2].popWait();
-						_startTimes[channel/2].add(new Time(command[0]));
+						Racer starter = _queues[channel/2].popWait();
+						Time start = new Time(command[0]);
+						_startTimes[channel/2].add(start);
+						_printer.print(starter.getBib() + " started at " + start.convertRawTime());
 					}
 					else
 					{
@@ -598,6 +600,7 @@ public class Chronotimer {
 							{
 							_startTimes[0].add(new Time(command[0]));
 							}
+							_printer.print("Race started at " + new Time().convertRawTime());
 						}
 					}
 				}catch(NullPointerException e){return;}
