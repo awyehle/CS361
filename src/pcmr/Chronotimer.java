@@ -532,7 +532,7 @@ public class Chronotimer {
 		}
 		_finishTimes[0].add(new Time(null));
 		_run.get(_runNumber-1).addResult(bad.getBib(), getRacerTime(0,0));
-		_printer.print(_run.get(_runNumber-1).getTimeForRacer(bad.getBib()).convertRawTime());
+		_printer.print(_run.get(_runNumber-1).getTimeForRacer(bad.getBib()).convertRawTime());//
 		_printer.println(command[0] + " Racer for channels [1] and [2] did not finish (DNF)");
 	}
 
