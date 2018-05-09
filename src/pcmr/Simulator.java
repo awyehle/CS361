@@ -27,6 +27,7 @@ public class Simulator {
 		_VALIDCOMMANDS.add("DNF");
 		_VALIDCOMMANDS.add("CANCEL");
 		_VALIDCOMMANDS.add("TOG");
+		_VALIDCOMMANDS.add("LOG");
 		_VALIDCOMMANDS.add("TRIG");
 		_VALIDCOMMANDS.add("START");
 		_VALIDCOMMANDS.add("FINISH");
@@ -37,6 +38,7 @@ public class Simulator {
 		_VALIDCOMMANDS.add("PRINT");
 		_VALIDCOMMANDS.add("CONN");
 		_VALIDCOMMANDS.add("EXPORT");
+		_VALIDCOMMANDS.add("SWAP");
 	}
 
 	public static void main(String[] args)
