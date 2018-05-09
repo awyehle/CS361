@@ -131,7 +131,7 @@ public class Time implements Comparable {
 		if(!(arg0 instanceof Time)) return -1;
 		else
 		{
-			if(((Time) arg0)._time<0 || this._time < 0) return -1;
+			if(((Time) arg0)._time<0 || this._time < 0) return Integer.MAX_VALUE;
 			return (int) (this._time-((Time) arg0)._time);
 		}
 	}
